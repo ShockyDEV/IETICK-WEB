@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Base ──────────────────────────────────────────────────────────── */
+@layer base {
+  :root {
+    color-scheme: light;
+    --header-h: 4.5rem;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--header-h) + 1rem);
+  }
+
+  body {
+    @apply bg-white font-sans text-tinta antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display tracking-tight text-tinta;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    @apply bg-cian-300 text-noche-900;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-oro-400 ring-offset-2 ring-offset-white;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ─── Componentes reutilizables ────────────────────────────────────── */
+@layer components {
+  .contenedor {
+    @apply mx-auto w-full max-w-site px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Etiqueta en mayúsculas y monoespaciada sobre los títulos de sección */
+  .antetitulo {
+    @apply font-mono text-xs font-medium uppercase tracking-[0.18em] text-mar-600;
+  }
+  .antetitulo-claro {
+    @apply font-mono text-xs font-medium uppercase tracking-[0.18em] text-cian-300;
+  }
+
+  .boton {
+    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition
+      focus-visible:ring-2 focus-visible:ring-oro-400 focus-visible:ring-offset-2;
+  }
+  .boton-oro {
+    @apply boton bg-oro-400 text-noche-900 shadow-[0_8px_24px_-8px_rgba(235,174,63,0.7)] hover:bg-oro-300;
+  }
+  .boton-contorno-claro {
+    @apply boton border border-cian-300/40 text-white hover:border-cian-300 hover:bg-white/5;
+  }
+  .boton-mar {
+    @apply boton bg-mar-600 text-white hover:bg-mar-700;
+  }
+  .boton-contorno {
+    @apply boton border border-linea bg-white text-tinta hover:border-mar-300 hover:text-mar-700;
+  }
+
+  .enlace {
+    @apply font-medium text-mar-600 underline decoration-mar-300 decoration-1 underline-offset-4 transition hover:text-mar-800 hover:decoration-mar-600;
+  }
+
+  .tarjeta {
+    @apply rounded-2xl border border-linea bg-white shadow-tarjeta;
+  }
+
+  /* Texto largo (páginas de contenido) */
+  .prosa {
+    @apply max-w-[68ch] text-[1.0625rem] leading-relaxed text-tinta-suave;
+  }
+  .prosa p + p {
+    @apply mt-4;
+  }
+  .prosa strong {
+    @apply font-semibold text-tinta;
+  }
+}
+
+/* Fuera de la vista pero accesible a lectores de pantalla */
+@layer utilities {
+  .sr-only-focusable:not(:focus):not(:focus-within) {
+    @apply sr-only;
+  }
+  .scrollbar-fino {
+    scrollbar-width: thin;
+    scrollbar-color: theme("colors.mar.200") transparent;
+  }
+}

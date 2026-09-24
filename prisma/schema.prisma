@@ -1,0 +1,148 @@
+// ieTIC 2027 — modelo de datos
+//
+// El programa sigue la lógica de la web del programa de ICED26
+// (edificios → salas → sesiones), llevada a una base de datos relacional:
+//
+//   Venue (edificio)  1─N  Room (sala)  1─N  Session  1─N  Talk
+//
+// Ámbito de una sesión (en qué columnas de la parrilla se pinta):
+//   · roomId  != null                → una sala concreta
+//   · roomId  == null && venueId     → todas las salas de ese edificio
+//                                       (sesiones simultáneas sin aula asignada)
+//   · roomId  == null && !venueId    → fila general (pausas, acreditaciones…)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  EDITOR
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  passwordHash String
+  role         Role     @default(EDITOR)
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+/// Edificio o sede (equivale a los "clusters" del programa de ICED26).
+model Venue {
+  id         String    @id // slug estable, p. ej. "iuce"
+  name       String
+  namePt     String?
+  short      String?
+  subtitle   String?
+  subtitlePt String?
+  address    String?
+  order      Int       @default(0)
+  rooms      Room[]
+  sessions   Session[]
+}
+
+/// Sala. Los datos de los espacios del IUCE proceden del catálogo de la web
+/// de reservas (reservas.iuce.usal.es).
+model Room {
+  id            String    @id // slug estable, p. ej. "aula-17a"
+  venueId       String
+  venue         Venue     @relation(fields: [venueId], references: [id], onDelete: Cascade)
+  name          String
+  namePt        String?
+  code          String?
+  capacity      Int?
+  floor         String?
+  floorPt       String?
+  description   String?
+  descriptionPt String?
+  equipment     String[]  @default([])
+  imageUrl      String?
+  accessible    Boolean   @default(true)
+  order         Int       @default(0)
+  active        Boolean   @default(true)
+  sessions      Session[]
+}
+
+/// Días del congreso (fecha local de Europe/Madrid).
+model Day {
+  key     String @id // "2027-02-11"
+  labelEs String
+  labelPt String
+  order   Int    @default(0)
+}
+
+enum SessionType {
+  ACREDITACION
+  INSTITUCIONAL
+  PONENCIA
+  PANEL_EXPERTOS
+  MESA_REDONDA
+  TALLER
+  COMUNICACIONES
+  PROYECTOS
+  PAUSA
+  SOCIAL
+  OTRO
+}
+
+model Session {
+  id            String      @id @default(cuid())
+  day           String // "2027-02-11" (hora local de Madrid)
+  start         String // "09:30"
+  end           String // "10:00"
+  type          SessionType
+  title         String
+  titlePt       String?
+  subtitle      String?
+  subtitlePt    String?
+  description   String?     @db.Text
+  descriptionPt String?     @db.Text
+  speakers      String? // texto libre: "Nombre Apellido (Universidad)"; uno por línea
+  chair         String? // modera / coordina
+  roomId        String?
+  room          Room?       @relation(fields: [roomId], references: [id], onDelete: SetNull)
+  venueId       String?
+  venue         Venue?      @relation(fields: [venueId], references: [id], onDelete: SetNull)
+  location      String? // lugar fuera de las salas (p. ej. punto de encuentro)
+  locationPt    String?
+  streamUrl     String?
+  cancelled     Boolean     @default(false)
+  published     Boolean     @default(true)
+  order         Int         @default(0)
+  talks         Talk[]
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([day])
+}
+
+/// Contribución dentro de una sesión (comunicaciones, proyectos…).
+model Talk {
+  id        String  @id @default(cuid())
+  sessionId String
+  session   Session @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  order     Int     @default(0)
+  title     String
+  authors   String?
+  presenter String?
+  abstract  String? @db.Text
+  axis      String? // id del eje temático (ver src/content/ejes.ts)
+
+  @@index([sessionId])
+}
+
+/// Ajustes sueltos (clave → valor), p. ej. programmeStatus = provisional.
+model Setting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}

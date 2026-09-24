@@ -1,0 +1,64 @@
+# ieTIC 2027 — servicios
+#   Desarrollo:  docker compose up -d            (solo PostgreSQL, puerto 5435)
+#   Producción:  docker compose --profile prod up -d --build
+#
+# Puertos elegidos para convivir con el resto de proyectos del PC:
+#   5432 Reservas · 5433 iuce-web / MUPES · 5434 DIGIFOLK · 5435 ieTIC 2027
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: ietic27-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-ietic}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ietic27-dev}
+      POSTGRES_DB: ${POSTGRES_DB:-ietic27}
+    ports:
+      - "5435:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ietic} -d ${POSTGRES_DB:-ietic27}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ietic27-app
+    restart: unless-stopped
+    profiles:
+      - prod
+    ports:
+      - "3027:3000"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-ietic}:${POSTGRES_PASSWORD:-ietic27-dev}@db:5432/${POSTGRES_DB:-ietic27}?schema=public
+      AUTH_SECRET: ${AUTH_SECRET}
+      AUTH_TRUST_HOST: "true"
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3027}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # Tarea puntual: crear/actualizar tablas y cargar la semilla.
+  #   docker compose --profile tools run --rm migrate
+  migrate:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: builder
+    profiles:
+      - tools
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-ietic}:${POSTGRES_PASSWORD:-ietic27-dev}@db:5432/${POSTGRES_DB:-ietic27}?schema=public
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@ietic27.local}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+    command: sh -c "npx prisma db push --skip-generate && npx tsx prisma/seed.ts"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:
