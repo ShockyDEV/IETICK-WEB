@@ -3,7 +3,7 @@ import Image from "next/image";
 import { PageArt } from "@/components/ui/page-art";
 import { PageHeader } from "@/components/ui/page-header";
 import { PendingNote } from "@/components/ui/pending-note";
-import { UI } from "@/content/ui";
+import { sectionColor, UI } from "@/content/ui";
 import { isLocale, pick, type Locale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
 
@@ -41,11 +41,11 @@ export default async function ComitesPage({ params }: Props) {
 
   return (
     <>
-      <PageHeader eyebrow={t.eyebrow} title={t.title} lead={t.lead} art={<PageArt />} />
+      <PageHeader eyebrow={t.eyebrow} title={t.title} lead={t.lead} art={<PageArt />} color={sectionColor("/comites")} />
       <section className="py-16 sm:py-20">
         <div className="contenedor grid gap-6 md:grid-cols-2">
-          {[t.organizing, t.scientific].map((c) => (
-            <div key={c} className="tarjeta p-7">
+          {[t.organizing, t.scientific].map((c, i) => (
+            <div key={c} data-reveal style={{ ["--d" as string]: `${i * 100}ms` }} className="tarjeta p-7">
               <h2 className="font-display text-2xl font-bold">{c}</h2>
               <PendingNote title={pick(UI.soon, locale)} className="mt-6">
                 {t.pending}
@@ -57,7 +57,6 @@ export default async function ComitesPage({ params }: Props) {
           <p className="antetitulo">{pick(UI.organiza, locale)}</p>
           <div className="mt-6 flex flex-wrap items-center gap-10">
             <Image src="/brand/usal-logo.png" alt="Universidad de Salamanca" width={854} height={232} className="h-14 w-auto" />
-            <Image src="/brand/iuce-logo-full.png" alt="IUCE — Instituto Universitario de Ciencias de la Educación" width={2250} height={1018} className="h-16 w-auto" />
           </div>
         </div>
       </section>

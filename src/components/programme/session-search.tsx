@@ -84,13 +84,13 @@ export function SessionSearch({
             setOpen(false);
           }
         }}
-        className="h-11 w-full rounded-full border border-linea bg-white pl-10 pr-10 text-sm text-tinta placeholder:text-tinta-tenue focus:border-mar-400 focus:outline-none focus:ring-2 focus:ring-mar-200 [&::-webkit-search-cancel-button]:hidden"
+        className="h-11 w-full rounded-md border border-linea bg-white pl-10 pr-10 text-sm text-tinta placeholder:text-tinta-tenue focus:border-mar-400 focus:outline-none focus:ring-2 focus:ring-mar-200 [&::-webkit-search-cancel-button]:hidden"
       />
       {q && (
         <button
           type="button"
           onClick={() => setQ("")}
-          className="absolute right-2 top-1/2 inline-flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full text-tinta-tenue hover:bg-papel"
+          className="absolute right-2 top-1/2 inline-flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded text-tinta-tenue hover:bg-papel"
           aria-label={t.close}
         >
           <X className="h-4 w-4" aria-hidden />
@@ -100,7 +100,7 @@ export function SessionSearch({
         <ul
           id={listId}
           role="listbox"
-          className="absolute left-0 right-0 top-[calc(100%+0.4rem)] z-50 max-h-96 overflow-y-auto rounded-2xl border border-linea bg-white p-1.5 shadow-elevada"
+          className="absolute left-0 right-0 top-[calc(100%+0.4rem)] z-50 max-h-96 overflow-y-auto rounded-lg border border-linea bg-white p-1.5 shadow-elevada"
         >
           {results.length === 0 ? (
             <li className="px-3 py-3 text-sm text-tinta-tenue">{t.noResults}</li>
@@ -116,13 +116,16 @@ export function SessionSearch({
                   onMouseDown={(e) => e.preventDefault()}
                   onClick={() => choose(s.id)}
                   onMouseEnter={() => setActive(i)}
-                  className={cn("flex cursor-pointer gap-3 rounded-xl px-3 py-2.5", i === active && "bg-papel")}
+                  className={cn("flex cursor-pointer gap-3 rounded-md px-3 py-2.5", i === active && "bg-papel")}
                 >
-                  <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full" style={{ backgroundColor: meta.color }} aria-hidden />
+                  <span className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-sm" style={{ backgroundColor: meta.color }} aria-hidden />
                   <span className="min-w-0">
                     <span className="block truncate text-sm font-medium text-tinta">{tr(s.title, s.titlePt, locale)}</span>
-                    <span className="block font-mono text-xs text-tinta-tenue">
-                      {shortDay(s.day, locale)} · {s.start}–{s.end} · {meta.label[locale]}
+                    <span className="flex gap-2 text-xs text-tinta-tenue">
+                      <span className="tabular-nums">
+                        {shortDay(s.day, locale)}, {s.start}–{s.end}
+                      </span>
+                      <span style={{ color: meta.color }}>{meta.label[locale]}</span>
                     </span>
                   </span>
                 </li>

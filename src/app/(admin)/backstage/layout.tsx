@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "@/app/globals.css";
-import { fontVariables } from "@/lib/fonts";
+import { adminFontVariables } from "@/lib/fonts";
 import { AdminToaster } from "@/components/admin/AdminToaster";
 
 /**
@@ -31,7 +31,7 @@ export default function BackstageRootLayout({ children }: { children: React.Reac
   return (
     // data-scroll-behavior: globals.css usa scroll-behavior:smooth; así Next lo
     // desactiva durante las transiciones de ruta (y no avisa en consola).
-    <html lang="es" className={fontVariables} data-scroll-behavior="smooth">
+    <html lang="es" className={adminFontVariables} data-scroll-behavior="smooth">
       <body className="min-h-dvh bg-papel text-tinta">
         {children}
         <AdminToaster />

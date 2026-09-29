@@ -21,10 +21,10 @@ export const AVISO_LEGAL: LegalDoc = {
       heading: { es: "Titular", pt: "Titular" },
       body: {
         es: [
-          "Universidad de Salamanca — Instituto Universitario de Ciencias de la Educación (IUCE). Paseo de Canalejas, 169 (Edificio Solís, 1.ª planta), 37008 Salamanca. Correo: iuce@usal.es · Teléfono: +34 923 294 634.",
+          "Universidad de Salamanca. Patio de Escuelas, 1, 37008 Salamanca. El correo de contacto de la organización del congreso se publicará en esta web.",
         ],
         pt: [
-          "Universidade de Salamanca — Instituto Universitário de Ciências da Educação (IUCE). Paseo de Canalejas, 169 (Edifício Solís, 1.º piso), 37008 Salamanca. Correio eletrónico: iuce@usal.es · Telefone: +34 923 294 634.",
+          "Universidade de Salamanca. Patio de Escuelas, 1, 37008 Salamanca. O correio eletrónico de contacto da organização do congresso será publicado neste sítio.",
         ],
       },
     },
@@ -148,8 +148,8 @@ export const ACCESIBILIDAD: LegalDoc = {
     {
       heading: { es: "Comunícanos cualquier barrera", pt: "Comunica-nos qualquer barreira" },
       body: {
-        es: ["Si encuentras algún problema de accesibilidad, escríbenos a iuce@usal.es y lo resolveremos lo antes posible."],
-        pt: ["Se encontrares algum problema de acessibilidade, escreve-nos para iuce@usal.es e resolvê-lo-emos o mais depressa possível."],
+        es: ["Si encuentras algún problema de accesibilidad, comunícaselo a la organización del congreso y lo resolveremos lo antes posible."],
+        pt: ["Se encontrares algum problema de acessibilidade, comunica-o à organização do congresso e resolvê-lo-emos o mais depressa possível."],
       },
     },
   ],

@@ -1,15 +1,27 @@
 import type { L10n } from "@/lib/i18n";
 
-/** Navegación principal (mismas rutas en los dos idiomas; PT con prefijo /pt). */
-export const NAV: { path: string; label: L10n }[] = [
-  { path: "/congreso", label: { es: "El congreso", pt: "O congresso" } },
-  { path: "/programa", label: { es: "Programa", pt: "Programa" } },
-  { path: "/ponentes", label: { es: "Ponentes", pt: "Oradores" } },
-  { path: "/comunicaciones", label: { es: "Comunicaciones", pt: "Comunicações" } },
-  { path: "/inscripcion", label: { es: "Inscripción", pt: "Inscrição" } },
-  { path: "/comites", label: { es: "Comités", pt: "Comissões" } },
-  { path: "/sede", label: { es: "Sede", pt: "Local" } },
+/**
+ * Navegación principal (mismas rutas en los dos idiomas; PT con prefijo /pt).
+ *
+ * Cada sección tiene su color, como en DIGIFOLK: lo toman el punto y la
+ * estela del menú, el filete de la cabecera y la cabecera de su página. Son
+ * tonos claros porque se pintan sobre el azul noche (contraste > 7:1).
+ */
+export const NAV: { path: string; label: L10n; color: string }[] = [
+  { path: "/congreso", label: { es: "El congreso", pt: "O congresso" }, color: "#98DDED" },
+  { path: "/programa", label: { es: "Programa", pt: "Programa" }, color: "#F0C263" },
+  { path: "/ponentes", label: { es: "Ponentes", pt: "Oradores" }, color: "#C3A6F2" },
+  { path: "/comunicaciones", label: { es: "Comunicaciones", pt: "Comunicações" }, color: "#7CC8F2" },
+  { path: "/inscripcion", label: { es: "Inscripción", pt: "Inscrição" }, color: "#8BDDB0" },
+  { path: "/comites", label: { es: "Comités", pt: "Comissões" }, color: "#F4A6C6" },
+  { path: "/sede", label: { es: "Sede", pt: "Local" }, color: "#F5B387" },
 ];
+
+/** Color de la sección de una ruta ("/sede", "/sede#espacios"…); cian en portada y legales. */
+export function sectionColor(path: string): string {
+  const clean = path.split(/[?#]/)[0];
+  return NAV.find((n) => clean === n.path || clean.startsWith(`${n.path}/`))?.color ?? "#98DDED";
+}
 
 export const LEGAL_NAV: { path: string; label: L10n }[] = [
   { path: "/aviso-legal", label: { es: "Aviso legal", pt: "Aviso legal" } },
@@ -37,7 +49,6 @@ export const UI = {
   },
   venueTitle: { es: "Sede", pt: "Local" },
   sections: { es: "Secciones", pt: "Secções" },
-  contact: { es: "Contacto de la sede", pt: "Contacto do local" },
   howToGet: { es: "Cómo llegar", pt: "Como chegar" },
   rights: { es: "Universidad de Salamanca", pt: "Universidade de Salamanca" },
 } satisfies Record<string, L10n>;

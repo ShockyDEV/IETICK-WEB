@@ -7,13 +7,13 @@ import { sessionLocation, typeColor, typeLabel } from "@/lib/programme-format";
 export function ProgrammeGlance({ data, locale }: { data: ProgrammeData; locale: Locale }) {
   return (
     <div className="mt-12 grid gap-6 lg:grid-cols-2">
-      {data.days.map((day) => {
+      {data.days.map((day, di) => {
         const sessions = data.sessions.filter((s) => s.day === day.key);
         return (
-          <article key={day.key} className="tarjeta overflow-hidden">
+          <article key={day.key} data-reveal style={{ ["--d" as string]: `${di * 120}ms` }} className="tarjeta eleva overflow-hidden">
             <header className="flex items-center justify-between border-b border-linea bg-white px-6 py-4">
               <h3 className="font-display text-lg font-bold">{dayLabel(day, locale)}</h3>
-              <span className="font-mono text-xs text-tinta-tenue">
+              <span className="text-sm tabular-nums text-tinta-tenue">
                 {sessions[0]?.start}–{sessions[sessions.length - 1]?.end}
               </span>
             </header>
@@ -25,7 +25,7 @@ export function ProgrammeGlance({ data, locale }: { data: ProgrammeData; locale:
                 const muted = s.type === "PAUSA" || s.type === "ACREDITACION";
                 return (
                   <li key={s.id} className="relative grid grid-cols-[4.25rem_1fr] gap-4 py-2.5">
-                    <span className="pt-0.5 text-right font-mono text-sm tabular-nums text-tinta-suave">{s.start}</span>
+                    <span className="pt-0.5 text-right text-sm font-medium tabular-nums text-tinta-suave">{s.start}</span>
                     <div className="relative pl-5">
                       <span
                         className="absolute left-[-0.3rem] top-[0.45rem] h-2.5 w-2.5 rounded-full ring-4 ring-white"
@@ -47,7 +47,7 @@ export function ProgrammeGlance({ data, locale }: { data: ProgrammeData; locale:
                               {loc.label}
                             </span>
                           )}
-                          {s.subtitle && <span className="text-tinta-tenue">· {tr(s.subtitle, s.subtitlePt, locale)}</span>}
+                          {s.subtitle && <span className="text-tinta-tenue">{tr(s.subtitle, s.subtitlePt, locale)}</span>}
                         </p>
                       )}
                     </div>

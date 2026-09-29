@@ -26,7 +26,8 @@ const OUT = path.join(__dirname, "..", "public", "og-image.png");
     content: `
       header, [role="timer"], nextjs-portal { display: none !important; }
       section:first-of-type a { display: none !important; }
-      section:first-of-type > div.contenedor { min-height: 630px !important; padding-top: 56px !important; padding-bottom: 40px !important; justify-content: center !important; }
+      section:first-of-type > div.contenedor { min-height: 630px !important; padding-top: 44px !important; padding-bottom: 40px !important; justify-content: center !important; }
+      section:first-of-type > div.contenedor img { width: 21rem !important; margin-top: 1.25rem !important; }
     `,
   });
   await new Promise((r) => setTimeout(r, 800));

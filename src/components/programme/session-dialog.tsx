@@ -12,7 +12,6 @@ import { formatInZone, formatOffset, hmToMinutes, offsetVsMadrid, sessionState }
 import { cn } from "@/lib/cn";
 import type { ProgrammeStrings } from "./i18n";
 import { LiveBadge } from "./programme-grid";
-import { rgba } from "./utils";
 
 /** Ficha de sesión en un <dialog> nativo (foco atrapado y Esc de serie). */
 export function SessionDialog({
@@ -65,25 +64,21 @@ export function SessionDialog({
       className="m-0 h-full max-h-none w-full max-w-none bg-transparent p-0 backdrop:bg-noche-950/60 backdrop:backdrop-blur-sm sm:m-auto sm:h-fit sm:max-h-[88vh] sm:max-w-2xl"
     >
       {s && meta && (
-        <div className="flex h-full flex-col overflow-hidden bg-white shadow-elevada sm:h-auto sm:max-h-[88vh] sm:rounded-3xl">
+        <div className="flex h-full flex-col overflow-hidden bg-white shadow-elevada sm:h-auto sm:max-h-[88vh] sm:rounded-xl">
           <div className="h-1.5 shrink-0" style={{ backgroundColor: meta.color }} aria-hidden />
           <header className="flex shrink-0 items-start justify-between gap-4 px-6 pb-2 pt-5 sm:px-8">
-            <div className="flex flex-wrap items-center gap-2">
-              <span
-                className="rounded-full px-2.5 py-1 text-xs font-semibold uppercase tracking-wide"
-                style={{ color: meta.color, backgroundColor: rgba(meta.color, 0.1) }}
-              >
+            <div className="flex flex-wrap items-center gap-3 pt-2">
+              <span className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wide" style={{ color: meta.color }}>
+                <span className="h-2.5 w-2.5 rounded-sm" style={{ backgroundColor: meta.color }} aria-hidden />
                 {meta.label[locale]}
               </span>
               {state === "live" && <LiveBadge t={t} />}
-              {s.cancelled && (
-                <span className="rounded-full bg-red-50 px-2.5 py-1 text-xs font-semibold uppercase text-red-700">{t.cancelled}</span>
-              )}
+              {s.cancelled && <span className="rounded-sm bg-red-50 px-2 py-0.5 text-xs font-semibold uppercase text-red-700">{t.cancelled}</span>}
             </div>
             <button
               type="button"
               onClick={onClose}
-              className="-mr-2 -mt-1 inline-flex h-10 w-10 items-center justify-center rounded-full text-tinta-suave transition hover:bg-papel hover:text-tinta"
+              className="-mr-2 -mt-1 inline-flex h-10 w-10 items-center justify-center rounded-md text-tinta-suave transition hover:bg-papel hover:text-tinta"
               aria-label={t.close}
               autoFocus
             >
@@ -97,18 +92,17 @@ export function SessionDialog({
             </h2>
             {s.subtitle && <p className="mt-2 text-lg text-tinta-suave">{tr(s.subtitle, s.subtitlePt, locale)}</p>}
 
-            <dl className="mt-6 space-y-3 rounded-2xl bg-papel p-4 text-sm">
+            <dl className="mt-6 space-y-3 rounded-lg bg-papel p-4 text-sm">
               <div className="flex gap-3">
                 <dt className="sr-only">{t.madridTime}</dt>
                 <Clock className="mt-0.5 h-4 w-4 shrink-0 text-mar-600" aria-hidden />
                 <dd>
-                  <span className="font-medium text-tinta">{day ? dayLabel(day, locale) : s.day}</span>
-                  {" · "}
-                  <span className="font-mono tabular-nums">
+                  <span className="font-medium text-tinta">{day ? dayLabel(day, locale) : s.day}</span>,{" "}
+                  <span className="font-medium tabular-nums">
                     {s.start}–{s.end}
                   </span>{" "}
                   <span className="text-tinta-tenue">
-                    ({t.madridTime} · {duration} {t.minutes})
+                    ({t.madridTime}, {duration} {t.minutes})
                   </span>
                 </dd>
               </div>
@@ -118,7 +112,7 @@ export function SessionDialog({
                   <Globe2 className="mt-0.5 h-4 w-4 shrink-0 text-mar-600" aria-hidden />
                   <dd>
                     {t.yourTime}:{" "}
-                    <span className="font-mono font-medium tabular-nums text-tinta">
+                    <span className="font-medium tabular-nums text-tinta">
                       {formatInZone(s.day, s.start, timeZone)}–{formatInZone(s.day, s.end, timeZone)}
                     </span>{" "}
                     <span className="text-tinta-tenue">
@@ -133,14 +127,14 @@ export function SessionDialog({
                   <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-mar-600" aria-hidden />
                   <dd>
                     <span className="font-medium text-tinta">{loc.label}</span>
+                    {loc.room?.capacity ? <span className="text-tinta-tenue"> ({t.capacity(loc.room.capacity)})</span> : null}
                     {loc.venue && loc.scope === "room" && (
-                      <span className="text-tinta-tenue"> · {tr(loc.venue.name, loc.venue.namePt, locale)}</span>
+                      <span className="block text-tinta-tenue">{tr(loc.venue.name, loc.venue.namePt, locale)}</span>
                     )}
-                    {loc.room?.capacity ? <span className="text-tinta-tenue"> · {t.capacity(loc.room.capacity)}</span> : null}
                     {(loc.room || loc.venue) && (
                       <Link
                         href={`${href(locale, "/sede")}#${loc.room ? `sala-${loc.room.id}` : "espacios"}`}
-                        className="enlace ml-2 text-xs"
+                        className="enlace mt-1 inline-block text-xs"
                         onClick={onClose}
                       >
                         {t.seeVenue}
@@ -153,8 +147,8 @@ export function SessionDialog({
 
             {speakers.length > 0 && (
               <section className="mt-6">
-                <h3 className="flex items-center gap-2 font-mono text-xs font-medium uppercase tracking-[0.14em] text-tinta-tenue">
-                  <Mic2 className="h-3.5 w-3.5" aria-hidden /> {t.speakers}
+                <h3 className="nota flex items-center gap-2 text-tinta-suave">
+                  <Mic2 className="h-4 w-4 text-mar-600" aria-hidden /> {t.speakers}
                 </h3>
                 <ul className="mt-2 space-y-1">
                   {speakers.map((p) => (
@@ -184,36 +178,32 @@ export function SessionDialog({
 
             {s.talks.length > 0 && (
               <section className="mt-8">
-                <h3 className="font-mono text-xs font-medium uppercase tracking-[0.14em] text-tinta-tenue">
+                <h3 className="nota text-tinta-suave">
                   {t.contributions} ({s.talks.length})
                 </h3>
-                <ol className="mt-3 divide-y divide-linea rounded-2xl border border-linea">
-                  {s.talks.map((talk, i) => {
+                <ol className="mt-3 divide-y divide-linea rounded-lg border border-linea">
+                  {s.talks.map((talk) => {
                     const eje = EJES.find((e) => e.id === talk.axis);
                     return (
                       <li key={talk.id} className="p-4">
-                        <p className="flex gap-3">
-                          <span className="font-mono text-xs text-tinta-tenue">{String(i + 1).padStart(2, "0")}</span>
-                          <span className="font-medium leading-snug text-tinta">{talk.title}</span>
-                        </p>
+                        <p className="font-medium leading-snug text-tinta">{talk.title}</p>
                         {(talk.authors || talk.presenter) && (
-                          <p className="ml-7 mt-1 text-sm text-tinta-suave">
+                          <p className="mt-1 text-sm text-tinta-suave">
                             {talk.authors}
                             {talk.presenter && (
-                              <span className="text-tinta-tenue">
-                                {" "}
-                                · {t.presenter}: {talk.presenter}
+                              <span className="block text-tinta-tenue">
+                                {t.presenter}: {talk.presenter}
                               </span>
                             )}
                           </p>
                         )}
                         {eje && (
-                          <p className="ml-7 mt-2 inline-flex rounded-full bg-mar-50 px-2 py-0.5 text-xs text-mar-700">
+                          <p className="mt-2 text-xs text-mar-700">
                             {t.axis}: {pick(eje.short, locale)}
                           </p>
                         )}
                         {talk.abstract && (
-                          <details className="ml-7 mt-2 text-sm text-tinta-suave">
+                          <details className="mt-2 text-sm text-tinta-suave">
                             <summary className="cursor-pointer font-medium text-mar-600">{t.abstract}</summary>
                             <p className="mt-2 leading-relaxed">{talk.abstract}</p>
                           </details>
@@ -238,8 +228,9 @@ export function SessionDialog({
               onClick={onToggleAgenda}
               aria-pressed={starred}
               className={cn(
-                "boton",
-                starred ? "bg-oro-100 text-oro-800 hover:bg-oro-200" : "border border-linea bg-white text-tinta hover:border-oro-400",
+                starred
+                  ? "boton text-oro-800 [--boton-fondo:theme(colors.oro.100)] hover:[--boton-fondo:theme(colors.oro.200)]"
+                  : "boton-contorno hover:[--boton-borde:theme(colors.oro.400)]",
               )}
             >
               <Star className="h-4 w-4" fill={starred ? "currentColor" : "none"} aria-hidden />

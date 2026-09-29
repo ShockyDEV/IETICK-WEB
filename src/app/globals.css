@@ -7,6 +7,8 @@
   :root {
     color-scheme: light;
     --header-h: 4.5rem;
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --rebote: cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
   html {
@@ -60,29 +62,57 @@
     @apply mx-auto w-full max-w-site px-4 sm:px-6 lg:px-8;
   }
 
-  /* Etiqueta en mayúsculas y monoespaciada sobre los títulos de sección */
+  /* Antetítulo: cursiva de EB Garamond, sin mayúsculas ni espaciado; delante
+     lleva el «punto y estela» (SectionHeading, PageHeader, portada) */
   .antetitulo {
-    @apply font-mono text-xs font-medium uppercase tracking-[0.18em] text-mar-600;
+    @apply font-serif text-[1.3rem] italic leading-tight text-mar-700;
   }
   .antetitulo-claro {
-    @apply font-mono text-xs font-medium uppercase tracking-[0.18em] text-cian-300;
+    @apply font-serif text-[1.3rem] italic leading-tight text-cian-200;
   }
 
-  .boton {
-    @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition
-      focus-visible:ring-2 focus-visible:ring-oro-400 focus-visible:ring-offset-2;
+  /* Botones con una esquina facetada, como los polígonos del fondo del logo.
+     El fondo (--boton-fondo) y el borde (--boton-borde) se pintan en
+     pseudoelementos recortados (ver más abajo), así el anillo de foco del
+     propio botón no se recorta. */
+  .boton,
+  .boton-oro,
+  .boton-mar,
+  .boton-contorno,
+  .boton-contorno-claro {
+    --faceta: 10px;
+    @apply relative isolate inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold transition;
   }
   .boton-oro {
-    @apply boton bg-oro-400 text-noche-900 shadow-[0_8px_24px_-8px_rgba(235,174,63,0.7)] hover:bg-oro-300;
+    --boton-fondo: theme("colors.oro.400");
+    @apply text-noche-900;
+    filter: drop-shadow(0 6px 14px rgba(235, 174, 63, 0.35));
   }
-  .boton-contorno-claro {
-    @apply boton border border-cian-300/40 text-white hover:border-cian-300 hover:bg-white/5;
+  .boton-oro:hover {
+    --boton-fondo: theme("colors.oro.300");
   }
   .boton-mar {
-    @apply boton bg-mar-600 text-white hover:bg-mar-700;
+    --boton-fondo: theme("colors.mar.600");
+    @apply text-white;
+  }
+  .boton-mar:hover {
+    --boton-fondo: theme("colors.mar.700");
   }
   .boton-contorno {
-    @apply boton border border-linea bg-white text-tinta hover:border-mar-300 hover:text-mar-700;
+    --boton-fondo: #fff;
+    --boton-borde: theme("colors.linea");
+    @apply text-tinta hover:text-mar-700;
+  }
+  .boton-contorno:hover {
+    --boton-borde: theme("colors.mar.300");
+  }
+  .boton-contorno-claro {
+    --boton-borde: rgb(152 221 237 / 0.4);
+    @apply text-white;
+  }
+  .boton-contorno-claro:hover {
+    --boton-fondo: rgb(255 255 255 / 0.05);
+    --boton-borde: theme("colors.cian.300");
   }
 
   .enlace {
@@ -90,7 +120,12 @@
   }
 
   .tarjeta {
-    @apply rounded-2xl border border-linea bg-white shadow-tarjeta;
+    @apply rounded-lg border border-linea bg-white shadow-tarjeta;
+  }
+
+  /* «Por anunciar» y otras notas: cursiva, sin cápsula */
+  .nota {
+    @apply font-serif text-[1.075rem] italic leading-snug;
   }
 
   /* Texto largo (páginas de contenido) */
@@ -102,6 +137,274 @@
   }
   .prosa strong {
     @apply font-semibold text-tinta;
+  }
+}
+
+/* Faceta de los botones (ver .boton en @layer components) */
+:is(.boton, .boton-oro, .boton-mar, .boton-contorno, .boton-contorno-claro)::before,
+:is(.boton, .boton-oro, .boton-mar, .boton-contorno, .boton-contorno-claro)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  transition: background-color 0.2s var(--ease);
+}
+:is(.boton, .boton-oro, .boton-mar, .boton-contorno, .boton-contorno-claro)::before {
+  background-color: var(--boton-fondo, transparent);
+  clip-path: polygon(0 0, calc(100% - var(--faceta)) 0, 100% var(--faceta), 100% 100%, 0 100%);
+}
+/* Borde de 1 px con la misma faceta: anillo par-impar (contorno exterior e interior) */
+:is(.boton, .boton-oro, .boton-mar, .boton-contorno, .boton-contorno-claro)::after {
+  background-color: var(--boton-borde, transparent);
+  clip-path: polygon(
+    evenodd,
+    0 0,
+    calc(100% - var(--faceta)) 0,
+    100% var(--faceta),
+    100% 100%,
+    0 100%,
+    0 0,
+    1px 1px,
+    1px calc(100% - 1px),
+    calc(100% - 1px) calc(100% - 1px),
+    calc(100% - 1px) calc(var(--faceta) + 0.41px),
+    calc(100% - var(--faceta) - 0.41px) 1px,
+    1px 1px
+  );
+}
+
+/* ─── Movimiento (mismo lenguaje que DIGIFOLK) ───────────────────────── */
+
+/* «Punto y estela» (components/ui/trace-line.tsx): el punto del logo sale
+   disparado y deja una línea recta que crece de izquierda a derecha */
+.trazo {
+  position: relative;
+  display: block;
+  width: var(--w);
+  max-width: 100%;
+  height: 8px;
+}
+.trazo__linea {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  height: var(--g, 2px);
+  transform: translateY(-50%) scaleX(0);
+  transform-origin: left center;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, var(--c) 55%);
+  transition: transform 0.55s var(--ease) var(--d, 0ms);
+}
+.trazo__punto {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  margin: -3.5px 0 0 -3.5px;
+  border-radius: 999px;
+  background: var(--c);
+  box-shadow: 0 0 10px var(--c);
+  opacity: 0;
+  transform: translateX(0) scale(0.4);
+  transition:
+    transform 0.55s var(--ease) var(--d, 0ms),
+    opacity 0.2s var(--ease) var(--d, 0ms);
+}
+/* Estado trazado */
+.trazo-hover:hover .trazo--hover .trazo__linea,
+.trazo-hover:focus-visible .trazo--hover .trazo__linea,
+.is-active .trazo--hover .trazo__linea,
+.is-in .trazo--draw .trazo__linea,
+[data-revela="no"] .trazo--draw .trazo__linea,
+html:not([data-revela]) .trazo--draw .trazo__linea {
+  transform: translateY(-50%) scaleX(1);
+}
+.trazo-hover:hover .trazo--hover .trazo__punto,
+.trazo-hover:focus-visible .trazo--hover .trazo__punto,
+.is-active .trazo--hover .trazo__punto,
+.is-in .trazo--draw .trazo__punto,
+[data-revela="no"] .trazo--draw .trazo__punto,
+html:not([data-revela]) .trazo--draw .trazo__punto {
+  opacity: 1;
+  transform: translateX(var(--w)) scale(1);
+}
+/* Al cargar (cabeceras) */
+.trazo--intro .trazo__linea {
+  animation: estela 0.9s var(--ease) var(--d, 0ms) both;
+}
+.trazo--intro .trazo__punto {
+  animation: disparo 0.9s var(--ease) var(--d, 0ms) both;
+}
+
+/* Ola de letras del menú: cada letra cambia de color con un pequeño retardo
+   y da un saltito al pasar el ratón */
+.letra {
+  display: inline-block;
+  transition: color 0.3s var(--ease);
+  transition-delay: calc(var(--i) * 22ms);
+}
+.trazo-hover:hover .letra,
+.trazo-hover:focus-visible .letra {
+  animation: salto 0.45s var(--ease) calc(var(--i) * 22ms);
+}
+
+/* Aparición al entrar en pantalla (components/ui/reveal-observer.tsx).
+   Solo se oculta cuando el script de la cabecera marca <html data-revela>. */
+[data-revela="si"] [data-reveal] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.6s var(--ease),
+    transform 0.6s var(--ease);
+  transition-delay: var(--d, 0ms);
+}
+[data-revela="si"] [data-reveal="izq"] {
+  transform: translateX(-24px);
+}
+[data-revela="si"] [data-reveal="escala"] {
+  transform: scale(0.96);
+}
+[data-revela="si"] [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Eje cronológico de ediciones: la línea se traza y los nodos y sus datos
+   aparecen en secuencia (components/congreso/editions-timeline.tsx) */
+[data-revela="si"] .eje .eje__linea {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 1.4s var(--ease) 150ms;
+}
+[data-revela="si"] .eje.is-in .eje__linea {
+  transform: scaleX(1);
+}
+[data-revela="si"] .eje .eje__nodo {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
+  transition:
+    opacity 0.3s var(--ease),
+    transform 0.5s var(--rebote);
+  transition-delay: var(--d, 0ms);
+}
+[data-revela="si"] .eje.is-in .eje__nodo {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+[data-revela="si"] .eje .eje__texto {
+  opacity: 0;
+  transition: opacity 0.5s var(--ease);
+  transition-delay: var(--d, 0ms);
+}
+[data-revela="si"] .eje.is-in .eje__texto {
+  opacity: 1;
+}
+
+/* Tarjetas que se elevan */
+.eleva {
+  transition:
+    transform 0.25s var(--ease),
+    box-shadow 0.25s var(--ease),
+    border-color 0.25s var(--ease);
+}
+.eleva:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 2px 4px rgba(6, 34, 47, 0.08), 0 24px 40px -16px rgba(6, 34, 47, 0.32);
+}
+
+/* Entrada de las cabeceras: palabra a palabra, barrido de color */
+.palabra {
+  display: inline-block;
+  animation: subir 0.6s var(--ease) both;
+}
+.entra {
+  animation: subir 0.6s var(--ease) both;
+}
+.barrido {
+  animation: barrido 0.8s var(--ease) both;
+}
+
+@keyframes estela {
+  from {
+    transform: translateY(-50%) scaleX(0);
+  }
+  to {
+    transform: translateY(-50%) scaleX(1);
+  }
+}
+@keyframes disparo {
+  0% {
+    opacity: 0;
+    transform: translateX(0) scale(0.4);
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(var(--w)) scale(1);
+  }
+}
+@keyframes salto {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-3px);
+  }
+}
+@keyframes subir {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes barrido {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@keyframes latir {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.45);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  /* Los trazos que se dibujan solos aparecen ya hechos; los del menú siguen
+     saliendo solo en hover/activo, pero sin animación */
+  .trazo--draw .trazo__linea,
+  .trazo--intro .trazo__linea {
+    transform: translateY(-50%) scaleX(1) !important;
+    animation: none !important;
+  }
+  .trazo--draw .trazo__punto,
+  .trazo--intro .trazo__punto {
+    opacity: 1 !important;
+    transform: translateX(var(--w)) scale(1) !important;
+    animation: none !important;
+  }
+  .letra {
+    animation: none !important;
   }
 }
 

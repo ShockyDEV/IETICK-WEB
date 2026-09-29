@@ -1,14 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, Check } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Check } from "lucide-react";
 import { FacetPattern } from "@/components/art/FacetPattern";
+import { EditionsTimeline } from "@/components/congreso/editions-timeline";
 import { EjeIcon } from "@/components/ui/eje-icon";
 import { PageArt } from "@/components/ui/page-art";
 import { PageHeader } from "@/components/ui/page-header";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { EJES } from "@/content/ejes";
-import { EDICIONES, SITE } from "@/content/site";
-import { UI } from "@/content/ui";
+import { IETIC_SERIE } from "@/content/site";
+import { sectionColor } from "@/content/ui";
+import { CountUp } from "@/components/ui/count-up";
 import { href, isLocale, pick, type Locale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
 import { getProgramme } from "@/lib/programme";
@@ -46,7 +48,11 @@ const T = {
     ],
     historyEyebrow: "Trayectoria",
     historyTitle: "Una conferencia ibérica",
-    historyLead: "ieTIC nació de la colaboración entre instituciones de España y Portugal y ha recorrido distintas sedes a ambos lados de la frontera. Algunas paradas del camino:",
+    historyLead: "ieTIC nació en 2011 de la colaboración entre instituciones de España y Portugal y ha recorrido distintas sedes a ambos lados de la frontera. Estas son sus ediciones, con los libros de actas publicados:",
+    thisEdition: "esta edición",
+    linkLabels: { actas: "Actas", resumenes: "Resúmenes", web: "Web" },
+    seriesWeb: "Web de la serie ieTIC (IPB)",
+    proceedingsNote: "Actas en el repositorio del Instituto Politécnico de Bragança.",
     ctaProgramme: "Ver el programa",
   },
   pt: {
@@ -76,7 +82,11 @@ const T = {
     ],
     historyEyebrow: "Percurso",
     historyTitle: "Uma conferência ibérica",
-    historyLead: "O ieTIC nasceu da colaboração entre instituições de Espanha e Portugal e tem percorrido diferentes locais dos dois lados da fronteira. Algumas paragens do caminho:",
+    historyLead: "O ieTIC nasceu em 2011 da colaboração entre instituições de Espanha e Portugal e tem percorrido diferentes locais dos dois lados da fronteira. Estas são as suas edições, com os livros de atas publicados:",
+    thisEdition: "esta edição",
+    linkLabels: { actas: "Atas", resumenes: "Resumos", web: "Web" },
+    seriesWeb: "Sítio da série ieTIC (IPB)",
+    proceedingsNote: "Atas no repositório do Instituto Politécnico de Bragança.",
     ctaProgramme: "Ver o programa",
   },
 } as const;
@@ -113,29 +123,27 @@ export default async function CongresoPage({ params }: Props) {
 
   return (
     <>
-      <PageHeader eyebrow={t.eyebrow} title={t.title} lead={t.lead} art={<PageArt />} />
+      <PageHeader eyebrow={t.eyebrow} title={t.title} lead={t.lead} art={<PageArt />} color={sectionColor("/congreso")} />
 
       {/* Presentación + a quién se dirige */}
       <section className="py-20 sm:py-24">
         <div className="contenedor grid gap-14 lg:grid-cols-12">
           <div className="lg:col-span-7">
-            <SectionHeading index="01" eyebrow={t.aboutEyebrow} title={t.aboutTitle} />
+            <SectionHeading eyebrow={t.aboutEyebrow} title={t.aboutTitle} />
             <div className="prosa mt-6">
               {t.about.map((p) => (
                 <p key={p.slice(0, 24)}>{p}</p>
               ))}
             </div>
           </div>
-          <aside className="lg:col-span-5">
+          <aside className="lg:col-span-5" data-reveal style={{ ["--d" as string]: "150ms" }}>
             <div className="tarjeta p-7">
               <p className="antetitulo">{t.audienceEyebrow}</p>
               <h2 className="mt-3 font-display text-2xl font-bold">{t.audienceTitle}</h2>
               <ul className="mt-5 space-y-3">
                 {t.audience.map((a) => (
                   <li key={a} className="flex gap-3 text-[0.95rem] leading-snug text-tinta-suave">
-                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-mar-50 text-mar-600">
-                      <Check className="h-3.5 w-3.5" aria-hidden />
-                    </span>
+                    <Check className="mt-0.5 h-4 w-4 shrink-0 text-mar-600" aria-hidden />
                     {a}
                   </li>
                 ))}
@@ -149,14 +157,14 @@ export default async function CongresoPage({ params }: Props) {
       {counts.length > 0 && (
         <section className="border-y border-linea bg-papel py-16 sm:py-20">
           <div className="contenedor">
-            <SectionHeading index="02" eyebrow={t.formatEyebrow} title={t.formatTitle} />
+            <SectionHeading eyebrow={t.formatEyebrow} title={t.formatTitle} />
             <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {counts.map(({ type, n }) => {
+              {counts.map(({ type, n }, i) => {
                 const meta = SESSION_TYPE_META[type];
                 return (
-                  <li key={type} className="tarjeta flex items-center gap-4 p-5">
+                  <li key={type} data-reveal style={{ ["--d" as string]: `${i * 80}ms` }} className="tarjeta eleva flex items-center gap-4 p-5">
                     <span className="font-display text-3xl font-extrabold" style={{ color: meta.color }}>
-                      {n}
+                      <CountUp value={n} duration={900} />
                     </span>
                     <span className="text-sm font-medium leading-snug text-tinta">{(n === 1 ? meta.label : meta.plural)[locale]}</span>
                   </li>
@@ -173,23 +181,20 @@ export default async function CongresoPage({ params }: Props) {
       {/* Ejes temáticos */}
       <section id="ejes" className="py-20 sm:py-24" aria-labelledby="ejes-titulo">
         <div className="contenedor">
-          <SectionHeading index="03" eyebrow={t.ejesEyebrow} title={t.ejesTitle} lead={t.ejesLead} id="ejes-titulo" />
+          <SectionHeading eyebrow={t.ejesEyebrow} title={t.ejesTitle} lead={t.ejesLead} id="ejes-titulo" />
           <ol className="mt-12 grid gap-5 md:grid-cols-2">
             {EJES.map((eje, i) => (
-              <li key={eje.id} id={`eje-${eje.id}`} className="tarjeta scroll-mt-40 p-7">
+              <li key={eje.id} id={`eje-${eje.id}`} data-reveal style={{ ["--d" as string]: `${(i % 2) * 90}ms` }} className="tarjeta eleva scroll-mt-40 p-7">
                 <div className="flex items-center gap-4">
-                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-noche-900 text-cian-300">
+                  <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-noche-900 text-cian-300">
                     <EjeIcon icon={eje.icon} className="h-6 w-6" />
                   </span>
-                  <div>
-                    <p className="font-mono text-xs text-mar-600">{String(i + 1).padStart(2, "0")}</p>
-                    <h3 className="font-display text-xl font-bold leading-snug">{pick(eje.title, locale)}</h3>
-                  </div>
+                  <h3 className="font-display text-xl font-bold leading-snug">{pick(eje.title, locale)}</h3>
                 </div>
                 <ul className="mt-5 space-y-2.5 border-t border-linea pt-5">
                   {pick(eje.lines, locale).map((line) => (
                     <li key={line} className="flex gap-3 text-[0.95rem] leading-snug text-tinta-suave">
-                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-oro-500" aria-hidden />
+                      <span className="mt-[0.7em] h-px w-2.5 shrink-0 bg-oro-500" aria-hidden />
                       {line}
                     </li>
                   ))}
@@ -208,32 +213,13 @@ export default async function CongresoPage({ params }: Props) {
           aria-hidden
         />
         <div className="contenedor">
-          <SectionHeading index="04" eyebrow={t.historyEyebrow} title={t.historyTitle} lead={t.historyLead} dark />
-          <ol className="relative mt-14 grid gap-6 sm:grid-cols-3 lg:grid-cols-6">
-            <span className="absolute left-0 right-0 top-[1.15rem] hidden h-px bg-gradient-to-r from-cian-300/10 via-cian-300/40 to-oro-400 lg:block" aria-hidden />
-            {EDICIONES.map((e) => (
-              <li key={e.year} className="relative">
-                <span
-                  className={
-                    e.current
-                      ? "relative z-10 flex h-9 w-9 items-center justify-center rounded-full bg-oro-400 text-noche-900 shadow-[0_0_24px_rgba(235,174,63,0.6)]"
-                      : "relative z-10 flex h-9 w-9 items-center justify-center rounded-full border border-cian-300/40 bg-noche-800 text-cian-300"
-                  }
-                >
-                  <span className="h-2 w-2 rounded-full bg-current" aria-hidden />
-                </span>
-                <p className={e.current ? "mt-4 font-display text-2xl font-bold text-oro-300" : "mt-4 font-display text-2xl font-bold text-white"}>
-                  {e.year}
-                </p>
-                <p className="mt-1 font-mono text-xs uppercase tracking-[0.14em] text-cian-300/80">
-                  {e.edition} · {pick(e.place, locale)}
-                </p>
-                {e.note && <p className="mt-2 text-sm leading-snug text-white/60">{pick(e.note, locale)}</p>}
-              </li>
-            ))}
-          </ol>
-          <p className="mt-12 text-sm text-white/50">
-            {pick(SITE.seriesName, locale)} · {pick(UI.organiza, locale)}: {pick(SITE.venue.short, locale)}
+          <SectionHeading eyebrow={t.historyEyebrow} title={t.historyTitle} lead={t.historyLead} dark />
+          <EditionsTimeline locale={locale} labels={t.linkLabels} thisEdition={t.thisEdition} />
+          <p className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-white/60">
+            <a href={IETIC_SERIE.web} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-cian-200 hover:text-white">
+              {t.seriesWeb} <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
+            </a>
+            <span>{t.proceedingsNote}</span>
           </p>
         </div>
       </section>

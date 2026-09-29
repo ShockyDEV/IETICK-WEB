@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, CalendarDays, MapPin, Users } from "lucide-react";
+import { ArrowRight, Users } from "lucide-react";
 import { FacetPattern } from "@/components/art/FacetPattern";
 import { Countdown } from "@/components/home/countdown";
+import { TraceLine } from "@/components/ui/trace-line";
+import { CountUp } from "@/components/ui/count-up";
+import { DateMark } from "@/components/ui/date-mark";
 import { ProgrammeGlance } from "@/components/home/programme-glance";
 import { HomeHeroArt } from "@/components/home/hero-art-slot";
 import { EjeIcon } from "@/components/ui/eje-icon";
@@ -29,10 +32,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 const T = {
   es: {
-    eyebrow: "XIII Conferencia Ibérica · Salamanca",
+    eyebrow: "XIII Conferencia Ibérica",
     ctaEjes: "Ejes temáticos",
-    datesLabel: "Fechas",
-    venueLabel: "Sede",
     welcomeEyebrow: "El congreso",
     welcomeTitle: "Innovar con TIC, en abierto",
     welcome: [
@@ -43,7 +44,7 @@ const T = {
     facts: [
       { value: "XIII", label: "edición de la conferencia ibérica" },
       { value: "2", label: "jornadas de ponencias, talleres y comunicaciones" },
-      { value: "6", label: "ejes temáticos para enviar tu comunicación" },
+      { value: "6", label: "ejes temáticos para las comunicaciones" },
     ],
     ejesEyebrow: "Ejes temáticos",
     ejesTitle: "Seis ejes para pensar la educación con tecnología",
@@ -65,10 +66,8 @@ const T = {
     participateText: "Consulta los ejes temáticos y las modalidades de participación. Las normas, plantillas y plazos se publicarán en la página de comunicaciones.",
   },
   pt: {
-    eyebrow: "XIII Conferência Ibérica · Salamanca",
+    eyebrow: "XIII Conferência Ibérica",
     ctaEjes: "Eixos temáticos",
-    datesLabel: "Datas",
-    venueLabel: "Local",
     welcomeEyebrow: "O congresso",
     welcomeTitle: "Inovar com TIC, em aberto",
     welcome: [
@@ -79,7 +78,7 @@ const T = {
     facts: [
       { value: "XIII", label: "edição da conferência ibérica" },
       { value: "2", label: "dias de conferências, oficinas e comunicações" },
-      { value: "6", label: "eixos temáticos para submeter a tua comunicação" },
+      { value: "6", label: "eixos temáticos para as comunicações" },
     ],
     ejesEyebrow: "Eixos temáticos",
     ejesTitle: "Seis eixos para pensar a educação com tecnologia",
@@ -116,7 +115,7 @@ export default async function HomePage({ params }: Props) {
   const locale: Locale = isLocale(raw) ? raw : "es";
   const t = T[locale];
   const programme = await loadProgramme();
-  const iuceRooms = programme?.rooms.filter((r) => r.venueId === "iuce") ?? [];
+  const rooms = programme?.rooms ?? [];
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -152,8 +151,13 @@ export default async function HomePage({ params }: Props) {
       <section className="relative isolate overflow-hidden bg-noche-900 text-white">
         <HomeHeroArt />
         <div className="contenedor relative z-10 flex min-h-[calc(100svh-var(--header-h))] flex-col justify-start pb-[42vh] pt-12 sm:pt-16 lg:justify-center lg:pb-24 lg:pt-10">
-          <div className="max-w-xl animate-aparecer lg:max-w-[40rem]">
-            <p className="antetitulo-claro">{t.eyebrow}</p>
+          <div className="max-w-xl lg:max-w-[40rem]">
+            <p className="antetitulo-claro flex items-baseline gap-3 !text-oro-200">
+              <TraceLine mode="intro" width={40} color="#EBAE3F" delay={60} thickness={2} className="shrink-0" />
+              <span className="entra" style={{ animationDelay: "420ms" }}>
+                {t.eyebrow}
+              </span>
+            </p>
             <h1 className="sr-only">
               ieTIC 2027 — {pick(SITE.fullName, locale)}
             </h1>
@@ -163,28 +167,31 @@ export default async function HomePage({ params }: Props) {
               width={718}
               height={348}
               priority
-              className="mt-6 w-[min(26rem,78vw)] drop-shadow-[0_8px_30px_rgba(3,24,34,0.6)]"
+              className="entra mt-6 w-[min(26rem,78vw)] drop-shadow-[0_8px_30px_rgba(3,24,34,0.6)]"
+              style={{ animationDelay: "120ms" }}
             />
             <p className="mt-8 font-display text-2xl font-semibold leading-snug text-white sm:text-[1.75rem]">
-              {pick(SITE.lema, locale)}
+              {pick(SITE.lema, locale)
+                .split(" ")
+                .map((w, i, all) => (
+                  <span key={`${w}-${i}`}>
+                    <span className="palabra" style={{ animationDelay: `${260 + i * 55}ms` }}>
+                      {w}
+                    </span>
+                    {i < all.length - 1 ? " " : ""}
+                  </span>
+                ))}
             </p>
-            <p className="mt-3 text-lg leading-relaxed text-cian-200/90">{pick(SITE.sublema, locale)}</p>
+            <p className="entra mt-4 text-lg leading-relaxed text-cian-200/90" style={{ animationDelay: "820ms" }}>
+              {pick(SITE.sublema, locale)}
+            </p>
 
-            <dl className="mt-8 flex flex-wrap gap-x-8 gap-y-3 text-[0.95rem]">
-              <div className="flex items-center gap-2.5">
-                <dt className="sr-only">{t.datesLabel}</dt>
-                <CalendarDays className="h-5 w-5 text-oro-300" aria-hidden />
-                <dd className="font-medium">{pick(SITE.datesLabel, locale)}</dd>
-              </div>
-              <div className="flex items-center gap-2.5">
-                <dt className="sr-only">{t.venueLabel}</dt>
-                <MapPin className="h-5 w-5 text-oro-300" aria-hidden />
-                <dd className="font-medium">{pick(SITE.venue.short, locale)}</dd>
-              </div>
-            </dl>
+            <div className="entra mt-8" style={{ animationDelay: "940ms" }}>
+              <DateMark locale={locale} />
+            </div>
 
-            <div className="mt-9 flex flex-wrap gap-3">
-              <Link href={href(locale, "/programa")} className="boton-oro">
+            <div className="entra mt-9 flex flex-wrap gap-3" style={{ animationDelay: "1060ms" }}>
+              <Link href={href(locale, "/programa")} className="boton-oro transition hover:-translate-y-0.5">
                 {pick(UI.seeProgramme, locale)}
                 <ArrowRight className="h-4 w-4" aria-hidden />
               </Link>
@@ -193,7 +200,7 @@ export default async function HomePage({ params }: Props) {
               </Link>
             </div>
 
-            <div className="mt-10">
+            <div className="entra mt-10" style={{ animationDelay: "1180ms" }}>
               <Countdown locale={locale} start={SITE.startsAt} end={SITE.endsAt} />
             </div>
           </div>
@@ -204,7 +211,7 @@ export default async function HomePage({ params }: Props) {
       <section className="py-20 sm:py-28" aria-labelledby="bienvenida">
         <div className="contenedor grid gap-14 lg:grid-cols-12">
           <div className="lg:col-span-7">
-            <SectionHeading index="01" eyebrow={t.welcomeEyebrow} title={t.welcomeTitle} id="bienvenida" />
+            <SectionHeading eyebrow={t.welcomeEyebrow} title={t.welcomeTitle} id="bienvenida" />
             <div className="prosa mt-6">
               {t.welcome.map((p) => (
                 <p key={p.slice(0, 24)}>{p}</p>
@@ -215,9 +222,16 @@ export default async function HomePage({ params }: Props) {
             </Link>
           </div>
           <ul className="grid content-start gap-4 sm:grid-cols-3 lg:col-span-5 lg:grid-cols-1">
-            {t.facts.map((f) => (
-              <li key={f.label} className="tarjeta flex items-center gap-5 p-5">
-                <span className="min-w-[4.5rem] font-display text-4xl font-extrabold text-mar-600">{f.value}</span>
+            {t.facts.map((f, i) => (
+              <li
+                key={f.label}
+                data-reveal
+                style={{ ["--d" as string]: `${i * 90}ms` }}
+                className="tarjeta eleva flex items-center gap-5 p-5"
+              >
+                <span className="min-w-[4.5rem] font-display text-4xl font-extrabold text-mar-600">
+                  {/^\d+$/.test(f.value) ? <CountUp value={Number(f.value)} /> : f.value}
+                </span>
                 <span className="text-sm leading-snug text-tinta-suave">{f.label}</span>
               </li>
             ))}
@@ -233,25 +247,22 @@ export default async function HomePage({ params }: Props) {
           aria-hidden
         />
         <div className="contenedor">
-          <SectionHeading index="02" eyebrow={t.ejesEyebrow} title={t.ejesTitle} lead={t.ejesLead} dark id="ejes-home" />
+          <SectionHeading eyebrow={t.ejesEyebrow} title={t.ejesTitle} lead={t.ejesLead} dark id="ejes-home" />
           <ul className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {EJES.map((eje, i) => (
-              <li key={eje.id}>
+              <li key={eje.id} data-reveal style={{ ["--d" as string]: `${(i % 3) * 90 + Math.floor(i / 3) * 60}ms` }}>
                 <Link
                   href={`${href(locale, "/congreso")}#eje-${eje.id}`}
-                  className="group flex h-full flex-col rounded-2xl border border-white/10 bg-white/[0.04] p-6 transition hover:border-cian-300/40 hover:bg-white/[0.07]"
+                  className="eleva group flex h-full flex-col rounded-lg border border-white/10 bg-white/[0.04] p-6 hover:border-cian-300/40 hover:bg-white/[0.07]"
                 >
-                  <div className="flex items-start justify-between">
-                    <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-cian-300/10 text-cian-300 ring-1 ring-cian-300/20 transition group-hover:bg-cian-300 group-hover:text-noche-900">
-                      <EjeIcon icon={eje.icon} className="h-6 w-6" />
-                    </span>
-                    <span className="font-mono text-xs text-white/40">{String(i + 1).padStart(2, "0")}</span>
-                  </div>
+                  <span className="flex h-12 w-12 items-center justify-center rounded-md bg-cian-300/10 text-cian-300 ring-1 ring-cian-300/20 transition group-hover:bg-cian-300 group-hover:text-noche-900">
+                    <EjeIcon icon={eje.icon} className="h-6 w-6" />
+                  </span>
                   <h3 className="mt-5 font-display text-lg font-semibold leading-snug text-white">{pick(eje.title, locale)}</h3>
                   <ul className="mt-3 space-y-1.5 text-sm leading-snug text-white/65">
                     {pick(eje.lines, locale).map((line) => (
                       <li key={line} className="flex gap-2">
-                        <span className="mt-[0.45rem] h-1 w-1 shrink-0 rounded-full bg-oro-400" aria-hidden />
+                        <span className="mt-[0.6rem] h-px w-2.5 shrink-0 bg-oro-400" aria-hidden />
                         {line.replace(/\.$/, "")}
                       </li>
                     ))}
@@ -267,8 +278,8 @@ export default async function HomePage({ params }: Props) {
       <section className="bg-papel py-20 sm:py-28" aria-labelledby="programa-home">
         <div className="contenedor">
           <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-            <SectionHeading index="03" eyebrow={t.progEyebrow} title={t.progTitle} lead={t.progLead} id="programa-home" />
-            <Link href={href(locale, "/programa")} className="boton-mar shrink-0 self-start lg:self-auto">
+            <SectionHeading eyebrow={t.progEyebrow} title={t.progTitle} lead={t.progLead} id="programa-home" />
+            <Link href={href(locale, "/programa")} data-reveal className="boton-mar shrink-0 self-start lg:self-auto">
               {t.progCta}
               <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>
@@ -280,31 +291,36 @@ export default async function HomePage({ params }: Props) {
       {/* ─── Sede ─────────────────────────────────────────────────────── */}
       <section className="py-20 sm:py-28" aria-labelledby="sede-home">
         <div className="contenedor grid items-center gap-12 lg:grid-cols-2">
-          <div className="relative">
-            <div className="overflow-hidden rounded-3xl shadow-elevada">
+          <div className="relative" data-reveal="izq">
+            <div className="group overflow-hidden rounded-xl shadow-elevada">
               <Image
                 src="/espacios/edificio-solis-claustro.webp"
                 alt={locale === "pt" ? "Claustro do Edifício Solís, sede do IUCE" : "Claustro del Edificio Solís, sede del IUCE"}
                 width={1000}
                 height={750}
                 sizes="(min-width: 1024px) 40vw, 100vw"
-                className="aspect-[4/3] w-full object-cover"
+                className="aspect-[4/3] w-full object-cover transition duration-700 ease-out group-hover:scale-[1.03]"
               />
             </div>
-            <div className="absolute -bottom-6 -right-2 hidden rounded-2xl bg-noche-900 px-5 py-4 text-white shadow-elevada sm:block">
-              <p className="font-mono text-[0.7rem] uppercase tracking-[0.16em] text-cian-300">Salamanca</p>
+            <div className="absolute -bottom-6 -right-2 hidden rounded-md bg-noche-900 px-5 py-4 text-white shadow-elevada sm:block">
+              <p className="nota text-cian-200">Salamanca</p>
               <p className="mt-1 font-display text-lg font-semibold">{pick(SITE.venue.building, locale)}</p>
             </div>
           </div>
           <div>
-            <SectionHeading index="04" eyebrow={t.venueEyebrow} title={t.venueTitle} id="sede-home" />
+            <SectionHeading eyebrow={t.venueEyebrow} title={t.venueTitle} id="sede-home" />
             <p className="prosa mt-6">{t.venueText}</p>
-            {iuceRooms.length > 0 && (
+            {rooms.length > 0 && (
               <ul className="mt-8 grid grid-cols-2 gap-3">
-                {iuceRooms.map((r) => (
-                  <li key={r.id} className="flex items-center gap-3 rounded-xl border border-linea p-3">
+                {rooms.map((r, i) => (
+                  <li
+                    key={r.id}
+                    data-reveal
+                    style={{ ["--d" as string]: `${i * 80}ms` }}
+                    className="eleva flex items-center gap-3 rounded-lg border border-linea bg-white p-3"
+                  >
                     {r.imageUrl && (
-                      <Image src={r.imageUrl} alt="" width={96} height={72} className="h-12 w-16 shrink-0 rounded-lg object-cover" />
+                      <Image src={r.imageUrl} alt="" width={96} height={72} className="h-12 w-16 shrink-0 rounded object-cover" />
                     )}
                     <div className="min-w-0">
                       <p className="truncate font-display text-sm font-semibold">{locale === "pt" && r.namePt ? r.namePt : r.name}</p>
@@ -329,7 +345,7 @@ export default async function HomePage({ params }: Props) {
       {/* ─── Fechas clave ─────────────────────────────────────────────── */}
       <section className="border-t border-linea bg-papel py-20 sm:py-24" aria-labelledby="fechas-home">
         <div className="contenedor">
-          <SectionHeading index="05" eyebrow={t.datesEyebrow} title={t.datesTitle} id="fechas-home" />
+          <SectionHeading eyebrow={t.datesEyebrow} title={t.datesTitle} id="fechas-home" />
           <ol className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {FECHAS.map((d, i) => {
               const hl = !!d.highlight;
@@ -337,23 +353,22 @@ export default async function HomePage({ params }: Props) {
               return (
                 <li
                   key={d.id}
+                  data-reveal
+                  style={{ ["--d" as string]: `${i * 90}ms` }}
                   className={
                     hl
-                      ? "relative rounded-2xl bg-noche-900 p-6 text-white shadow-elevada"
-                      : "relative rounded-2xl border border-linea bg-white p-6"
+                      ? "eleva relative rounded-lg bg-noche-900 p-6 text-white shadow-elevada"
+                      : "eleva relative rounded-lg border border-linea bg-white p-6"
                   }
                 >
-                  <span className={hl ? "font-mono text-xs text-cian-300" : "font-mono text-xs text-mar-600"}>
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <p className={hl ? "mt-3 font-display font-semibold text-white" : "mt-3 font-display font-semibold"}>{pick(d.label, locale)}</p>
+                  <p className={hl ? "font-display font-semibold text-white" : "font-display font-semibold"}>{pick(d.label, locale)}</p>
                   <p
                     className={
                       hl
                         ? "mt-2 font-medium text-oro-300"
                         : value
                           ? "mt-2 font-medium text-mar-700"
-                          : "mt-2 inline-flex rounded-full bg-mar-50 px-2.5 py-0.5 text-sm text-mar-700"
+                          : "nota mt-2 text-tinta-tenue"
                     }
                   >
                     {value ?? pick(UI.pending, locale)}
@@ -362,12 +377,15 @@ export default async function HomePage({ params }: Props) {
               );
             })}
           </ol>
-          <div className="mt-12 flex flex-col gap-6 rounded-3xl bg-gradient-to-br from-mar-600 to-mar-800 p-8 text-white sm:p-10 lg:flex-row lg:items-center lg:justify-between">
+          <div
+            data-reveal="escala"
+            className="mt-12 flex flex-col gap-6 rounded-xl bg-gradient-to-br from-mar-600 to-mar-800 p-8 text-white sm:p-10 lg:flex-row lg:items-center lg:justify-between"
+          >
             <div className="max-w-2xl">
               <p className="font-display text-2xl font-bold">{t.participate}</p>
               <p className="mt-2 text-white/80">{t.participateText}</p>
             </div>
-            <Link href={href(locale, "/comunicaciones")} className="boton-oro shrink-0 self-start lg:self-auto">
+            <Link href={href(locale, "/comunicaciones")} className="boton-oro shrink-0 self-start transition hover:-translate-y-0.5 lg:self-auto">
               {pick(UI.submit, locale)}
               <ArrowRight className="h-4 w-4" aria-hidden />
             </Link>

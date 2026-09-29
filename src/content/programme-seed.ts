@@ -1,18 +1,20 @@
 /**
  * Datos iniciales del programa (semilla de la base de datos).
  *
- * Fuente: «PROGRAMA PROVISIONAL DE IETIC 2027 v2.docx» (correo de Marcos
- * Cabezas, 23-09-2026). Espacios del IUCE: catálogo de la web de reservas
+ * Fuente: «PROGRAMA PROVISIONAL DE IETIC 2027 v2.docx» (correo de la
+ * organización, 23-09-2026). Espacios del IUCE: catálogo de la web de reservas
  * (reservas.iuce.usal.es), con sus aforos y equipamiento.
  *
  * Decisiones tomadas al pasar el Word a la parrilla (ver docs/ANALISIS.md):
- *   · Las sesiones marcadas «(Salón de actos)» van a la sala «Salón de actos»
- *     de la Facultad de Educación — el IUCE no tiene salón de actos propio en
- *     el catálogo de reservas. PENDIENTE DE CONFIRMAR con la organización.
+ *   · Todo el congreso se celebra en el Edificio Solís. El «Salón de actos»
+ *     del Word está en el mismo edificio aunque no es del IUCE (confirmado
+ *     el 28-09-2026), así que va junto a las aulas en un solo edificio.
  *   · «Talleres» y «Panel de comunicaciones» no indican sala: se pintan como
- *     sesiones simultáneas que ocupan todas las aulas del IUCE hasta que se
- *     asigne cada taller o mesa a su aula.
+ *     sesiones simultáneas de todo el edificio hasta que se asigne cada
+ *     taller o mesa a su aula.
  *   · Acreditaciones, pausas y la visita guiada son filas generales.
+ *   · El Laboratorio del IUCE no se usa en el congreso (28-09-2026): queda
+ *     en el catálogo como sala INACTIVA, por si hubiera que recuperarlo.
  *
  * Este fichero SOLO se usa en `prisma/seed.ts` (imports relativos a propósito).
  */
@@ -20,31 +22,21 @@ import type { SessionTypeKey } from "../lib/session-types";
 
 export const SEED_VENUES = [
   {
-    id: "facultad",
-    name: "Facultad de Educación",
-    namePt: "Faculdade de Educação",
-    short: "Facultad",
-    subtitle: "Sesiones plenarias",
-    subtitlePt: "Sessões plenárias",
-    address: "Paseo de Canalejas, 169 · 37008 Salamanca",
+    id: "solis",
+    name: "Edificio Solís",
+    namePt: "Edifício Solís",
+    short: "Solís",
+    subtitle: "Campus de Educación",
+    subtitlePt: "Campus de Educação",
+    address: "Paseo de Canalejas, 169, 37008 Salamanca",
     order: 0,
-  },
-  {
-    id: "iuce",
-    name: "IUCE · Edificio Solís",
-    namePt: "IUCE · Edifício Solís",
-    short: "IUCE",
-    subtitle: "Aulas del Instituto",
-    subtitlePt: "Salas do Instituto",
-    address: "Paseo de Canalejas, 169 · 37008 Salamanca",
-    order: 1,
   },
 ];
 
 export const SEED_ROOMS = [
   {
     id: "salon-actos",
-    venueId: "facultad",
+    venueId: "solis",
     name: "Salón de actos",
     namePt: "Auditório",
     code: "SA",
@@ -57,7 +49,7 @@ export const SEED_ROOMS = [
   },
   {
     id: "aula-17a",
-    venueId: "iuce",
+    venueId: "solis",
     name: "Aula 17A",
     namePt: "Sala 17A",
     code: "IUCE-17A",
@@ -72,7 +64,7 @@ export const SEED_ROOMS = [
   },
   {
     id: "aula-12a",
-    venueId: "iuce",
+    venueId: "solis",
     name: "Aula 12A",
     namePt: "Sala 12A",
     code: "IUCE-12A",
@@ -87,7 +79,7 @@ export const SEED_ROOMS = [
   },
   {
     id: "laboratorio",
-    venueId: "iuce",
+    venueId: "solis",
     name: "Laboratorio",
     namePt: "Laboratório",
     code: "IUCE-LAB",
@@ -99,10 +91,11 @@ export const SEED_ROOMS = [
     equipment: ["20 puestos informáticos", "Proyector", "Pizarra digital", "Software educativo", "Wi-Fi"],
     imageUrl: "/espacios/laboratorio.webp",
     order: 3,
+    active: false,
   },
   {
     id: "sala-usos-multiples",
-    venueId: "iuce",
+    venueId: "solis",
     name: "Sala de Usos Múltiples",
     namePt: "Sala Polivalente",
     code: "IUCE-SUM",
@@ -214,7 +207,7 @@ export const SEED_SESSIONS: SeedSession[] = [
       "Talleres prácticos en paralelo. La relación de talleres y el aula de cada uno se publicarán con el programa definitivo.",
     descriptionPt:
       "Oficinas práticas em paralelo. A lista de oficinas e a sala de cada uma serão publicadas com o programa definitivo.",
-    venueId: "iuce",
+    venueId: "solis",
   },
   {
     day: "2027-02-11",
@@ -239,7 +232,7 @@ export const SEED_SESSIONS: SeedSession[] = [
       "Presentación de las comunicaciones aceptadas. La distribución por mesas y aulas se publicará con el programa definitivo.",
     descriptionPt:
       "Apresentação das comunicações aceites. A distribuição por mesas e salas será publicada com o programa definitivo.",
-    venueId: "iuce",
+    venueId: "solis",
   },
   {
     day: "2027-02-11",
@@ -268,7 +261,7 @@ export const SEED_SESSIONS: SeedSession[] = [
       "Presentación de las comunicaciones aceptadas. La distribución por mesas y aulas se publicará con el programa definitivo.",
     descriptionPt:
       "Apresentação das comunicações aceites. A distribuição por mesas e salas será publicada com o programa definitivo.",
-    venueId: "iuce",
+    venueId: "solis",
   },
   {
     day: "2027-02-12",

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { CalendarClock, TriangleAlert } from "lucide-react";
+import { CalendarClock } from "lucide-react";
 import { ProgrammeApp } from "@/components/programme/programme-app";
 import { PageHeader } from "@/components/ui/page-header";
+import { sectionColor } from "@/content/ui";
 import { PageArt } from "@/components/ui/page-art";
 import { SITE } from "@/content/site";
 import { isLocale, pick, type Locale } from "@/lib/i18n";
@@ -16,7 +17,8 @@ const T = {
   es: {
     title: "Programa",
     lead: "Dos jornadas de ponencias invitadas, panel de expertos, mesa redonda, talleres y paneles de comunicaciones en el IUCE. Marca con la estrella las sesiones que no te quieres perder y consulta cada una por sala y hora.",
-    provisional: "Programa provisional · sujeto a cambios",
+    provisional: "Programa provisional",
+    provisionalNote: "sujeto a cambios",
     definitive: "Programa definitivo",
     updated: "Actualizado el",
     error: "El programa no está disponible en este momento. Vuelve a intentarlo en unos minutos.",
@@ -24,7 +26,8 @@ const T = {
   pt: {
     title: "Programa",
     lead: "Dois dias de conferências convidadas, painel de especialistas, mesa-redonda, oficinas e painéis de comunicações no IUCE. Marca com a estrela as sessões que não queres perder e consulta cada uma por sala e hora.",
-    provisional: "Programa provisório · sujeito a alterações",
+    provisional: "Programa provisório",
+    provisionalNote: "sujeito a alterações",
     definitive: "Programa definitivo",
     updated: "Atualizado em",
     error: "O programa não está disponível neste momento. Tenta novamente dentro de alguns minutos.",
@@ -60,24 +63,20 @@ export default async function ProgrammePage({ params }: Props) {
 
   return (
     <>
-      <PageHeader eyebrow={`ieTIC 2027 · ${pick(SITE.datesShort, locale)}`} title={t.title} lead={t.lead} art={<PageArt />}>
+      <PageHeader eyebrow={pick(SITE.datesLabel, locale)} title={t.title} lead={t.lead} art={<PageArt />} color={sectionColor("/programa")}>
         {data && (
-          <div className="mt-6 flex flex-wrap items-center gap-3 text-sm">
-            <span
-              className={
-                data.status === "provisional"
-                  ? "inline-flex items-center gap-2 rounded-full border border-oro-400/60 bg-oro-400/10 px-3 py-1 font-medium text-oro-200"
-                  : "inline-flex items-center gap-2 rounded-full border border-cian-300/50 bg-cian-300/10 px-3 py-1 font-medium text-cian-200"
-              }
-            >
-              {data.status === "provisional" && <TriangleAlert className="h-4 w-4" aria-hidden />}
-              {data.status === "provisional" ? t.provisional : t.definitive}
-            </span>
+          <div className={`mt-7 border-l-2 pl-4 ${data.status === "provisional" ? "border-oro-400" : "border-cian-300"}`}>
+            <p className="flex flex-wrap items-baseline gap-x-2">
+              <span className={`font-display font-semibold ${data.status === "provisional" ? "text-oro-200" : "text-cian-200"}`}>
+                {data.status === "provisional" ? t.provisional : t.definitive}
+              </span>
+              {data.status === "provisional" && <span className="nota text-white/70">{t.provisionalNote}</span>}
+            </p>
             {updated && (
-              <span className="inline-flex items-center gap-1.5 text-white/60">
+              <p className="mt-1 flex items-center gap-1.5 text-sm text-white/60">
                 <CalendarClock className="h-4 w-4" aria-hidden />
                 {t.updated} {updated}
-              </span>
+              </p>
             )}
           </div>
         )}
@@ -88,7 +87,7 @@ export default async function ProgrammePage({ params }: Props) {
           {data ? (
             <ProgrammeApp data={data} locale={locale} />
           ) : (
-            <p className="rounded-2xl border border-dashed border-linea bg-white p-10 text-center text-tinta-suave">{t.error}</p>
+            <p className="rounded-lg border border-dashed border-linea bg-white p-10 text-center text-tinta-suave">{t.error}</p>
           )}
         </div>
       </section>

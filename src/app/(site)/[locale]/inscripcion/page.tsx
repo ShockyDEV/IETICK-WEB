@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, CalendarCheck2, Mail, Ticket } from "lucide-react";
+import { DateMark } from "@/components/ui/date-mark";
 import { PageArt } from "@/components/ui/page-art";
 import { PageHeader } from "@/components/ui/page-header";
 import { PendingNote } from "@/components/ui/pending-note";
 import { SITE } from "@/content/site";
-import { UI } from "@/content/ui";
-import { href, isLocale, pick, type Locale } from "@/lib/i18n";
+import { sectionColor } from "@/content/ui";
+import { href, isLocale, type Locale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
 
 type Props = { params: Promise<{ locale: string }> };
@@ -53,20 +54,18 @@ export default async function InscripcionPage({ params }: Props) {
 
   return (
     <>
-      <PageHeader eyebrow={t.eyebrow} title={t.title} lead={t.lead} art={<PageArt />}>
-        <p className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/15 px-3 py-1 font-mono text-xs uppercase tracking-[0.14em] text-cian-200">
-          {pick(SITE.datesLabel, locale)} · {SITE.city}
-        </p>
+      <PageHeader eyebrow={t.eyebrow} title={t.title} lead={t.lead} art={<PageArt />} color={sectionColor("/inscripcion")}>
+        <DateMark locale={locale} className="mt-8" />
       </PageHeader>
       <section className="py-16 sm:py-20">
         <div className="contenedor max-w-4xl">
           <PendingNote title={t.pendingTitle}>{t.pendingText}</PendingNote>
           <h2 className="mt-14 font-display text-2xl font-bold">{t.meanwhile}</h2>
           <ul className="mt-6 grid gap-5 sm:grid-cols-2">
-            {t.cards.map((c) => (
-              <li key={c.path}>
-                <Link href={href(locale, c.path)} className="tarjeta group flex h-full flex-col p-6 transition hover:border-mar-300">
-                  <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-mar-50 text-mar-600">
+            {t.cards.map((c, i) => (
+              <li key={c.path} data-reveal style={{ ["--d" as string]: `${i * 100}ms` }}>
+                <Link href={href(locale, c.path)} className="tarjeta eleva group flex h-full flex-col p-6 hover:border-mar-300">
+                  <span className="flex h-11 w-11 items-center justify-center rounded-md bg-mar-50 text-mar-600">
                     {c.icon === "calendar" ? <CalendarCheck2 className="h-5 w-5" aria-hidden /> : <Ticket className="h-5 w-5" aria-hidden />}
                   </span>
                   <p className="mt-4 font-display text-lg font-bold group-hover:text-mar-700">{c.title}</p>
@@ -76,11 +75,12 @@ export default async function InscripcionPage({ params }: Props) {
               </li>
             ))}
           </ul>
-          <p className="mt-12 flex flex-wrap items-center gap-2 text-sm text-tinta-suave">
-            <Mail className="h-4 w-4 text-mar-600" aria-hidden />
-            {t.contact}: <a href={`mailto:${SITE.venue.email}`} className="enlace">{SITE.venue.email}</a>
-            <span className="text-tinta-tenue">({pick(UI.contact, locale).toLowerCase()})</span>
-          </p>
+          {SITE.contactEmail && (
+            <p className="mt-12 flex flex-wrap items-center gap-2 text-sm text-tinta-suave">
+              <Mail className="h-4 w-4 text-mar-600" aria-hidden />
+              {t.contact}: <a href={`mailto:${SITE.contactEmail}`} className="enlace">{SITE.contactEmail}</a>
+            </p>
+          )}
         </div>
       </section>
     </>

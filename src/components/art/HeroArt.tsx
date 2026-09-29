@@ -24,7 +24,9 @@ export type HeroArtProps = {
   animated?: boolean;
 };
 
-/* Encuadre: el SVG de la ciudad mide (arte + 2 teselas) de ancho. */
+/* Encuadre: el SVG de la ciudad mide (arte + 2 teselas) de ancho. En móvil
+   su alto no pasa de 38vh, que cabe en el hueco inferior del hero (42vh):
+   así la cuenta atrás no pisa las torres. */
 const PROPORCION = (CIUDAD.ancho * 3) / CIUDAD.alto;
 /** Posición del foco monumental dentro del SVG, en múltiplos de su alto. */
 const ANCLA = ((CIUDAD.foco + CIUDAD.ancho) / CIUDAD.alto).toFixed(3);
@@ -32,7 +34,7 @@ const ANCLA = ((CIUDAD.foco + CIUDAD.ancho) / CIUDAD.alto).toFixed(3);
 const CSS = `
 .ietic-h svg{position:absolute;display:block;overflow:hidden}
 .ietic-h-cielo{inset:0;width:100%;height:100%}
-.ietic-h-ciudad{bottom:0;--h:40cqh;height:var(--h);width:calc(var(--h)*${PROPORCION});left:min(0px,calc(50cqw - var(--h)*${ANCLA}))}
+.ietic-h-ciudad{bottom:0;--h:min(40cqh,38vh);height:var(--h);width:calc(var(--h)*${PROPORCION});left:min(0px,calc(50cqw - var(--h)*${ANCLA}))}
 .ietic-h-velo{position:absolute;inset:0;background:linear-gradient(180deg,rgba(3,24,34,.78) 0%,rgba(3,24,34,.5) 34%,rgba(3,24,34,0) 58%)}
 @media (min-width:1024px){
 .ietic-h-ciudad{--h:66cqh;left:min(0px,calc(72cqw - var(--h)*${ANCLA}))}

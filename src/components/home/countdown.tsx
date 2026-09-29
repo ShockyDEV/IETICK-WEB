@@ -38,11 +38,11 @@ export function Countdown({
     return <div className="h-[4.25rem]" aria-hidden />;
   }
   if (now >= endMs) {
-    return <p className="font-mono text-sm text-cian-200">{t.over}</p>;
+    return <p className="nota text-cian-200">{t.over}</p>;
   }
   if (now >= startMs) {
     return (
-      <p className="inline-flex items-center gap-2 font-mono text-sm text-oro-300">
+      <p className="nota inline-flex items-center gap-2 text-oro-200">
         <span className="h-2 w-2 animate-latido rounded-full bg-oro-400" aria-hidden />
         {t.live}
       </p>
@@ -63,11 +63,11 @@ export function Countdown({
     <div className="flex items-end gap-4" role="timer" aria-live="off">
       {parts.map((p) => (
         <div key={p.l} className="min-w-[3.5rem]">
-          <span className="block font-mono text-3xl font-semibold tabular-nums text-white">{String(p.v).padStart(2, "0")}</span>
-          <span className="block font-mono text-[0.68rem] uppercase tracking-[0.16em] text-cian-300/80">{p.l}</span>
+          <span className="block font-display text-3xl font-semibold tabular-nums text-white">{p.v}</span>
+          <span className="nota block text-cian-200/80">{p.l}</span>
         </div>
       ))}
-      <span className="pb-1 text-sm text-white/60">{t.until}</span>
+      <span className="nota pb-0.5 text-white/60">{t.until}</span>
     </div>
   );
 }

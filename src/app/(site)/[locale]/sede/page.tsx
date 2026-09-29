@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Accessibility, Bus, Car, Landmark, MapPin, Presentation, TrainFront, Users } from "lucide-react";
+import { Accessibility, ArrowUpRight, Bus, Car, Landmark, MapPin, Presentation, TrainFront, Users } from "lucide-react";
 import { PageArt } from "@/components/ui/page-art";
 import { PageHeader } from "@/components/ui/page-header";
+import { sectionColor } from "@/content/ui";
 import { PendingNote } from "@/components/ui/pending-note";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { HOTELES } from "@/content/alojamiento";
@@ -20,7 +21,7 @@ type Props = { params: Promise<{ locale: string }> };
 const T = {
   es: {
     eyebrow: "Sede",
-    title: "IUCE · Edificio Solís",
+    title: "El IUCE, en el Edificio Solís",
     lead: "El congreso se celebra en el Instituto Universitario de Ciencias de la Educación de la Universidad de Salamanca, en el Campus de Educación del Paseo de Canalejas.",
     buildingEyebrow: "El edificio",
     buildingTitle: "Un colegio del siglo XVI para la educación del XXI",
@@ -30,7 +31,8 @@ const T = {
     ],
     spacesEyebrow: "Espacios",
     spacesTitle: "Las salas del congreso",
-    spacesLead: "Las sesiones plenarias se celebran en el salón de actos; los talleres y los paneles de comunicaciones, en las aulas del IUCE, las mismas que se reservan a diario en reservas.iuce.usal.es.",
+    spacesLead: "Todo el congreso se celebra en el Edificio Solís: las sesiones plenarias, en el salón de actos, y los talleres y los paneles de comunicaciones, en las aulas del Instituto Universitario de Ciencias de la Educación (IUCE).",
+    iuceWeb: "Conoce el IUCE en su web",
     capacity: (n: number) => `${n} personas`,
     accessible: "Accesible",
     planTitle: "Plano de la primera planta del IUCE",
@@ -54,7 +56,7 @@ const T = {
   },
   pt: {
     eyebrow: "Local",
-    title: "IUCE · Edifício Solís",
+    title: "O IUCE, no Edifício Solís",
     lead: "O congresso realiza-se no Instituto Universitário de Ciências da Educação da Universidade de Salamanca, no Campus de Educação do Paseo de Canalejas.",
     buildingEyebrow: "O edifício",
     buildingTitle: "Um colégio do século XVI para a educação do século XXI",
@@ -64,7 +66,8 @@ const T = {
     ],
     spacesEyebrow: "Espaços",
     spacesTitle: "As salas do congresso",
-    spacesLead: "As sessões plenárias realizam-se no auditório; as oficinas e os painéis de comunicações, nas salas do IUCE, as mesmas que se reservam diariamente em reservas.iuce.usal.es.",
+    spacesLead: "Todo o congresso decorre no Edifício Solís: as sessões plenárias, no auditório, e as oficinas e os painéis de comunicações, nas salas do Instituto Universitário de Ciências da Educação (IUCE).",
+    iuceWeb: "Conhece o IUCE no seu sítio web",
     capacity: (n: number) => `${n} pessoas`,
     accessible: "Acessível",
     planTitle: "Planta do primeiro piso do IUCE",
@@ -108,12 +111,14 @@ export default async function SedePage({ params }: Props) {
     console.error("[sede] datos no disponibles:", e);
   }
   const visit = data?.sessions.find((s) => s.type === "SOCIAL");
+  // Con un solo edificio no hace falta rotularlo en cada sala
+  const severalVenues = new Set(data?.rooms.map((r) => r.venueId)).size > 1;
   const { lat, lon } = SITE.venue;
   const bbox = [lon - 0.0065, lat - 0.0032, lon + 0.0065, lat + 0.0032].map((n) => n.toFixed(5)).join(",");
 
   return (
     <>
-      <PageHeader eyebrow={t.eyebrow} title={t.title} lead={t.lead} art={<PageArt />}>
+      <PageHeader eyebrow={t.eyebrow} title={t.title} lead={t.lead} art={<PageArt />} color={sectionColor("/sede")}>
         <p className="mt-6 flex items-center gap-2 text-white/80">
           <MapPin className="h-5 w-5 text-oro-300" aria-hidden /> {SITE.venue.address}
         </p>
@@ -123,21 +128,21 @@ export default async function SedePage({ params }: Props) {
       <section className="py-20 sm:py-24">
         <div className="contenedor grid items-center gap-12 lg:grid-cols-2">
           <div>
-            <SectionHeading index="01" eyebrow={t.buildingEyebrow} title={t.buildingTitle} />
+            <SectionHeading eyebrow={t.buildingEyebrow} title={t.buildingTitle} />
             <div className="prosa mt-6">
               {t.building.map((p) => (
                 <p key={p.slice(0, 20)}>{p}</p>
               ))}
             </div>
           </div>
-          <div className="grid grid-cols-5 gap-3">
+          <div data-reveal="escala" className="grid grid-cols-5 gap-3">
             <Image
               src="/espacios/edificio-solis-claustro.webp"
               alt={locale === "pt" ? "Claustro do Edifício Solís" : "Claustro del Edificio Solís"}
               width={1000}
               height={750}
               sizes="(min-width: 1024px) 30vw, 60vw"
-              className="col-span-3 aspect-[3/4] h-full w-full rounded-3xl object-cover shadow-elevada"
+              className="col-span-3 aspect-[3/4] h-full w-full rounded-xl object-cover shadow-elevada"
             />
             <div className="col-span-2 flex flex-col gap-3">
               <Image
@@ -146,9 +151,9 @@ export default async function SedePage({ params }: Props) {
                 width={1600}
                 height={1201}
                 sizes="(min-width: 1024px) 20vw, 40vw"
-                className="aspect-square w-full rounded-3xl object-cover"
+                className="aspect-square w-full rounded-xl object-cover"
               />
-              <div className="flex flex-1 flex-col justify-end rounded-3xl bg-noche-900 p-5 text-white">
+              <div className="flex flex-1 flex-col justify-end rounded-xl bg-noche-900 p-5 text-white">
                 <Landmark className="h-6 w-6 text-oro-300" aria-hidden />
                 <p className="mt-3 font-display text-3xl font-bold">1542</p>
                 <p className="text-sm text-white/65">Francisco de Solís</p>
@@ -161,68 +166,61 @@ export default async function SedePage({ params }: Props) {
       {/* Espacios */}
       <section id="espacios" className="scroll-mt-24 border-y border-linea bg-papel py-20 sm:py-24">
         <div className="contenedor">
-          <SectionHeading index="02" eyebrow={t.spacesEyebrow} title={t.spacesTitle} lead={t.spacesLead} />
-          {data && (
-            <div className="mt-12 space-y-12">
-              {data.venues.map((venue) => {
-                const rooms = data!.rooms.filter((r) => r.venueId === venue.id);
-                if (!rooms.length) return null;
+          <SectionHeading eyebrow={t.spacesEyebrow} title={t.spacesTitle} lead={t.spacesLead} />
+          <a
+            href={SITE.venue.web}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="enlace mt-4 inline-flex items-center gap-1.5"
+          >
+            {t.iuceWeb}: {SITE.venue.web.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+            <ArrowUpRight className="h-4 w-4" aria-hidden />
+          </a>
+          {data && data.rooms.length > 0 && (
+            <ul className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {data.rooms.map((room, i) => {
+                const venue = data!.venues.find((v) => v.id === room.venueId);
                 return (
-                  <div key={venue.id}>
-                    <h3 className="flex flex-wrap items-baseline gap-x-3 font-display text-xl font-bold">
-                      {tr(venue.name, venue.namePt, locale)}
-                      {venue.subtitle && <span className="font-mono text-xs font-medium uppercase tracking-[0.14em] text-mar-600">{tr(venue.subtitle, venue.subtitlePt, locale)}</span>}
-                    </h3>
-                    <ul className="mt-5 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-                      {rooms.map((room) => (
-                        <li key={room.id} id={`sala-${room.id}`} className="tarjeta scroll-mt-28 overflow-hidden">
-                          {room.imageUrl ? (
-                            <Image src={room.imageUrl} alt={tr(room.name, room.namePt, locale)} width={800} height={600} sizes="(min-width: 1024px) 22vw, (min-width: 640px) 45vw, 100vw" className="aspect-[4/3] w-full object-cover" />
-                          ) : (
-                            <div className="flex aspect-[4/3] w-full items-center justify-center bg-gradient-to-br from-noche-800 to-mar-700 text-cian-300">
-                              <Presentation className="h-12 w-12" aria-hidden />
-                            </div>
-                          )}
-                          <div className="p-5">
-                            <div className="flex items-start justify-between gap-3">
-                              <h4 className="font-display text-lg font-bold">{tr(room.name, room.namePt, locale)}</h4>
-                              {room.code && <span className="font-mono text-[0.7rem] text-tinta-tenue">{room.code}</span>}
-                            </div>
-                            <p className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-tinta-suave">
-                              {room.capacity && (
-                                <span className="inline-flex items-center gap-1.5">
-                                  <Users className="h-4 w-4 text-mar-600" aria-hidden /> {t.capacity(room.capacity)}
-                                </span>
-                              )}
-                              {room.accessible && (
-                                <span className="inline-flex items-center gap-1.5">
-                                  <Accessibility className="h-4 w-4 text-mar-600" aria-hidden /> {t.accessible}
-                                </span>
-                              )}
-                            </p>
-                            {room.description && <p className="mt-3 text-sm leading-relaxed text-tinta-suave">{tr(room.description, room.descriptionPt, locale)}</p>}
-                            {room.equipment.length > 0 && (
-                              <ul className="mt-4 flex flex-wrap gap-1.5">
-                                {room.equipment.map((e) => (
-                                  <li key={e} className="rounded-full bg-mar-50 px-2.5 py-0.5 text-xs text-mar-700">
-                                    {e}
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
-                          </div>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
+                  <li
+                    key={room.id}
+                    id={`sala-${room.id}`}
+                    data-reveal
+                    style={{ ["--d" as string]: `${i * 90}ms` }}
+                    className="tarjeta eleva group scroll-mt-28 overflow-hidden"
+                  >
+                    {room.imageUrl ? (
+                      <Image src={room.imageUrl} alt={tr(room.name, room.namePt, locale)} width={800} height={600} sizes="(min-width: 1024px) 22vw, (min-width: 640px) 45vw, 100vw" className="aspect-[4/3] w-full object-cover" />
+                    ) : (
+                      <div className="flex aspect-[4/3] w-full items-center justify-center bg-gradient-to-br from-noche-800 to-mar-700 text-cian-300">
+                        <Presentation className="h-12 w-12" aria-hidden />
+                      </div>
+                    )}
+                    <div className="p-5">
+                      {severalVenues && venue && <p className="nota text-mar-700">{tr(venue.name, venue.namePt, locale)}</p>}
+                      <h3 className="mt-0.5 font-display text-lg font-bold">{tr(room.name, room.namePt, locale)}</h3>
+                      <p className="mt-2 flex flex-wrap gap-x-4 gap-y-1 text-sm text-tinta-suave">
+                        {room.capacity && (
+                          <span className="inline-flex items-center gap-1.5">
+                            <Users className="h-4 w-4 text-mar-600" aria-hidden /> {t.capacity(room.capacity)}
+                          </span>
+                        )}
+                        {room.accessible && (
+                          <span className="inline-flex items-center gap-1.5">
+                            <Accessibility className="h-4 w-4 text-mar-600" aria-hidden /> {t.accessible}
+                          </span>
+                        )}
+                      </p>
+                      {room.description && <p className="mt-3 text-sm leading-relaxed text-tinta-suave">{tr(room.description, room.descriptionPt, locale)}</p>}
+                    </div>
+                  </li>
                 );
               })}
-            </div>
+            </ul>
           )}
 
-          <figure className="mt-16 overflow-hidden rounded-3xl border border-linea bg-white p-4 sm:p-8">
+          <figure data-reveal className="mt-16 overflow-hidden rounded-xl border border-linea bg-white p-4 sm:p-8">
             <Image src="/espacios/plano-iuce.png" alt={t.planAlt} width={879} height={704} className="mx-auto h-auto w-full max-w-3xl" />
-            <figcaption className="mt-4 text-center font-mono text-xs uppercase tracking-[0.14em] text-tinta-tenue">{t.planTitle}</figcaption>
+            <figcaption className="nota mt-4 text-center text-tinta-suave">{t.planTitle}</figcaption>
           </figure>
         </div>
       </section>
@@ -231,18 +229,18 @@ export default async function SedePage({ params }: Props) {
       <section id="como-llegar" className="scroll-mt-24 py-20 sm:py-24">
         <div className="contenedor grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
-            <SectionHeading index="03" eyebrow={t.howEyebrow} title={t.howTitle} />
+            <SectionHeading eyebrow={t.howEyebrow} title={t.howTitle} />
             <address className="mt-6 not-italic">
               <p className="font-semibold">{pick(SITE.venue.name, locale)}</p>
               <p className="text-tinta-suave">{pick(SITE.venue.building, locale)}</p>
               <p className="text-tinta-suave">{SITE.venue.address}</p>
             </address>
             <ul className="mt-8 space-y-5">
-              {t.how.map((h) => {
+              {t.how.map((h, i) => {
                 const Icon = HOW_ICONS[h.icon as keyof typeof HOW_ICONS];
                 return (
-                  <li key={h.title} className="flex gap-4">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-mar-50 text-mar-600">
+                  <li key={h.title} data-reveal style={{ ["--d" as string]: `${i * 80}ms` }} className="flex gap-4">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md bg-mar-50 text-mar-600">
                       <Icon className="h-5 w-5" aria-hidden />
                     </span>
                     <div>
@@ -255,7 +253,7 @@ export default async function SedePage({ params }: Props) {
             </ul>
           </div>
           <div className="lg:col-span-7">
-            <div className="overflow-hidden rounded-3xl border border-linea shadow-tarjeta">
+            <div data-reveal="escala" className="overflow-hidden rounded-xl border border-linea shadow-tarjeta">
               <iframe
                 title={t.mapTitle}
                 src={`https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat},${lon}`}
@@ -280,7 +278,7 @@ export default async function SedePage({ params }: Props) {
       <section id="alojamiento" className="scroll-mt-24 border-t border-linea bg-papel py-20 sm:py-24">
         <div className="contenedor grid gap-10 lg:grid-cols-2">
           <div>
-            <SectionHeading index="04" eyebrow={t.stayEyebrow} title={t.stayTitle} />
+            <SectionHeading eyebrow={t.stayEyebrow} title={t.stayTitle} />
             {HOTELES.length === 0 ? (
               <PendingNote title={t.stayPending} className="mt-8">
                 {t.stayText}
@@ -295,7 +293,7 @@ export default async function SedePage({ params }: Props) {
                     </p>
                     <p className="mt-1 text-sm text-tinta-suave">{h.address}</p>
                     {h.distance && <p className="mt-1 text-sm text-mar-700">{pick(h.distance, locale)}</p>}
-                    {h.offer && <p className="mt-3 rounded-xl bg-oro-50 p-3 text-sm text-oro-800">{pick(h.offer, locale)}</p>}
+                    {h.offer && <p className="mt-3 rounded-md bg-oro-50 p-3 text-sm text-oro-800">{pick(h.offer, locale)}</p>}
                     <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm">
                       {h.web && (
                         <a href={h.web} target="_blank" rel="noopener noreferrer" className="enlace">
@@ -311,8 +309,8 @@ export default async function SedePage({ params }: Props) {
             )}
           </div>
           {visit && (
-            <div className="self-end rounded-3xl bg-gradient-to-br from-oro-400 to-oro-500 p-7 text-noche-900">
-              <p className="font-mono text-xs font-semibold uppercase tracking-[0.14em]">{SESSION_TYPE_META.SOCIAL.label[locale]}</p>
+            <div className="self-end rounded-xl bg-gradient-to-br from-oro-400 to-oro-500 p-7 text-noche-900">
+              <p className="nota text-noche-900/80">{SESSION_TYPE_META.SOCIAL.label[locale]}</p>
               <p className="mt-3 font-display text-xl font-bold leading-snug">{t.visit}</p>
               <Link href={`${href(locale, "/programa")}?sesion=${visit.id}`} className="mt-5 inline-flex items-center gap-1 font-semibold underline underline-offset-4">
                 {t.visitCta} →

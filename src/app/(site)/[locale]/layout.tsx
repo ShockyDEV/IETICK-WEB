@@ -4,6 +4,8 @@ import "@/app/globals.css";
 import { fontVariables } from "@/lib/fonts";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
+import { RevealObserver } from "@/components/ui/reveal-observer";
+import { REVEAL_BOOT } from "@/lib/reveal-boot";
 import { isLocale, LOCALES, LOCALE_LABELS, pick, type Locale } from "@/lib/i18n";
 import { SITE, siteUrl } from "@/content/site";
 
@@ -57,8 +59,13 @@ export default async function SiteLayout({ children, params }: Props) {
   if (!isLocale(locale)) notFound();
 
   return (
-    <html lang={LOCALE_LABELS[locale].htmlLang} className={fontVariables}>
+    // suppressHydrationWarning: el script de <head> añade data-revela antes de hidratar
+    <html lang={LOCALE_LABELS[locale].htmlLang} className={fontVariables} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: REVEAL_BOOT }} />
+      </head>
       <body className="flex min-h-dvh flex-col">
+        <RevealObserver />
         <SiteHeader locale={locale} />
         <main id="contenido" className="flex-1">
           {children}

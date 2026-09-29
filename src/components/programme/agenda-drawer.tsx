@@ -57,12 +57,12 @@ export function AgendaDrawer({
           <h2 id="agenda-titulo" className="flex items-center gap-2 font-display text-xl font-bold">
             <Star className="h-5 w-5 text-oro-500" fill="currentColor" aria-hidden />
             {t.agendaTitle}
-            <span className="font-mono text-sm font-normal text-tinta-tenue">({saved.length})</span>
+            <span className="text-base font-normal tabular-nums text-tinta-tenue">({saved.length})</span>
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className="inline-flex h-10 w-10 items-center justify-center rounded-full text-tinta-suave hover:bg-papel"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-md text-tinta-suave hover:bg-papel"
             aria-label={t.close}
           >
             <X className="h-5 w-5" aria-hidden />
@@ -70,14 +70,14 @@ export function AgendaDrawer({
         </header>
         <div className="scrollbar-fino flex-1 overflow-y-auto px-6 py-5">
           {saved.length === 0 ? (
-            <p className="rounded-2xl border border-dashed border-linea p-6 text-sm leading-relaxed text-tinta-suave">{t.agendaEmpty}</p>
+            <p className="rounded-lg border border-dashed border-linea p-6 text-sm leading-relaxed text-tinta-suave">{t.agendaEmpty}</p>
           ) : (
             data.days.map((day) => {
               const list = saved.filter((s) => s.day === day.key);
               if (!list.length) return null;
               return (
                 <section key={day.key} className="mb-6">
-                  <h3 className="font-mono text-xs font-medium uppercase tracking-[0.14em] text-mar-600">{dayLabel(day, locale)}</h3>
+                  <h3 className="nota text-mar-700">{dayLabel(day, locale)}</h3>
                   <ul className="mt-3 space-y-2">
                     {list.map((s) => {
                       const meta = SESSION_TYPE_META[s.type];
@@ -96,13 +96,13 @@ export function AgendaDrawer({
                               }
                             }}
                             className={cn(
-                              "relative flex gap-3 rounded-xl border border-linea p-3 pl-4 transition hover:border-mar-300",
+                              "relative flex gap-3 overflow-hidden rounded-lg border border-linea p-3 pl-4 transition hover:border-mar-300",
                               live && "ring-2 ring-oro-400",
                             )}
                           >
-                            <span className="absolute inset-y-2 left-0 w-1 rounded-full" style={{ backgroundColor: meta.color }} aria-hidden />
+                            <span className="absolute inset-y-0 left-0 w-1" style={{ backgroundColor: meta.color }} aria-hidden />
                             <div className="min-w-0 flex-1">
-                              <p className="flex items-center gap-2 font-mono text-xs tabular-nums text-tinta-tenue">
+                              <p className="flex items-center gap-2 text-xs font-medium tabular-nums text-tinta-tenue">
                                 {s.start}–{s.end} {live && <LiveBadge t={t} />}
                               </p>
                               <p className="mt-0.5 font-medium leading-snug">{tr(s.title, s.titlePt, locale)}</p>

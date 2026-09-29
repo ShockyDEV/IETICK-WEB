@@ -42,9 +42,9 @@ export function sessionLocation(
   if (scope === "venue") {
     const venue = data.venues.find((v) => v.id === s.venueId);
     if (!venue) return null;
-    const short = venue.short || tr(venue.name, venue.namePt, locale);
+    const name = tr(venue.name, venue.namePt, locale);
     return {
-      label: locale === "pt" ? `Salas do ${short}` : `Aulas del ${short}`,
+      label: locale === "pt" ? `${name} (várias salas)` : `${name} (varias salas)`,
       venue,
       scope,
     };
@@ -62,10 +62,15 @@ export function shortDay(dayKey: string, locale: Locale): string {
   return `${wd.charAt(0).toUpperCase()}${wd.slice(1)} ${d.getUTCDate()}`;
 }
 
-/** "11 feb" / "11 fev". */
-export function dayMonth(dayKey: string, locale: Locale): string {
+/** "feb" / "fev". (Se pide el mes suelto: en pt-PT, día + mes corto sale «11/02».) */
+export function monthShort(dayKey: string, locale: Locale): string {
   const d = new Date(`${dayKey}T12:00:00Z`);
-  return new Intl.DateTimeFormat(locale === "pt" ? "pt-PT" : "es-ES", { day: "numeric", month: "short", timeZone: "UTC" })
+  return new Intl.DateTimeFormat(locale === "pt" ? "pt-PT" : "es-ES", { month: "short", timeZone: "UTC" })
     .format(d)
     .replace(".", "");
+}
+
+/** "11 feb" / "11 fev". */
+export function dayMonth(dayKey: string, locale: Locale): string {
+  return `${new Date(`${dayKey}T12:00:00Z`).getUTCDate()} ${monthShort(dayKey, locale)}`;
 }

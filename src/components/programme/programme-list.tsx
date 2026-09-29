@@ -39,7 +39,7 @@ export function ProgrammeList({
 }) {
   const sessions = data.sessions.filter((s) => s.day === dayKey);
   if (!sessions.length) {
-    return <p className="rounded-2xl border border-dashed border-linea p-8 text-center text-tinta-suave">{t.noSessions}</p>;
+    return <p className="rounded-lg border border-dashed border-linea p-8 text-center text-tinta-suave">{t.noSessions}</p>;
   }
 
   const groups = new Map<string, typeof sessions>();
@@ -49,7 +49,7 @@ export function ProgrammeList({
     <ol className="space-y-6">
       {[...groups.entries()].map(([start, list]) => (
         <li key={start} className="grid grid-cols-[3.5rem_1fr] gap-3">
-          <p className="pt-3 text-right font-mono text-sm font-medium tabular-nums text-tinta-suave">{start}</p>
+          <p className="pt-3 text-right text-sm font-semibold tabular-nums text-tinta-suave">{start}</p>
           <ul className="space-y-2.5">
             {list.map((s) => {
               const meta = SESSION_TYPE_META[s.type];
@@ -64,12 +64,12 @@ export function ProgrammeList({
                   <li
                     key={s.id}
                     className={cn(
-                      "flex items-center justify-between gap-3 rounded-xl border border-dashed border-linea bg-papel px-4 py-2.5 text-sm text-tinta-suave",
+                      "flex items-center justify-between gap-3 rounded-lg border border-dashed border-linea bg-papel px-4 py-2.5 text-sm text-tinta-suave",
                       paint === "past" && "opacity-55",
                     )}
                   >
                     <span className="font-medium">{title}</span>
-                    <span className="font-mono text-xs tabular-nums text-tinta-tenue">
+                    <span className="text-xs tabular-nums text-tinta-tenue">
                       {s.start}–{s.end}
                     </span>
                   </li>
@@ -84,7 +84,7 @@ export function ProgrammeList({
                     onClick={() => onOpen(s.id)}
                     onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), onOpen(s.id))}
                     className={cn(
-                      "relative flex gap-3 overflow-hidden rounded-2xl border bg-white p-4 pl-5 shadow-tarjeta transition active:scale-[0.99]",
+                      "relative flex gap-3 overflow-hidden rounded-lg border bg-white p-4 pl-5 shadow-tarjeta transition active:scale-[0.99]",
                       paint === "live" && "ring-2 ring-oro-400",
                       paint === "past" && "opacity-60",
                     )}
@@ -96,7 +96,7 @@ export function ProgrammeList({
                         <span className="font-semibold uppercase tracking-wide" style={{ color: meta.color }}>
                           {meta.label[locale]}
                         </span>
-                        <span className="font-mono tabular-nums text-tinta-tenue">
+                        <span className="tabular-nums text-tinta-tenue">
                           {s.start}–{s.end}
                         </span>
                         {paint === "live" && <LiveBadge t={t} />}
@@ -105,7 +105,7 @@ export function ProgrammeList({
                       <p className={cn("mt-1 font-display text-base font-semibold leading-snug", s.cancelled && "line-through")}>{title}</p>
                       {s.subtitle && <p className="mt-0.5 text-sm text-tinta-suave">{tr(s.subtitle, s.subtitlePt, locale)}</p>}
                       {loc && (
-                        <p className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-mar-50 px-2.5 py-1 text-xs font-medium text-mar-700">
+                        <p className="mt-2 flex items-center gap-1.5 text-xs font-medium text-mar-700">
                           <MapPin className="h-3.5 w-3.5" aria-hidden />
                           {loc.label}
                         </p>

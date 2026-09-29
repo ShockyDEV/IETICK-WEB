@@ -37,7 +37,7 @@ export function ProgrammeGrid({ data, dayKey, locale, t, now, archive, agenda, o
   const range = useMemo(() => timeRange(daySessions), [daySessions]);
 
   if (!daySessions.length) {
-    return <p className="rounded-2xl border border-dashed border-linea p-10 text-center text-tinta-suave">{t.noSessions}</p>;
+    return <p className="rounded-lg border border-dashed border-linea p-10 text-center text-tinta-suave">{t.noSessions}</p>;
   }
 
   const n = Math.max(1, columns.length);
@@ -56,38 +56,35 @@ export function ProgrammeGrid({ data, dayKey, locale, t, now, archive, agenda, o
   const ordered = [...placed].sort((a, b) => rank(a) - rank(b));
 
   return (
-    <div className="rounded-3xl border border-linea bg-white shadow-tarjeta">
-      {/* Cabecera fija: edificios + salas */}
+    <div className="rounded-xl border border-linea bg-white shadow-tarjeta">
+      {/* Cabecera fija: una franja propia con los edificios y, debajo, las salas */}
       <div
-        className="sticky z-30 rounded-t-3xl border-b border-linea bg-white/95 backdrop-blur"
+        className="sticky z-30 rounded-t-xl border-b border-linea bg-white/95 backdrop-blur"
         style={{ top: "calc(var(--header-h) + var(--toolbar-h, 0px))" }}
       >
-        <div className="grid" style={{ gridTemplateColumns: gridCols }}>
+        <div className="grid rounded-t-xl bg-noche-900 text-white" style={{ gridTemplateColumns: gridCols }}>
           <div />
           {bands.map((b) => (
             <div
               key={b.venue.id}
-              className="border-l border-linea px-3 pb-1 pt-3"
+              className="flex min-w-0 items-baseline gap-x-3 border-l border-white/10 px-3 py-2.5"
               style={{ gridColumn: `${b.start + 2} / span ${b.span}` }}
             >
-              <p className="truncate font-mono text-[0.68rem] font-medium uppercase tracking-[0.14em] text-mar-600">
-                {tr(b.venue.name, b.venue.namePt, locale)}
-                {b.venue.subtitle && b.span > 1 && (
-                  <span className="text-tinta-tenue"> · {tr(b.venue.subtitle, b.venue.subtitlePt, locale)}</span>
-                )}
-              </p>
+              <p className="truncate font-display text-[0.9rem] font-semibold">{tr(b.venue.name, b.venue.namePt, locale)}</p>
+              {b.venue.subtitle && b.span > 1 && (
+                <p className="truncate font-serif text-[1.05rem] italic leading-none text-cian-200/85">
+                  {tr(b.venue.subtitle, b.venue.subtitlePt, locale)}
+                </p>
+              )}
             </div>
           ))}
         </div>
         <div className="grid" style={{ gridTemplateColumns: gridCols }}>
           <div />
           {columns.map((c) => (
-            <div key={c.room.id} className={cn("px-3 pb-3 pt-1", "border-l border-linea")}>
+            <div key={c.room.id} className="border-l border-linea px-3 pb-2.5 pt-2">
               <p className="truncate font-display text-[0.95rem] font-semibold text-tinta">{tr(c.room.name, c.room.namePt, locale)}</p>
-              <p className="font-mono text-[0.7rem] text-tinta-tenue">
-                {c.room.code}
-                {c.room.capacity ? ` · ${t.capacity(c.room.capacity)}` : ""}
-              </p>
+              {c.room.capacity ? <p className="text-xs text-tinta-tenue">{t.capacity(c.room.capacity)}</p> : null}
             </div>
           ))}
         </div>
@@ -108,8 +105,8 @@ export function ProgrammeGrid({ data, dayKey, locale, t, now, archive, agenda, o
               {i < slots && (
                 <span
                   className={cn(
-                    "absolute -translate-y-1/2 pl-3 font-mono tabular-nums",
-                    hour ? "text-xs font-medium text-tinta-suave" : "text-[0.65rem] text-tinta-tenue/80",
+                    "absolute -translate-y-1/2 pl-3 tabular-nums",
+                    hour ? "text-xs font-semibold text-tinta-suave" : "text-[0.68rem] text-tinta-tenue/80",
                   )}
                   style={{ top: 0, left: 0 }}
                 >
@@ -168,7 +165,7 @@ export function ProgrammeGrid({ data, dayKey, locale, t, now, archive, agenda, o
             aria-hidden
           >
             <div className="absolute right-0 border-t-2 border-oro-500" style={{ left: TIME_COL }} />
-            <span className="absolute -translate-y-1/2 rounded-full bg-oro-400 px-2 py-0.5 font-mono text-[0.65rem] font-semibold text-noche-900 shadow">
+            <span className="absolute -translate-y-1/2 bg-oro-400 py-0.5 pl-2 pr-3 text-[0.7rem] font-semibold tabular-nums text-noche-900 [clip-path:polygon(0_0,calc(100%-7px)_0,100%_50%,calc(100%-7px)_100%,0_100%)]">
               {nowParts.label}
             </span>
             <span className="absolute h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 animate-latido rounded-full bg-oro-500" style={{ left: TIME_COL }} />
@@ -222,7 +219,7 @@ function SessionBlock({
     return (
       <div
         className={cn(
-          "absolute z-0 flex items-center justify-center gap-3 rounded-xl border border-dashed px-4 text-sm",
+          "absolute z-0 flex items-center justify-center gap-3 rounded-lg border border-dashed px-4 text-sm",
           paint === "past" ? "opacity-55" : "",
           clickable && "cursor-pointer hover:border-mar-300",
         )}
@@ -238,7 +235,7 @@ function SessionBlock({
         onClick={clickable ? onOpen : undefined}
         onKeyDown={clickable ? (e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), onOpen()) : undefined}
       >
-        <span className="font-mono text-xs tabular-nums text-tinta-tenue">
+        <span className="text-xs tabular-nums text-tinta-tenue">
           {s.start}–{s.end}
         </span>
         <span className="font-medium text-tinta-suave">{title}</span>
@@ -258,7 +255,7 @@ function SessionBlock({
       onClick={onOpen}
       onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), onOpen())}
       className={cn(
-        "group absolute flex cursor-pointer flex-col overflow-hidden rounded-xl border text-left transition",
+        "group absolute flex cursor-pointer flex-col overflow-hidden rounded-lg border text-left transition",
         "hover:-translate-y-px hover:shadow-tarjeta focus-visible:z-[28]",
         venueWide || global ? "z-10" : "z-20",
         paint === "live" && "z-[25] ring-2 ring-oro-400 shadow-brillo",
@@ -278,12 +275,12 @@ function SessionBlock({
       <div className={cn("flex min-h-0 flex-1 flex-col pl-3.5 pr-1.5", compact ? "justify-center py-1" : "py-2")}>
         <div className="flex items-start gap-2">
           <div className="min-w-0 flex-1">
-            <p className="flex flex-wrap items-center gap-x-2 gap-y-0.5 font-mono text-[0.68rem] tabular-nums text-tinta-suave">
+            <p className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[0.72rem] font-medium tabular-nums text-tinta-suave">
               <span>
                 {s.start}–{s.end}
               </span>
               {paint === "live" && <LiveBadge t={t} />}
-              {s.cancelled && <span className="rounded bg-red-50 px-1.5 font-sans text-[0.65rem] font-semibold uppercase text-red-700">{t.cancelled}</span>}
+              {s.cancelled && <span className="rounded-sm bg-red-50 px-1.5 text-[0.65rem] font-semibold uppercase text-red-700">{t.cancelled}</span>}
               {s.streamUrl && <Radio className="h-3 w-3 text-mar-600" aria-label={t.stream} />}
             </p>
             <p
@@ -301,10 +298,10 @@ function SessionBlock({
         {!compact && (
           <div className="mt-auto space-y-0.5 pt-1">
             {subtitle && <p className="line-clamp-1 text-xs text-tinta-suave">{subtitle}</p>}
-            <p className="flex items-center gap-2 text-[0.7rem] font-semibold uppercase tracking-wide" style={{ color: meta.color }}>
+            <p className="flex items-center gap-3 text-[0.7rem] font-semibold uppercase tracking-wide" style={{ color: meta.color }}>
               {meta.label[locale]}
-              {s.talks.length > 0 && <span className="font-normal normal-case tracking-normal text-tinta-tenue">· {t.talks(s.talks.length)}</span>}
-              {venueWide && <span className="font-normal normal-case tracking-normal text-tinta-tenue">· {t.simultaneous}</span>}
+              {s.talks.length > 0 && <span className="font-normal normal-case tracking-normal text-tinta-tenue">{t.talks(s.talks.length)}</span>}
+              {venueWide && <span className="font-normal normal-case tracking-normal text-tinta-tenue">{t.simultaneous}</span>}
             </p>
           </div>
         )}
@@ -315,7 +312,7 @@ function SessionBlock({
 
 export function LiveBadge({ t }: { t: ProgrammeStrings }) {
   return (
-    <span className="inline-flex items-center gap-1 rounded-full bg-oro-400 px-1.5 py-px font-sans text-[0.62rem] font-bold uppercase tracking-wide text-noche-900">
+    <span className="inline-flex items-center gap-1 rounded-sm bg-oro-400 px-1.5 py-px text-[0.62rem] font-bold uppercase tracking-wide text-noche-900">
       <span className="h-1.5 w-1.5 animate-latido rounded-full bg-noche-900" aria-hidden />
       {t.live}
     </span>

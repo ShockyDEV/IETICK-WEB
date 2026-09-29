@@ -5,10 +5,11 @@ import toast, { Toaster } from "react-hot-toast";
 import { FlaskConical, Globe2, Star } from "lucide-react";
 import type { Locale } from "@/lib/i18n";
 import type { ProgrammeData } from "@/lib/programme";
-import { shortDay, dayMonth } from "@/lib/programme-format";
+import { monthShort, shortDay } from "@/lib/programme-format";
 import { SESSION_TYPES, SESSION_TYPE_META } from "@/lib/session-types";
 import { CONGRESS_TZ, formatOffset, offsetVsMadrid, zonedParts } from "@/lib/time";
 import { cn } from "@/lib/cn";
+import { TraceLine } from "@/components/ui/trace-line";
 import { AgendaDrawer } from "./agenda-drawer";
 import { PT_ES } from "./i18n";
 import { ProgrammeGrid } from "./programme-grid";
@@ -121,10 +122,10 @@ export function ProgrammeApp({ data, locale }: { data: ProgrammeData; locale: Lo
       />
 
       {simulated && (
-        <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-oro-300 bg-oro-50 px-4 py-3 text-sm text-oro-800">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-md border border-oro-300 bg-oro-50 px-4 py-3 text-sm text-oro-800">
           <p className="flex items-center gap-2">
             <FlaskConical className="h-4 w-4" aria-hidden />
-            <strong>{t.simulated}:</strong> {shortDay(zonedParts(simulated).dayKey, locale)} · {zonedParts(simulated).label} ({t.madridTime})
+            <strong>{t.simulated}:</strong> {shortDay(zonedParts(simulated).dayKey, locale)}, {zonedParts(simulated).label} ({t.madridTime})
           </p>
           <a href="?" className="font-semibold underline underline-offset-4">
             {t.backToReal}
@@ -136,30 +137,40 @@ export function ProgrammeApp({ data, locale }: { data: ProgrammeData; locale: Lo
       <div className="sticky top-[var(--header-h)] z-40 -mx-4 mb-5 border-b border-linea bg-papel/95 px-4 py-3 backdrop-blur sm:-mx-6 sm:px-6 lg:mx-0 lg:h-[var(--toolbar-h)] lg:border-0 lg:px-0 lg:py-0">
         <div className="flex h-full flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex items-center gap-2">
-            <div role="tablist" aria-label={t.days} className="flex flex-1 gap-1 rounded-full border border-linea bg-white p-1 shadow-tarjeta lg:flex-none">
+            {/* Días: pestañas tipográficas; la activa lleva el «punto y estela» */}
+            <div role="tablist" aria-label={t.days} className="flex flex-1 items-center gap-6 lg:flex-none">
               {data.days.map((d) => {
                 const selected = d.key === dayKey;
                 const isToday = d.key === todayKey;
+                const label = `${shortDay(d.key, locale)} ${monthShort(d.key, locale)}`;
                 return (
                   <button
                     key={d.key}
                     role="tab"
                     aria-selected={selected}
                     onClick={() => setDayKey(d.key)}
-                    className={cn(
-                      "relative flex flex-1 items-center justify-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition lg:flex-none lg:px-5",
-                      selected ? "bg-noche-900 text-white" : "text-tinta-suave hover:bg-papel hover:text-tinta",
-                    )}
+                    className={cn("trazo-hover group flex flex-col items-start rounded-sm pt-1 text-left", selected && "is-active")}
                   >
-                    <span>{shortDay(d.key, locale)}</span>
-                    <span className={cn("font-mono text-xs font-normal", selected ? "text-cian-300" : "text-tinta-tenue")}>
-                      {dayMonth(d.key, locale).replace(/^\d+\s*/, "")}
-                    </span>
-                    {isToday && (
-                      <span className="absolute -right-0.5 -top-0.5 rounded-full bg-oro-400 px-1.5 text-[0.6rem] font-bold uppercase text-noche-900">
-                        {t.today}
+                    <span className="flex items-baseline gap-1.5 whitespace-nowrap">
+                      <span
+                        className={cn(
+                          "font-display text-lg font-bold transition-colors",
+                          selected ? "text-tinta" : "text-tinta-tenue group-hover:text-tinta",
+                        )}
+                      >
+                        {shortDay(d.key, locale)}
                       </span>
-                    )}
+                      <span className={cn("font-serif text-lg italic", selected ? "text-mar-700" : "text-tinta-tenue")}>
+                        {monthShort(d.key, locale)}
+                      </span>
+                      {isToday && (
+                        <span className="ml-1 inline-flex items-center gap-1 self-center font-serif text-base italic text-oro-600">
+                          <span className="h-1.5 w-1.5 animate-latido rounded-full bg-oro-500" aria-hidden />
+                          {t.today.toLowerCase()}
+                        </span>
+                      )}
+                    </span>
+                    <TraceLine mode="hover" width={Math.round(label.length * 9.5)} color="#DA9724" className="mt-1" />
                   </button>
                 );
               })}
@@ -167,11 +178,11 @@ export function ProgrammeApp({ data, locale }: { data: ProgrammeData; locale: Lo
             <button
               type="button"
               onClick={() => setAgendaOpen(true)}
-              className="inline-flex h-11 shrink-0 items-center gap-2 rounded-full border border-linea bg-white px-4 text-sm font-semibold text-tinta shadow-tarjeta transition hover:border-oro-400 lg:hidden"
+              className="boton-contorno h-11 shrink-0 px-4 lg:hidden"
             >
               <Star className="h-4 w-4 text-oro-500" fill={agenda.size ? "currentColor" : "none"} aria-hidden />
               <span className="sr-only">{t.agenda}</span>
-              <span className="font-mono">{agenda.size}</span>
+              <span className="tabular-nums">{agenda.size}</span>
             </button>
           </div>
           <div className="flex items-center gap-2">
@@ -179,11 +190,11 @@ export function ProgrammeApp({ data, locale }: { data: ProgrammeData; locale: Lo
             <button
               type="button"
               onClick={() => setAgendaOpen(true)}
-              className="hidden h-11 shrink-0 items-center gap-2 rounded-full border border-linea bg-white px-4 text-sm font-semibold text-tinta shadow-tarjeta transition hover:border-oro-400 lg:inline-flex"
+              className="boton-contorno hidden h-11 shrink-0 lg:inline-flex"
             >
               <Star className="h-4 w-4 text-oro-500" fill={agenda.size ? "currentColor" : "none"} aria-hidden />
               {t.agenda}
-              <span className="rounded-full bg-papel px-2 font-mono text-xs">{agenda.size}</span>
+              <span className="font-normal tabular-nums text-tinta-tenue">{agenda.size}</span>
             </button>
           </div>
         </div>
@@ -204,7 +215,7 @@ export function ProgrammeApp({ data, locale }: { data: ProgrammeData; locale: Lo
           {locale === "pt" ? "Horas em hora de Madrid" : "Horas en hora de Madrid"} ({CONGRESS_TZ})
           {timeZone && tzOffset !== 0 && (
             <span>
-              {" · "}
+              {"; "}
               {locale === "pt" ? "o teu dispositivo" : "tu dispositivo"}: {formatOffset(tzOffset)}
             </span>
           )}

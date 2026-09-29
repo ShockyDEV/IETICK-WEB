@@ -7,7 +7,7 @@ import type { L10n } from "@/lib/i18n";
  */
 export const SITE = {
   shortName: "ieTIC 2027",
-  // Deducido: ieTIC2026 fue la XII edición (Madrid, 19-20 feb 2026).
+  // Serie completa verificada en las actas del IPB: 2011 I … 2026 XII (UCM, Madrid).
   edition: "XIII",
   year: 2027,
   days: ["2027-02-11", "2027-02-12"] as const,
@@ -51,19 +51,20 @@ export const SITE = {
       es: "Instituto Universitario de Ciencias de la Educación (IUCE)",
       pt: "Instituto Universitário de Ciências da Educação (IUCE)",
     } satisfies L10n,
-    short: { es: "IUCE · Universidad de Salamanca", pt: "IUCE · Universidade de Salamanca" } satisfies L10n,
+    short: { es: "IUCE, Universidad de Salamanca", pt: "IUCE, Universidade de Salamanca" } satisfies L10n,
     building: {
-      es: "Edificio Solís · Campus de Educación",
-      pt: "Edifício Solís · Campus de Educação",
+      es: "Edificio Solís, Campus de Educación",
+      pt: "Edifício Solís, Campus de Educação",
     } satisfies L10n,
-    address: "Paseo de Canalejas, 169 · 37008 Salamanca",
+    address: "Paseo de Canalejas, 169, 37008 Salamanca",
     // Paseo de Canalejas, 169 (OpenStreetMap / Nominatim)
     lat: 40.95874,
     lon: -5.65984,
-    email: "iuce@usal.es",
-    phone: "+34 923 294 634",
-    web: "https://iuce.usal.es",
+    web: "https://solis.usal.es", // web nueva del IUCE
   },
+  // El IUCE es solo la sede: sus datos de contacto NO son los del congreso.
+  // Correo de la organización: pendiente (se muestra en cuanto se rellene).
+  contactEmail: null as string | null,
 };
 
 export function siteUrl(): string {
@@ -71,51 +72,113 @@ export function siteUrl(): string {
 }
 
 /**
- * Algunas ediciones anteriores de ieTIC (solo datos verificados en fuentes
- * públicas; ver docs/ANALISIS.md). No es una lista exhaustiva.
+ * Todas las ediciones de ieTIC. Números y actas verificados en el repositorio
+ * del Instituto Politécnico de Bragança (ietic.unipb.pt → «Edições
+ * anteriores»; enlaces Handle permanentes hdl.handle.net/10198/…). Sedes:
+ * solo las verificadas (2013 USAL; 2016 IPB; 2023 Salamanca y videoconferencia
+ * según su CFP de EasyChair; 2025 UNED; 2026 Facultad de Educación de la UCM).
  */
+export interface EdicionLink {
+  kind: "actas" | "resumenes" | "web";
+  url: string;
+}
+
 export const EDICIONES: {
   year: number;
   edition: string;
-  place: L10n;
+  place?: L10n;
   note?: L10n;
+  links?: EdicionLink[];
   current?: boolean;
 }[] = [
+  {
+    year: 2011,
+    edition: "I",
+    links: [
+      { kind: "actas", url: "https://hdl.handle.net/10198/7431" },
+      { kind: "resumenes", url: "https://hdl.handle.net/10198/7419" },
+    ],
+  },
+  { year: 2012, edition: "II", links: [{ kind: "actas", url: "https://hdl.handle.net/10198/17964" }] },
   {
     year: 2013,
     edition: "III",
     place: { es: "Salamanca", pt: "Salamanca" },
-    note: { es: "Facultad de Educación · Universidad de Salamanca", pt: "Faculdade de Educação · Universidade de Salamanca" },
+    note: { es: "Facultad de Educación, USAL", pt: "Faculdade de Educação, USAL" },
+    links: [{ kind: "actas", url: "https://hdl.handle.net/10198/17966" }],
   },
   {
     year: 2016,
     edition: "IV",
     place: { es: "Bragança", pt: "Bragança" },
     note: { es: "Instituto Politécnico de Bragança", pt: "Instituto Politécnico de Bragança" },
+    links: [{ kind: "actas", url: "https://hdl.handle.net/10198/13363" }],
+  },
+  {
+    year: 2019,
+    edition: "V",
+    links: [
+      { kind: "actas", url: "https://hdl.handle.net/10198/17747" },
+      { kind: "resumenes", url: "https://hdl.handle.net/10198/18572" },
+    ],
+  },
+  {
+    year: 2020,
+    edition: "VI",
+    links: [
+      { kind: "actas", url: "https://hdl.handle.net/10198/19663" },
+      { kind: "resumenes", url: "https://hdl.handle.net/10198/19662" },
+    ],
+  },
+  {
+    year: 2021,
+    edition: "VII",
+    links: [
+      { kind: "actas", url: "https://hdl.handle.net/10198/24493" },
+      { kind: "resumenes", url: "https://hdl.handle.net/10198/23347" },
+    ],
+  },
+  {
+    year: 2022,
+    edition: "VIII",
+    links: [
+      { kind: "actas", url: "https://hdl.handle.net/10198/25454" },
+      { kind: "resumenes", url: "https://hdl.handle.net/10198/24666" },
+    ],
   },
   {
     year: 2023,
     edition: "IX",
-    place: { es: "Formato híbrido", pt: "Formato híbrido" },
-    note: { es: "IPB · USAL · Universidade Aberta · UCM", pt: "IPB · USAL · Universidade Aberta · UCM" },
+    place: { es: "Salamanca", pt: "Salamanca" },
+    note: { es: "Presencial y por videoconferencia", pt: "Presencial e por videoconferência" },
+    links: [{ kind: "resumenes", url: "https://hdl.handle.net/10198/26023" }],
   },
+  { year: 2024, edition: "X" },
   {
     year: 2025,
     edition: "XI",
     place: { es: "Madrid", pt: "Madrid" },
-    note: { es: "UNED · «Educación 5.0»", pt: "UNED · «Educação 5.0»" },
+    note: { es: "UNED, «Educación 5.0»", pt: "UNED, «Educação 5.0»" },
+    links: [{ kind: "web", url: "https://multiweb.uned.es/w41931/home" }],
   },
   {
     year: 2026,
     edition: "XII",
     place: { es: "Madrid", pt: "Madrid" },
-    note: { es: "Tendencias tecnológicas emergentes", pt: "Tendências tecnológicas emergentes" },
+    note: { es: "Facultad de Educación, UCM", pt: "Faculdade de Educação, UCM" },
+    links: [{ kind: "web", url: "https://ietic.unipb.pt/" }],
   },
   {
     year: 2027,
     edition: "XIII",
     place: { es: "Salamanca", pt: "Salamanca" },
-    note: { es: "IUCE · Universidad de Salamanca", pt: "IUCE · Universidade de Salamanca" },
+    note: { es: "IUCE, Universidad de Salamanca", pt: "IUCE, Universidade de Salamanca" },
     current: true,
   },
 ];
+
+/** Web permanente de la serie (IPB) y página de actas de ediciones anteriores. */
+export const IETIC_SERIE = {
+  web: "https://ietic.unipb.pt/",
+  actas: "https://ietic.unipb.pt/edicoes-anteriores/",
+};

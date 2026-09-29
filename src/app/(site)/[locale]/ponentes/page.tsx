@@ -4,7 +4,7 @@ import { ArrowUpRight, CalendarDays, MapPin, UserRound } from "lucide-react";
 import { PageArt } from "@/components/ui/page-art";
 import { PageHeader } from "@/components/ui/page-header";
 import { PendingNote } from "@/components/ui/pending-note";
-import { UI } from "@/content/ui";
+import { sectionColor, UI } from "@/content/ui";
 import { href, isLocale, pick, type Locale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
 import { dayLabel, getProgramme, speakerList, tr, type ProgrammeData } from "@/lib/programme";
@@ -60,7 +60,7 @@ export default async function PonentesPage({ params }: Props) {
 
   return (
     <>
-      <PageHeader eyebrow={t.eyebrow} title={t.title} lead={t.lead} art={<PageArt />} />
+      <PageHeader eyebrow={t.eyebrow} title={t.title} lead={t.lead} art={<PageArt />} color={sectionColor("/ponentes")} />
       <section className="py-16 sm:py-20">
         <div className="contenedor">
           {!data && <p className="text-tinta-suave">{t.error}</p>}
@@ -68,13 +68,13 @@ export default async function PonentesPage({ params }: Props) {
 
           <ul className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {data &&
-              sessions.map((s) => {
+              sessions.map((s, i) => {
                 const meta = SESSION_TYPE_META[s.type];
                 const people = speakerList(s);
                 const day = data.days.find((d) => d.key === s.day);
                 const loc = sessionLocation(s, data, locale);
                 return (
-                  <li key={s.id} className="tarjeta flex flex-col overflow-hidden">
+                  <li key={s.id} data-reveal style={{ ["--d" as string]: `${(i % 3) * 90}ms` }} className="tarjeta eleva flex flex-col overflow-hidden">
                     <div className="relative flex h-44 items-end overflow-hidden bg-noche-900 p-5">
                       <div
                         className="absolute inset-0"
@@ -82,13 +82,11 @@ export default async function PonentesPage({ params }: Props) {
                         aria-hidden
                       />
                       {people.length === 0 && (
-                        <span className="absolute right-5 top-5 flex h-20 w-20 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white/40">
+                        <span className="absolute right-5 top-5 flex h-20 w-20 items-center justify-center rounded-md border border-white/15 bg-white/5 text-white/40">
                           <UserRound className="h-10 w-10" aria-hidden />
                         </span>
                       )}
-                      <p className="relative rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-white backdrop-blur">
-                        {meta.label[locale]}
-                      </p>
+                      <p className="nota relative text-white">{meta.label[locale]}</p>
                     </div>
                     <div className="flex flex-1 flex-col p-6">
                       <h2 className="font-display text-xl font-bold leading-snug">{tr(s.title, s.titlePt, locale)}</h2>
@@ -101,14 +99,12 @@ export default async function PonentesPage({ params }: Props) {
                           ))}
                         </ul>
                       ) : (
-                        <p className="mt-3 inline-flex self-start rounded-full bg-mar-50 px-3 py-1 text-sm font-medium text-mar-700">
-                          {pick(UI.pending, locale)}
-                        </p>
+                        <p className="nota mt-3 text-tinta-tenue">{pick(UI.pending, locale)}</p>
                       )}
                       <div className="mt-auto space-y-1.5 pt-6 text-sm text-tinta-suave">
                         <p className="flex items-center gap-2">
                           <CalendarDays className="h-4 w-4 text-mar-600" aria-hidden />
-                          {day ? dayLabel(day, locale) : s.day} · <span className="font-mono">{s.start}–{s.end}</span>
+                          {day ? dayLabel(day, locale) : s.day}, <span className="tabular-nums">{s.start}–{s.end}</span>
                         </p>
                         {loc && (
                           <p className="flex items-center gap-2">

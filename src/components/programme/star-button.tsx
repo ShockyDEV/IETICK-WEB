@@ -29,7 +29,7 @@ export function StarButton({
       }}
       onKeyDown={(e) => e.stopPropagation()}
       className={cn(
-        "inline-flex shrink-0 items-center justify-center rounded-full transition",
+        "inline-flex shrink-0 items-center justify-center rounded-md transition",
         size === "sm" ? "h-7 w-7" : "h-10 w-10",
         active ? "text-oro-500 hover:text-oro-600" : "text-tinta-tenue/70 hover:bg-black/5 hover:text-tinta",
         className,
