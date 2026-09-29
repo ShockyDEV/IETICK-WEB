@@ -12,7 +12,7 @@ Incluye la web pública del congreso (ES/PT), el **programa interactivo** herede
 | Estilos | Tailwind CSS 3.4 con tokens propios (`tailwind.config.ts`) |
 | Datos | PostgreSQL 16 (Docker) + Prisma 6 |
 | Panel | Auth.js v5 (credenciales + bcrypt, JWT), zod |
-| Tipografías | Sora · Inter · IBM Plex Mono (autoalojadas con `next/font`) |
+| Tipografías | Sora · Inter · EB Garamond en cursiva (autoalojadas con `next/font`); IBM Plex Mono solo en /backstage |
 | Tests | Vitest |
 | Despliegue | Docker Compose (imagen `standalone` de Next) |
 
@@ -45,6 +45,18 @@ Hereda las ideas del programa en vivo de ICED26 (programme.iced26.es), llevadas 
 - **Simular la hora** para revisar el modo en directo antes del congreso: `/programa?ahora=2027-02-11T10:15`.
 - Los espacios del IUCE (aforo, equipamiento, fotos) proceden del catálogo de la web de reservas.
 
+## El panel (/backstage)
+
+Equivalente al editor `/backstage` del programa de ICED26, pero guardando directamente en la base de datos: lo que se publica aparece al momento en la web.
+
+- **Resumen**: cifras del programa, conmutador provisional/definitivo y **avisos de validación** (solapes en una sala, sesiones de aula que pisan unas simultáneas del edificio, filas generales que no son pausas, horas imposibles, días o salas inexistentes, borradores y ponencias sin ponentes), cada uno con enlace a la sesión.
+- **Programa**: listado por días con buscador; crear, editar, duplicar (como borrador), publicar/despublicar, cancelar y borrar. El formulario tiene los textos en ES y PT, ponentes (uno por línea), un único selector de **ubicación** (fila general / todo un edificio / sala) y el editor de **contribuciones** con su eje temático.
+- **Espacios**: edificios y salas (aforo, planta, equipamiento, foto). No deja borrar una sala con sesiones: propone desactivarla.
+- **Ajustes**: estado del programa, días del congreso y **exportación completa en JSON** (copia de seguridad).
+- **Cuentas** (solo rol ADMIN): cuentas EDITOR/ADMIN, sin borrado, solo se desactivan. Nadie puede quitarse a sí mismo el rol de administración y siempre queda un ADMIN activo.
+
+Seguridad: sesión comprobada en el middleware, en cada página y en cada API contra la base de datos (desactivar una cuenta surte efecto al instante), control de origen en las escrituras, límite de intentos en el acceso y contraseñas con bcrypt.
+
 ## Producción
 
 ```bash
@@ -75,5 +87,15 @@ docs/ANALISIS.md           análisis del encargo y decisiones
 
 ```bash
 npm run typecheck
-npm test
+npm test            # unitarias: hora de Madrid, parrilla, validador, capa HTTP del panel…
+npm run test:int    # integración de los servicios del panel contra PostgreSQL
 ```
+
+Las pruebas de integración se ejecutan **solo** contra una base de datos cuyo nombre acaba en `_test`, que vacían antes de cada prueba. Para crearla en el contenedor de desarrollo:
+
+```bash
+docker exec ietic27-postgres psql -U ietic -d ietic27 -c "CREATE DATABASE ietic27_test"
+DATABASE_URL="postgresql://ietic:ietic27-dev@localhost:5435/ietic27_test?schema=public" npx prisma db push --skip-generate
+```
+
+En GitHub, `.github/workflows/ci.yml` lo repite todo en cada push (tipos, lint, pruebas con PostgreSQL y build).

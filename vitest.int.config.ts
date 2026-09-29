@@ -1,12 +1,15 @@
 import { defineConfig } from "vitest/config";
 import path from "node:path";
 
+/** Pruebas de integración del panel contra PostgreSQL (`npm run test:int`). */
 export default defineConfig({
   test: {
     environment: "node",
-    include: ["src/**/*.test.ts"],
-    // Las de integración necesitan PostgreSQL: `npm run test:int`
-    exclude: ["src/**/*.int.test.ts", "node_modules/**"],
+    include: ["src/**/*.int.test.ts"],
+    setupFiles: ["src/test/integration-setup.ts"],
+    fileParallelism: false,
+    testTimeout: 30_000,
+    hookTimeout: 30_000,
   },
   resolve: {
     alias: {
