@@ -4,6 +4,8 @@
 #
 # Puertos elegidos para convivir con el resto de proyectos del PC:
 #   5432 Reservas · 5433 iuce-web / MUPES · 5434 DIGIFOLK · 5435 ieTIC 2027
+# Ambos se publican solo en 127.0.0.1: la base de datos no queda expuesta a
+# la red y la web se sirve a través de Apache (proxy inverso con TLS).
 services:
   db:
     image: postgres:16-alpine
@@ -14,7 +16,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ietic27-dev}
       POSTGRES_DB: ${POSTGRES_DB:-ietic27}
     ports:
-      - "5435:5432"
+      - "127.0.0.1:5435:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
@@ -32,7 +34,7 @@ services:
     profiles:
       - prod
     ports:
-      - "3027:3000"
+      - "127.0.0.1:3027:3000"
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-ietic}:${POSTGRES_PASSWORD:-ietic27-dev}@db:5432/${POSTGRES_DB:-ietic27}?schema=public
       AUTH_SECRET: ${AUTH_SECRET}
