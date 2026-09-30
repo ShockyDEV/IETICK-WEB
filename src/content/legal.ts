@@ -43,7 +43,7 @@ export const AVISO_LEGAL: LegalDoc = {
       heading: { es: "Propiedad intelectual", pt: "Propriedade intelectual" },
       body: {
         es: [
-          "Los logotipos de la Universidad de Salamanca y del IUCE son marcas de sus titulares. El logotipo de ieTIC 2027 pertenece a la organización del congreso. Las fotografías de los espacios pertenecen al IUCE.",
+          "Los logotipos de las entidades organizadoras son marcas de sus titulares. El logotipo de ieTIC 2027 pertenece a la organización del congreso. Las fotografías de los espacios pertenecen al IUCE.",
           "Los textos de esta web pueden citarse indicando la fuente.",
         ],
         pt: [

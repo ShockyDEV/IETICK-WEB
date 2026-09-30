@@ -42,7 +42,7 @@ export const UI = {
   soon: { es: "Próximamente", pt: "Brevemente" },
   seeProgramme: { es: "Ver el programa", pt: "Ver o programa" },
   submit: { es: "Envía tu comunicación", pt: "Envia a tua comunicação" },
-  organiza: { es: "Organiza", pt: "Organização" },
+  organiza: { es: "Organización", pt: "Organização" },
   footerAbout: {
     es: "Conferencia ibérica que reúne a docentes, investigadores y profesionales de la educación de España y Portugal en torno a la innovación educativa con tecnologías.",
     pt: "Conferência ibérica que reúne docentes, investigadores e profissionais da educação de Espanha e Portugal em torno da inovação educativa com tecnologias.",

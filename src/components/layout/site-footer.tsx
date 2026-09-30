@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Mail, MapPin } from "lucide-react";
+import { OrganizersBand } from "@/components/layout/organizers-band";
 import { LEGAL_NAV, NAV, UI } from "@/content/ui";
 import { SITE } from "@/content/site";
 import { href, pick, type Locale } from "@/lib/i18n";
@@ -8,6 +9,16 @@ import { href, pick, type Locale } from "@/lib/i18n";
 export function SiteFooter({ locale }: { locale: Locale }) {
   return (
     <footer className="relative overflow-hidden bg-noche-950 text-white/75">
+      {/* Entidades organizadoras: en color sobre fondo claro */}
+      <section aria-labelledby="pie-organizacion" className="border-t border-linea bg-white py-10 sm:py-12">
+        <div className="contenedor">
+          <h2 id="pie-organizacion" className="nota text-center text-tinta-suave">
+            {pick(UI.organiza, locale)}
+          </h2>
+          <OrganizersBand locale={locale} className="mt-6" />
+        </div>
+      </section>
+
       {/* filete dorado superior */}
       <div className="h-px bg-gradient-to-r from-transparent via-oro-400/60 to-transparent" aria-hidden />
 
@@ -61,27 +72,19 @@ export function SiteFooter({ locale }: { locale: Locale }) {
       </div>
 
       <div className="border-t border-white/10">
-        <div className="contenedor flex flex-col gap-6 py-8 md:flex-row md:items-center md:justify-between">
-          <div className="flex items-center gap-5">
-            <span className="nota text-white/50">{pick(UI.organiza, locale)}</span>
-            <a href="https://www.usal.es" target="_blank" rel="noopener noreferrer" aria-label="Universidad de Salamanca">
-              <Image src="/brand/usal-logo-blanco.png" alt="" width={854} height={232} className="h-9 w-auto opacity-85 transition hover:opacity-100" />
-            </a>
-          </div>
-          <div className="flex flex-col gap-3 text-xs text-white/50 md:items-end">
-            <ul className="flex flex-wrap gap-x-5 gap-y-2">
-              {LEGAL_NAV.map((item) => (
-                <li key={item.path}>
-                  <Link href={href(locale, item.path)} className="transition hover:text-white">
-                    {pick(item.label, locale)}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <p>
-              © {SITE.year} ieTIC, {pick(UI.rights, locale)}
-            </p>
-          </div>
+        <div className="contenedor flex flex-col gap-3 py-7 text-xs text-white/50 md:flex-row md:items-center md:justify-between">
+          <ul className="flex flex-wrap gap-x-5 gap-y-2">
+            {LEGAL_NAV.map((item) => (
+              <li key={item.path}>
+                <Link href={href(locale, item.path)} className="transition hover:text-white">
+                  {pick(item.label, locale)}
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <p>
+            © {SITE.year} ieTIC, {pick(UI.rights, locale)}
+          </p>
         </div>
       </div>
     </footer>

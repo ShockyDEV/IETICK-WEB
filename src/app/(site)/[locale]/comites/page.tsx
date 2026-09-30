@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { PageArt } from "@/components/ui/page-art";
 import { PageHeader } from "@/components/ui/page-header";
 import { PendingNote } from "@/components/ui/pending-note";
@@ -13,7 +12,7 @@ const T = {
   es: {
     eyebrow: "Comités",
     title: "Quién hace ieTIC 2027",
-    lead: "ieTIC 2027 se organiza desde la Universidad de Salamanca, con el Instituto Universitario de Ciencias de la Educación (IUCE) como sede.",
+    lead: "Organizan ieTIC 2027 la Universidad de Salamanca, el Instituto Politécnico de Bragança, la Universidad Complutense de Madrid y la Universidade Aberta, junto con los grupos de investigación EduDIG y MITA de la Universidad de Salamanca.",
     organizing: "Comité organizador",
     scientific: "Comité científico",
     pending: "La composición del comité se publicará próximamente.",
@@ -21,7 +20,7 @@ const T = {
   pt: {
     eyebrow: "Comissões",
     title: "Quem faz o ieTIC 2027",
-    lead: "O ieTIC 2027 é organizado a partir da Universidade de Salamanca, com o Instituto Universitário de Ciências da Educação (IUCE) como local.",
+    lead: "O ieTIC 2027 é organizado pela Universidade de Salamanca, pelo Instituto Politécnico de Bragança, pela Universidade Complutense de Madrid e pela Universidade Aberta, juntamente com os grupos de investigação EduDIG e MITA da Universidade de Salamanca.",
     organizing: "Comissão organizadora",
     scientific: "Comissão científica",
     pending: "A composição da comissão será publicada brevemente.",
@@ -52,12 +51,6 @@ export default async function ComitesPage({ params }: Props) {
               </PendingNote>
             </div>
           ))}
-        </div>
-        <div className="contenedor mt-16">
-          <p className="antetitulo">{pick(UI.organiza, locale)}</p>
-          <div className="mt-6 flex flex-wrap items-center gap-10">
-            <Image src="/brand/usal-logo.png" alt="Universidad de Salamanca" width={854} height={232} className="h-14 w-auto" />
-          </div>
         </div>
       </section>
     </>

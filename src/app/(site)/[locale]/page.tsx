@@ -13,6 +13,7 @@ import { EjeIcon } from "@/components/ui/eje-icon";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { EJES } from "@/content/ejes";
 import { FECHAS, formatFecha } from "@/content/fechas";
+import { ORGANIZADORES } from "@/content/organizadores";
 import { SITE, siteUrl } from "@/content/site";
 import { UI } from "@/content/ui";
 import { href, isLocale, pick, type Locale } from "@/lib/i18n";
@@ -140,7 +141,7 @@ export default async function HomePage({ params }: Props) {
         addressCountry: "ES",
       },
     },
-    organizer: { "@type": "CollegeOrUniversity", name: "Universidad de Salamanca", url: "https://www.usal.es" },
+    organizer: ORGANIZADORES.map((o) => ({ "@type": "Organization", name: pick(o.name, locale), url: o.url })),
   };
 
   return (
