@@ -25,8 +25,7 @@ const T = {
     title: "Comparte tu investigación y tu experiencia",
     lead: "ieTIC 2027 abrirá una convocatoria de comunicaciones sobre innovación educativa con tecnologías, organizada en seis ejes temáticos.",
     modesEyebrow: "Modalidades",
-    modesTitle: "Dónde se presentan los trabajos",
-    modesLead: "Dos formas de presentar tu trabajo en el congreso, según el programa provisional.",
+    modesTitle: "Dos formas de presentar tu trabajo",
     modes: {
       COMUNICACIONES: {
         title: "Comunicaciones",
@@ -53,8 +52,7 @@ const T = {
     title: "Partilha a tua investigação e a tua experiência",
     lead: "O ieTIC 2027 abrirá uma chamada de comunicações sobre inovação educativa com tecnologias, organizada em seis eixos temáticos.",
     modesEyebrow: "Modalidades",
-    modesTitle: "Onde se apresentam os trabalhos",
-    modesLead: "Duas formas de apresentar o teu trabalho no congresso, de acordo com o programa provisório.",
+    modesTitle: "Duas formas de apresentar o teu trabalho",
     modes: {
       COMUNICACIONES: {
         title: "Comunicações",
@@ -111,7 +109,7 @@ export default async function ComunicacionesPage({ params }: Props) {
       {/* Modalidades (del programa) */}
       <section className="py-20 sm:py-24">
         <div className="contenedor">
-          <SectionHeading eyebrow={t.modesEyebrow} title={t.modesTitle} lead={t.modesLead} />
+          <SectionHeading eyebrow={t.modesEyebrow} title={t.modesTitle} />
           <ul className="mt-10 grid gap-6 md:grid-cols-2">
             {modes.map(({ type, sessions }, mi) => {
               const mode = t.modes[type];
