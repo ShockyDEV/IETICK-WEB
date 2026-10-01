@@ -25,7 +25,7 @@ import { createUser, resetPassword, updateUser } from "@/lib/admin/users";
 import { buildProgrammeExport } from "@/lib/admin/export";
 import { getProgrammeIssues } from "@/lib/admin/overview";
 import { getProgramme } from "@/lib/programme";
-import { SEED_DAYS, SEED_ROOMS, SEED_SESSIONS, SEED_SETTINGS, SEED_VENUES } from "@/content/programme-seed";
+import { SEED_DAYS, SEED_ROOMS, SEED_SESSIONS, SEED_SETTINGS, SEED_VENUES, seedSessionData } from "@/content/programme-seed";
 import type { AdminUser } from "@/lib/admin/guard";
 
 // ─── Utilidades ───────────────────────────────────────────────────────
@@ -47,7 +47,7 @@ async function loadSeed() {
   await prisma.day.createMany({ data: SEED_DAYS });
   await prisma.setting.createMany({ data: SEED_SETTINGS });
   let order = 0;
-  for (const s of SEED_SESSIONS) await prisma.session.create({ data: { ...s, order: order++ } });
+  for (const s of SEED_SESSIONS) await prisma.session.create({ data: seedSessionData(s, order++) });
 }
 
 /** Normaliza un payload del formulario como hace el route handler. */
@@ -199,8 +199,9 @@ describe("validación", () => {
     const issues = await getProgrammeIssues();
     expect(issues.filter((i) => i.severity === "error")).toEqual([]);
     const missing = issues.filter((i) => i.code === "MISSING_SPEAKERS");
-    // 2 ponencias invitadas + panel de expertos + mesa redonda
-    expect(missing).toHaveLength(4);
+    // La ponencia invitada del viernes y el panel de expertos (la mesa redonda
+    // lleva sus personas en las experiencias)
+    expect(missing).toHaveLength(2);
   });
 
   it("detecta el solape de dos sesiones en la misma sala", async () => {

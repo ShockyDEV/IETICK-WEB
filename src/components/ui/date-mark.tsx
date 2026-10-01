@@ -12,7 +12,7 @@ export function DateMark({ locale, place, className }: { locale: Locale; place?:
   const month = new Intl.DateTimeFormat(locale === "pt" ? "pt-PT" : "es-ES", { month: "long", timeZone: "UTC" }).format(
     new Date(`${first}T12:00:00Z`),
   );
-  const where = place ?? pick(SITE.venue.short, locale);
+  const where = place ?? pick(SITE.where, locale);
 
   return (
     <p className={cn("flex items-stretch gap-4", className)}>

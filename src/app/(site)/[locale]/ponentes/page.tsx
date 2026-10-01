@@ -19,7 +19,7 @@ const T = {
   es: {
     eyebrow: "Ponentes",
     title: "Voces invitadas",
-    lead: "Las ponencias invitadas, el panel de expertos y la mesa redonda sobre experiencias escolares reunirán a especialistas en tecnología educativa. Anunciaremos los nombres muy pronto.",
+    lead: "Quién interviene en ieTIC 2027: la ponencia inaugural, el panel de expertos, los talleres, la mesa redonda sobre experiencias escolares y la presentación de proyectos de investigación.",
     inProgramme: "Ver en el programa",
     pendingTitle: "Programa de ponentes en preparación",
     pendingText: "El comité organizador está cerrando las intervenciones invitadas. Esta página se actualizará automáticamente en cuanto se publiquen en el programa.",
@@ -28,7 +28,7 @@ const T = {
   pt: {
     eyebrow: "Oradores",
     title: "Vozes convidadas",
-    lead: "As conferências convidadas, o painel de especialistas e a mesa-redonda sobre experiências escolares reunirão especialistas em tecnologia educativa. Anunciaremos os nomes muito em breve.",
+    lead: "Quem intervém no ieTIC 2027: a conferência inaugural, o painel de especialistas, as oficinas, a mesa-redonda sobre experiências escolares e a apresentação de projetos de investigação.",
     inProgramme: "Ver no programa",
     pendingTitle: "Programa de oradores em preparação",
     pendingText: "A comissão organizadora está a fechar as intervenções convidadas. Esta página será atualizada automaticamente assim que forem publicadas no programa.",
@@ -36,7 +36,7 @@ const T = {
   },
 } as const;
 
-const SPEAKER_TYPES: SessionTypeKey[] = ["PONENCIA", "PANEL_EXPERTOS", "MESA_REDONDA"];
+const SPEAKER_TYPES: SessionTypeKey[] = ["PONENCIA", "PANEL_EXPERTOS", "TALLER", "MESA_REDONDA", "PROYECTOS"];
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale: raw } = await params;
@@ -56,7 +56,7 @@ export default async function PonentesPage({ params }: Props) {
     console.error("[ponentes] programa no disponible:", e);
   }
   const sessions = data?.sessions.filter((s) => SPEAKER_TYPES.includes(s.type)) ?? [];
-  const anyAnnounced = sessions.some((s) => speakerList(s).length > 0);
+  const anyAnnounced = sessions.some((s) => speakerList(s).length > 0 || s.talks.some((t) => t.authors));
 
   return (
     <>
@@ -81,16 +81,19 @@ export default async function PonentesPage({ params }: Props) {
                         style={{ background: `radial-gradient(circle at 70% 20%, ${meta.color}cc, transparent 60%)` }}
                         aria-hidden
                       />
-                      {people.length === 0 && (
+                      {people.length === 0 && s.talks.length === 0 && (
                         <span className="absolute right-5 top-5 flex h-20 w-20 items-center justify-center rounded-md border border-white/15 bg-white/5 text-white/40">
                           <UserRound className="h-10 w-10" aria-hidden />
                         </span>
                       )}
-                      <p className="nota relative text-white">{meta.label[locale]}</p>
+                      <p className="nota relative text-white">{(s.talks.length > 1 && s.type === "TALLER" ? meta.plural : meta.label)[locale]}</p>
                     </div>
                     <div className="flex flex-1 flex-col p-6">
                       <h2 className="font-display text-xl font-bold leading-snug">{tr(s.title, s.titlePt, locale)}</h2>
-                      {people.length > 0 ? (
+                      {(people.length > 0 || s.talks.length > 0) && s.subtitle && (
+                        <p className="nota mt-1 text-mar-700">{tr(s.subtitle, s.subtitlePt, locale)}</p>
+                      )}
+                      {people.length > 0 && (
                         <ul className="mt-3 space-y-1">
                           {people.map((p) => (
                             <li key={p} className="font-medium text-tinta">
@@ -98,8 +101,24 @@ export default async function PonentesPage({ params }: Props) {
                             </li>
                           ))}
                         </ul>
-                      ) : (
-                        <p className="nota mt-3 text-tinta-tenue">{pick(UI.pending, locale)}</p>
+                      )}
+                      {s.talks.length > 0 && (
+                        <ul className="mt-4 space-y-3">
+                          {s.talks.map((talk) => (
+                            <li key={talk.id} className="flex gap-3">
+                              <span className="mt-[0.7em] h-px w-3 shrink-0 bg-oro-500" aria-hidden />
+                              <span>
+                                <span className="block font-medium leading-snug text-tinta">{talk.title}</span>
+                                {talk.authors && <span className="block text-sm text-tinta-suave">{talk.authors}</span>}
+                              </span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                      {people.length === 0 && s.talks.length === 0 && (
+                        <p className="nota mt-3 text-tinta-tenue">
+                          {s.subtitle ? tr(s.subtitle, s.subtitlePt, locale) : pick(UI.pending, locale)}
+                        </p>
                       )}
                       <div className="mt-auto space-y-1.5 pt-6 text-sm text-tinta-suave">
                         <p className="flex items-center gap-2">

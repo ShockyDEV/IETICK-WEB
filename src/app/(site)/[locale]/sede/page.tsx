@@ -12,6 +12,7 @@ import { SITE } from "@/content/site";
 import { href, isLocale, pick, type Locale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
 import { getProgramme, tr, type ProgrammeData } from "@/lib/programme";
+import { monthShort, shortDay } from "@/lib/programme-format";
 import { SESSION_TYPE_META } from "@/lib/session-types";
 
 export const dynamic = "force-dynamic";
@@ -51,8 +52,6 @@ const T = {
     stayTitle: "Dónde alojarse",
     stayPending: "Hoteles recomendados: próximamente",
     stayText: "Publicaremos una selección de alojamientos cercanos a la sede y al centro histórico, con las tarifas especiales que se acuerden para las personas inscritas.",
-    visit: "El jueves 11, a las 20:00, el programa incluye una visita guiada a la ciudad de Salamanca.",
-    visitCta: "Ver en el programa",
   },
   pt: {
     eyebrow: "Local",
@@ -86,8 +85,6 @@ const T = {
     stayTitle: "Onde ficar",
     stayPending: "Hotéis recomendados: brevemente",
     stayText: "Publicaremos uma seleção de alojamentos perto do local e do centro histórico, com as tarifas especiais que venham a ser acordadas para os participantes inscritos.",
-    visit: "Na quinta-feira, dia 11, às 20:00, o programa inclui uma visita guiada à cidade de Salamanca.",
-    visitCta: "Ver no programa",
   },
 } as const;
 
@@ -110,7 +107,7 @@ export default async function SedePage({ params }: Props) {
   } catch (e) {
     console.error("[sede] datos no disponibles:", e);
   }
-  const visit = data?.sessions.find((s) => s.type === "SOCIAL");
+  const socials = data?.sessions.filter((s) => s.type === "SOCIAL") ?? [];
   // Con un solo edificio no hace falta rotularlo en cada sala
   const severalVenues = new Set(data?.rooms.map((r) => r.venueId)).size > 1;
   const { lat, lon } = SITE.venue;
@@ -308,13 +305,23 @@ export default async function SedePage({ params }: Props) {
               </ul>
             )}
           </div>
-          {visit && (
+          {socials.length > 0 && (
             <div className="self-end rounded-xl bg-gradient-to-br from-oro-400 to-oro-500 p-7 text-noche-900">
-              <p className="nota text-noche-900/80">{SESSION_TYPE_META.SOCIAL.label[locale]}</p>
-              <p className="mt-3 font-display text-xl font-bold leading-snug">{t.visit}</p>
-              <Link href={`${href(locale, "/programa")}?sesion=${visit.id}`} className="mt-5 inline-flex items-center gap-1 font-semibold underline underline-offset-4">
-                {t.visitCta} →
-              </Link>
+              <p className="nota text-noche-900/80">{SESSION_TYPE_META.SOCIAL.plural[locale]}</p>
+              <ul className="mt-3 space-y-3">
+                {socials.map((s) => (
+                  <li key={s.id}>
+                    <Link href={`${href(locale, "/programa")}?sesion=${s.id}`} className="group block">
+                      <span className="block text-sm font-semibold tabular-nums">
+                        {shortDay(s.day, locale)} {monthShort(s.day, locale)}, {s.start}–{s.end}
+                      </span>
+                      <span className="block font-display text-lg font-bold leading-snug underline-offset-4 group-hover:underline">
+                        {tr(s.title, s.titlePt, locale)}
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
           )}
         </div>

@@ -26,6 +26,8 @@ export const PT_ES = {
     speakers: "Ponentes",
     chair: "Modera",
     contributions: "Contribuciones",
+    workshops: "Talleres",
+    experiences: "Experiencias",
     presenter: "Presenta",
     axis: "Eje",
     abstract: "Resumen",
@@ -44,6 +46,8 @@ export const PT_ES = {
     capacity: (n: number) => `${n} pers.`,
     count: (n: number) => (n === 1 ? "1 sesión" : `${n} sesiones`),
     talks: (n: number) => (n === 1 ? "1 contribución" : `${n} contribuciones`),
+    workshopsN: (n: number) => (n === 1 ? "1 taller" : `${n} talleres`),
+    experiencesN: (n: number) => (n === 1 ? "1 experiencia" : `${n} experiencias`),
   },
   pt: {
     days: "Dias do congresso",
@@ -69,6 +73,8 @@ export const PT_ES = {
     speakers: "Oradores",
     chair: "Moderação",
     contributions: "Contribuições",
+    workshops: "Oficinas",
+    experiences: "Experiências",
     presenter: "Apresenta",
     axis: "Eixo",
     abstract: "Resumo",
@@ -87,6 +93,8 @@ export const PT_ES = {
     capacity: (n: number) => `${n} pess.`,
     count: (n: number) => (n === 1 ? "1 sessão" : `${n} sessões`),
     talks: (n: number) => (n === 1 ? "1 contribuição" : `${n} contribuições`),
+    workshopsN: (n: number) => (n === 1 ? "1 oficina" : `${n} oficinas`),
+    experiencesN: (n: number) => (n === 1 ? "1 experiência" : `${n} experiências`),
   },
 } as const;
 

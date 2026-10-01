@@ -2,7 +2,9 @@
  * Datos iniciales del programa (semilla de la base de datos).
  *
  * Fuente: «PROGRAMA PROVISIONAL DE IETIC 2027 v2.docx» (correo de la
- * organización, 23-09-2026). Espacios del IUCE: catálogo de la web de reservas
+ * organización, 23-09-2026), actualizado con el documento «Información para
+ * la web de ieTIC 2027» (01-10-2026): ponentes, talleres, experiencias de la
+ * mesa redonda y visitas a la Biblioteca histórica. Espacios del IUCE: catálogo de la web de reservas
  * (reservas.iuce.usal.es), con sus aforos y equipamiento.
  *
  * Decisiones tomadas al pasar el Word a la parrilla (ver docs/ANALISIS.md):
@@ -115,6 +117,11 @@ export const SEED_DAYS = [
   { key: "2027-02-12", labelEs: "Viernes 12 de febrero", labelPt: "Sexta-feira, 12 de fevereiro", order: 1 },
 ];
 
+interface SeedTalk {
+  title: string;
+  authors?: string;
+}
+
 interface SeedSession {
   day: string;
   start: string;
@@ -126,14 +133,46 @@ interface SeedSession {
   subtitlePt?: string;
   description?: string;
   descriptionPt?: string;
+  /** Una persona por línea */
+  speakers?: string;
   roomId?: string;
   venueId?: string;
   location?: string;
   locationPt?: string;
+  /** Talleres de la sesión, experiencias de la mesa redonda… */
+  talks?: SeedTalk[];
 }
 
-const POR_ANUNCIAR = { subtitle: "Ponente por anunciar", subtitlePt: "Orador a anunciar" };
-const PARTICIPANTES = { subtitle: "Participantes por anunciar", subtitlePt: "Participantes a anunciar" };
+/** Datos de Prisma para crear una sesión de la semilla, con sus contribuciones. */
+export function seedSessionData(s: SeedSession, order: number) {
+  const { talks, ...rest } = s;
+  return {
+    ...rest,
+    order,
+    ...(talks?.length ? { talks: { create: talks.map((t, i) => ({ ...t, order: i })) } } : {}),
+  };
+}
+
+const BIBLIOTECA = {
+  type: "SOCIAL" as const,
+  description: "Visita durante la pausa del almuerzo, en un grupo de 25 personas como máximo.",
+  descriptionPt: "Visita durante a pausa para almoço, num grupo de 25 pessoas no máximo.",
+  location: "Biblioteca histórica de la Universidad de Salamanca",
+  locationPt: "Biblioteca histórica da Universidade de Salamanca",
+};
+
+const COMUNICACIONES = {
+  type: "COMUNICACIONES" as const,
+  title: "Panel de comunicaciones",
+  titlePt: "Painel de comunicações",
+  subtitle: "Mesas simultáneas, presenciales y en línea",
+  subtitlePt: "Mesas simultâneas, presenciais e online",
+  description:
+    "Presentación de las comunicaciones aceptadas, en mesas presenciales y en línea. La distribución por mesas y aulas se publicará con el programa definitivo.",
+  descriptionPt:
+    "Apresentação das comunicações aceites, em mesas presenciais e online. A distribuição por mesas e salas será publicada com o programa definitivo.",
+  venueId: "solis",
+};
 
 export const SEED_SESSIONS: SeedSession[] = [
   // ─── Jueves 11 de febrero ──────────────────────────────────────────────
@@ -163,9 +202,11 @@ export const SEED_SESSIONS: SeedSession[] = [
     start: "10:00",
     end: "11:30",
     type: "PONENCIA",
-    title: "Ponencia invitada",
-    titlePt: "Conferência convidada",
-    ...POR_ANUNCIAR,
+    title: "Ponencia inaugural",
+    titlePt: "Conferência inaugural",
+    subtitle: "Recursos Educativos Abiertos y Diseño Universal de Aprendizaje",
+    subtitlePt: "Recursos Educativos Abertos e Desenho Universal para a Aprendizagem",
+    speakers: "Dra. Prudencia Gutiérrez Esteban (Universidad de Extremadura)",
     roomId: "salon-actos",
   },
   {
@@ -183,7 +224,8 @@ export const SEED_SESSIONS: SeedSession[] = [
     type: "PANEL_EXPERTOS",
     title: "Panel de expertos",
     titlePt: "Painel de especialistas",
-    ...PARTICIPANTES,
+    subtitle: "Cuatro ponentes, por anunciar",
+    subtitlePt: "Quatro oradores, a anunciar",
     roomId: "salon-actos",
   },
   {
@@ -196,18 +238,42 @@ export const SEED_SESSIONS: SeedSession[] = [
   },
   {
     day: "2027-02-11",
+    start: "13:30",
+    end: "14:00",
+    title: "Visita a la Biblioteca histórica (1.er grupo)",
+    titlePt: "Visita à Biblioteca histórica (1.º grupo)",
+    ...BIBLIOTECA,
+  },
+  {
+    day: "2027-02-11",
+    start: "14:00",
+    end: "14:30",
+    title: "Visita a la Biblioteca histórica (2.º grupo)",
+    titlePt: "Visita à Biblioteca histórica (2.º grupo)",
+    ...BIBLIOTECA,
+  },
+  {
+    day: "2027-02-11",
     start: "15:30",
     end: "17:00",
     type: "TALLER",
     title: "Talleres",
     titlePt: "Oficinas",
-    subtitle: "Sesiones simultáneas en las aulas del IUCE",
-    subtitlePt: "Sessões simultâneas nas salas do IUCE",
-    description:
-      "Talleres prácticos en paralelo. La relación de talleres y el aula de cada uno se publicarán con el programa definitivo.",
-    descriptionPt:
-      "Oficinas práticas em paralelo. A lista de oficinas e a sala de cada uma serão publicadas com o programa definitivo.",
+    subtitle: "Cinco talleres simultáneos",
+    subtitlePt: "Cinco oficinas em simultâneo",
+    description: "Talleres prácticos en paralelo. El aula de cada taller se publicará con el programa definitivo.",
+    descriptionPt: "Oficinas práticas em paralelo. A sala de cada oficina será publicada com o programa definitivo.",
     venueId: "solis",
+    talks: [
+      { title: "Narrativa inmersiva como propuesta pedagógica", authors: "Dra. Maribel R. Fidalgo (Universidad de Salamanca)" },
+      { title: "Videojuegos para educar", authors: "Universidad de Extremadura" },
+      {
+        title: "Neuroeducación y tecnología",
+        authors: "Dra. Vanesa Delgado y Dra. Sonia Rodríguez Cano (Universidad de Burgos)",
+      },
+      { title: "Potencial educativo de la IA", authors: "Universidad de Granada" },
+      { title: "Musicoterapia y TIC", authors: "César Daniel Pascual Vallejo (Universidad de Salamanca)" },
+    ],
   },
   {
     day: "2027-02-11",
@@ -216,23 +282,22 @@ export const SEED_SESSIONS: SeedSession[] = [
     type: "MESA_REDONDA",
     title: "Mesa redonda sobre experiencias escolares",
     titlePt: "Mesa-redonda sobre experiências escolares",
-    ...PARTICIPANTES,
+    subtitle: "Experiencias de centros educativos",
+    subtitlePt: "Experiências de escolas",
     roomId: "salon-actos",
+    talks: [
+      { title: "Experiencia de Sagrado Corazón", authors: "Dña. María Álvarez y Jorge Nuño" },
+      { title: "Experiencia de las Esclavas", authors: "Dña. María José Daniel y D. Carlos Marcos" },
+      { title: "Experiencia de CEIP Santa Catalina", authors: "Dña. María Victoria Casado Martín" },
+      { title: "Experiencia de San Estanislao de Kostka" },
+      { title: "Centro E-pisteme", authors: "Dr. Manuel Vidal Vielma Blanco" },
+    ],
   },
   {
     day: "2027-02-11",
     start: "18:30",
     end: "19:50",
-    type: "COMUNICACIONES",
-    title: "Panel de comunicaciones",
-    titlePt: "Painel de comunicações",
-    subtitle: "Mesas simultáneas en las aulas del IUCE",
-    subtitlePt: "Mesas simultâneas nas salas do IUCE",
-    description:
-      "Presentación de las comunicaciones aceptadas. La distribución por mesas y aulas se publicará con el programa definitivo.",
-    descriptionPt:
-      "Apresentação das comunicações aceites. A distribuição por mesas e salas será publicada com o programa definitivo.",
-    venueId: "solis",
+    ...COMUNICACIONES,
   },
   {
     day: "2027-02-11",
@@ -252,16 +317,7 @@ export const SEED_SESSIONS: SeedSession[] = [
     day: "2027-02-12",
     start: "09:00",
     end: "10:30",
-    type: "COMUNICACIONES",
-    title: "Panel de comunicaciones",
-    titlePt: "Painel de comunicações",
-    subtitle: "Mesas simultáneas en las aulas del IUCE",
-    subtitlePt: "Mesas simultâneas nas salas do IUCE",
-    description:
-      "Presentación de las comunicaciones aceptadas. La distribución por mesas y aulas se publicará con el programa definitivo.",
-    descriptionPt:
-      "Apresentação das comunicações aceites. A distribuição por mesas e salas será publicada com o programa definitivo.",
-    venueId: "solis",
+    ...COMUNICACIONES,
   },
   {
     day: "2027-02-12",
@@ -270,6 +326,13 @@ export const SEED_SESSIONS: SeedSession[] = [
     type: "PROYECTOS",
     title: "Presentación de proyectos de investigación",
     titlePt: "Apresentação de projetos de investigação",
+    speakers: [
+      "Dr. Antonio Moreira (Universidade Aberta)",
+      "Dr. Vitor Gonçalves (Instituto Politécnico de Bragança)",
+      "Dra. Pilar Gútiez Cuevas (AMPA)",
+      "Dra. Cristina Sánchez Romero (UNED)",
+      "Dra. Sonia Casillas Martín (Universidad de Salamanca)",
+    ].join("\n"),
     roomId: "salon-actos",
   },
   {
@@ -287,7 +350,8 @@ export const SEED_SESSIONS: SeedSession[] = [
     type: "PONENCIA",
     title: "Ponencia invitada",
     titlePt: "Conferência convidada",
-    ...POR_ANUNCIAR,
+    subtitle: "Ponente por anunciar",
+    subtitlePt: "Orador a anunciar",
     roomId: "salon-actos",
   },
   {

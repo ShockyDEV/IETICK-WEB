@@ -15,6 +15,7 @@ import {
   SEED_DAYS,
   SEED_ROOMS,
   SEED_SESSIONS,
+  seedSessionData,
   SEED_SETTINGS,
   SEED_VENUES,
 } from "../src/content/programme-seed";
@@ -68,7 +69,7 @@ async function main() {
   if (count === 0) {
     let order = 0;
     for (const s of SEED_SESSIONS) {
-      await prisma.session.create({ data: { ...s, order: order++ } });
+      await prisma.session.create({ data: seedSessionData(s, order++) });
     }
     console.log(`Sesiones creadas: ${SEED_SESSIONS.length} (programa provisional)`);
   } else {

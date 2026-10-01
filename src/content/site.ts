@@ -16,11 +16,11 @@ export const SITE = {
   endsAt: { day: "2027-02-12", time: "14:00" },
 
   fullName: {
-    es: "XIII Conferencia Ibérica de Innovación en Educación con TIC",
+    es: "XIII Conferencia Ibérica de Innovación en la Educación con TIC",
     pt: "XIII Conferência Ibérica de Inovação na Educação com TIC",
   } satisfies L10n,
   seriesName: {
-    es: "Conferencia Ibérica de Innovación en Educación con TIC",
+    es: "Conferencia Ibérica de Innovación en la Educación con TIC",
     pt: "Conferência Ibérica de Inovação na Educação com TIC",
   } satisfies L10n,
   // Texto del logo oficial
@@ -46,6 +46,8 @@ export const SITE = {
     pt: "11–12 fev 2027",
   } satisfies L10n,
   city: "Salamanca",
+  // Modalidad híbrida (documento de la organización, 01-10-2026)
+  where: { es: "Salamanca y en línea", pt: "Salamanca e online" } satisfies L10n,
   venue: {
     name: {
       es: "Instituto Universitario de Ciencias de la Educación (IUCE)",
@@ -62,9 +64,28 @@ export const SITE = {
     lon: -5.65984,
     web: "https://solis.usal.es", // web nueva del IUCE
   },
-  // El IUCE es solo la sede: sus datos de contacto NO son los del congreso.
-  // Correo de la organización: pendiente (se muestra en cuanto se rellene).
-  contactEmail: null as string | null,
+  // Contactos del congreso (documento de la organización, 01-10-2026)
+  contact: {
+    general: "ietic@ipb.pt",
+    secretaria: "secretaria.ietic27@usal.es",
+  },
+  // Inscripción: formulario previo + matrícula y pago en el Centro de
+  // Formación Permanente de la USAL
+  registration: {
+    form: "https://forms.gle/Ju4LaDBYRtZhFyE96",
+    payment: "https://vaporetto.usal.es/preactform/listaCursos?tipocur=sm",
+    courseName:
+      "Conferencia Ibérica de Innovación en la Educación con Tecnologías de la Información y Comunicación - ietic2027",
+    helpEmail: "formacionpermanente@usal.es",
+    helpPhone: "923 294 500",
+    helpExt: "3050 / 1174",
+  },
+  // Envío de comunicaciones y plantillas (public/descargas/)
+  submission: {
+    easychair: "https://easychair.org/conferences/?conf=ietic2027",
+    templateAbstract: "/descargas/ieTIC2027_Plantilla_resumen.docx",
+    templateFull: "/descargas/ieTIC2027_Plantilla_texto_completo.docx",
+  },
 };
 
 export function siteUrl(): string {

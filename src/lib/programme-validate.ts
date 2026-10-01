@@ -62,6 +62,8 @@ export interface ValidationSession {
   published: boolean;
   cancelled: boolean;
   speakers: string | null;
+  /** Autores de sus contribuciones (talleres, experiencias de una mesa…) */
+  talks?: { authors: string | null }[];
 }
 
 export interface ValidationRoom {
@@ -305,7 +307,7 @@ export function validateProgramme(input: ValidationInput): ValidationIssue[] {
       });
     }
 
-    if (SPEAKER_TYPES.has(s.type) && !hasSpeakers(s.speakers)) {
+    if (SPEAKER_TYPES.has(s.type) && !hasSpeakers(s.speakers) && !s.talks?.some((t) => hasSpeakers(t.authors))) {
       const kind = typeLabel(s.type).toLowerCase();
       // «Ponencia invitada (ponencia invitada)» sobra: el tipo solo se añade si aporta
       const suffix = s.title.trim().toLowerCase() === kind ? "" : ` (${kind})`;
@@ -393,6 +395,8 @@ function classifyOverlap(
 
   // Fila general
   if (a.scope === "global" && b.scope === "global") {
+    // Una actividad durante una pausa (visita en el almuerzo) es normal
+    if (LOGISTIC_TYPES.has(a.s.type) !== LOGISTIC_TYPES.has(b.s.type)) return null;
     return {
       ...base,
       code: "GLOBAL_OVERLAP",

@@ -72,13 +72,16 @@ export function placeSessions(sessions: ProgrammeSession[], columns: GridColumn[
   }
 
   // Carriles: sesiones de la MISMA sala que se solapan se reparten en paralelo
-  // (empaquetado voraz por columnas, como en el programa de ICED26).
+  // (empaquetado voraz por columnas, como en el programa de ICED26). Las filas
+  // generales que coinciden (una visita durante el almuerzo) hacen lo mismo
+  // a todo lo ancho; se agrupan aparte con una clave negativa.
   const byCol = new Map<number, PlacedSession[]>();
   for (const p of placed) {
-    if (p.kind !== "room") continue;
-    const list = byCol.get(p.col) ?? [];
+    if (p.kind === "venue") continue;
+    const key = p.kind === "global" ? -1 : p.col;
+    const list = byCol.get(key) ?? [];
     list.push(p);
-    byCol.set(p.col, list);
+    byCol.set(key, list);
   }
   for (const list of byCol.values()) {
     list.sort((a, b) => a.startMin - b.startMin || b.endMin - b.startMin - (a.endMin - a.startMin));

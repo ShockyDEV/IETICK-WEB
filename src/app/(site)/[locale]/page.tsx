@@ -38,8 +38,8 @@ const T = {
     welcomeEyebrow: "El congreso",
     welcomeTitle: "Innovar con TIC, en abierto",
     welcome: [
-      "Desde hace más de una década, la Conferencia Ibérica de Innovación en Educación con TIC reúne a docentes, investigadores y profesionales de la educación de España y Portugal para compartir investigaciones, experiencias y propuestas sobre el uso educativo de las tecnologías.",
-      "En su XIII edición, ieTIC llega al Instituto Universitario de Ciencias de la Educación de la Universidad de Salamanca con una pregunta de fondo: cómo pueden las tecnologías mejorar el aprendizaje dentro del ecosistema de la Ciencia Abierta, con los Recursos Educativos Abiertos y el Diseño Universal para el Aprendizaje como hilo conductor.",
+      "Desde 2011, la Conferencia Ibérica de Innovación en la Educación con TIC reúne a docentes, investigadores y profesionales de la educación de España y Portugal para compartir investigaciones, experiencias y propuestas sobre el uso educativo de las tecnologías.",
+      "La XIII edición, organizada por la red de universidades hispano-lusa IPB, USAL, Universidade Aberta y UNED, se celebra en Salamanca en modalidad híbrida, presencial y en línea, con una pregunta de fondo: cómo pueden las tecnologías mejorar el aprendizaje en el ecosistema de la Ciencia Abierta, con los Recursos Educativos Abiertos y el Diseño Universal de Aprendizaje como hilo conductor.",
     ],
     welcomeMore: "Conoce el congreso",
     facts: [
@@ -64,7 +64,8 @@ const T = {
     datesEyebrow: "Fechas clave",
     datesTitle: "Calendario",
     participate: "¿Quieres presentar tu trabajo?",
-    participateText: "Consulta los ejes temáticos y las modalidades de participación. Las normas, plantillas y plazos se publicarán en la página de comunicaciones.",
+    participateText: (opens: string) =>
+      `El envío de resúmenes se abre el ${opens}. Normas, plantillas y ejes temáticos, en la página de comunicaciones.`,
   },
   pt: {
     eyebrow: "XIII Conferência Ibérica",
@@ -72,8 +73,8 @@ const T = {
     welcomeEyebrow: "O congresso",
     welcomeTitle: "Inovar com TIC, em aberto",
     welcome: [
-      "Há mais de uma década que a Conferência Ibérica de Inovação na Educação com TIC reúne docentes, investigadores e profissionais da educação de Espanha e Portugal para partilhar investigações, experiências e propostas sobre o uso educativo das tecnologias.",
-      "Na sua XIII edição, o ieTIC chega ao Instituto Universitário de Ciências da Educação da Universidade de Salamanca com uma pergunta de fundo: como podem as tecnologias melhorar a aprendizagem no ecossistema da Ciência Aberta, tendo os Recursos Educativos Abertos e o Desenho Universal para a Aprendizagem como fio condutor.",
+      "Desde 2011, a Conferência Ibérica de Inovação na Educação com TIC reúne docentes, investigadores e profissionais da educação de Espanha e Portugal para partilhar investigações, experiências e propostas sobre o uso educativo das tecnologias.",
+      "A XIII edição, organizada pela rede de universidades luso-espanhola IPB, USAL, Universidade Aberta e UNED, realiza-se em Salamanca em modalidade híbrida, presencial e online, com uma pergunta de fundo: como podem as tecnologias melhorar a aprendizagem no ecossistema da Ciência Aberta, tendo os Recursos Educativos Abertos e o Desenho Universal para a Aprendizagem como fio condutor.",
     ],
     welcomeMore: "Conhece o congresso",
     facts: [
@@ -98,7 +99,8 @@ const T = {
     datesEyebrow: "Datas importantes",
     datesTitle: "Calendário",
     participate: "Queres apresentar o teu trabalho?",
-    participateText: "Consulta os eixos temáticos e as modalidades de participação. As normas, os modelos e os prazos serão publicados na página de comunicações.",
+    participateText: (opens: string) =>
+      `A submissão de resumos abre a ${opens}. Normas, modelos e eixos temáticos na página de comunicações.`,
   },
 } as const;
 
@@ -117,6 +119,10 @@ export default async function HomePage({ params }: Props) {
   const t = T[locale];
   const programme = await loadProgramme();
   const rooms = programme?.rooms ?? [];
+  const fecha = (id: string) => {
+    const f = FECHAS.find((x) => x.id === id);
+    return (f && formatFecha(f, locale)) ?? pick(UI.pending, locale);
+  };
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -126,22 +132,26 @@ export default async function HomePage({ params }: Props) {
     startDate: madridDate(SITE.startsAt.day, SITE.startsAt.time).toISOString(),
     endDate: madridDate(SITE.endsAt.day, SITE.endsAt.time).toISOString(),
     eventStatus: "https://schema.org/EventScheduled",
-    eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+    eventAttendanceMode: "https://schema.org/MixedEventAttendanceMode",
     inLanguage: ["es", "pt"],
     url: `${siteUrl()}${href(locale, "/")}`,
     image: [`${siteUrl()}/og-image.png`],
-    location: {
-      "@type": "Place",
-      name: pick(SITE.venue.name, locale),
-      address: {
-        "@type": "PostalAddress",
-        streetAddress: "Paseo de Canalejas, 169",
-        postalCode: "37008",
-        addressLocality: "Salamanca",
-        addressCountry: "ES",
+    location: [
+      {
+        "@type": "Place",
+        name: pick(SITE.venue.name, locale),
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "Paseo de Canalejas, 169",
+          postalCode: "37008",
+          addressLocality: "Salamanca",
+          addressCountry: "ES",
+        },
       },
-    },
-    organizer: ORGANIZADORES.map((o) => ({ "@type": "Organization", name: pick(o.name, locale), url: o.url })),
+      { "@type": "VirtualLocation", url: `${siteUrl()}${href(locale, "/")}` },
+    ],
+    organizer: ORGANIZADORES.filter((o) => o.consorcio).map((o) => ({ "@type": "Organization", name: pick(o.name, locale), url: o.url })),
+    sponsor: ORGANIZADORES.filter((o) => !o.consorcio).map((o) => ({ "@type": "Organization", name: pick(o.name, locale), url: o.url })),
   };
 
   return (
@@ -348,7 +358,7 @@ export default async function HomePage({ params }: Props) {
         <div className="contenedor">
           <SectionHeading eyebrow={t.datesEyebrow} title={t.datesTitle} id="fechas-home" />
           <ol className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {FECHAS.map((d, i) => {
+            {FECHAS.filter((d) => d.home).map((d, i) => {
               const hl = !!d.highlight;
               const value = formatFecha(d, locale);
               return (
@@ -384,7 +394,7 @@ export default async function HomePage({ params }: Props) {
           >
             <div className="max-w-2xl">
               <p className="font-display text-2xl font-bold">{t.participate}</p>
-              <p className="mt-2 text-white/80">{t.participateText}</p>
+              <p className="mt-2 text-white/80">{t.participateText(fecha("resumenes-apertura"))}</p>
             </div>
             <Link href={href(locale, "/comunicaciones")} className="boton-oro shrink-0 self-start transition hover:-translate-y-0.5 lg:self-auto">
               {pick(UI.submit, locale)}

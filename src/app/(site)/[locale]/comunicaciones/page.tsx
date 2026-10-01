@@ -1,13 +1,14 @@
+import { statSync } from "node:fs";
+import path from "node:path";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowUpRight, FileText, MapPin, Presentation, Send } from "lucide-react";
+import { ArrowDownToLine, ArrowUpRight, FileText, Mail, MapPin, MonitorPlay, Presentation } from "lucide-react";
 import { EjeIcon } from "@/components/ui/eje-icon";
 import { PageArt } from "@/components/ui/page-art";
 import { PageHeader } from "@/components/ui/page-header";
-import { PendingNote } from "@/components/ui/pending-note";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { EJES } from "@/content/ejes";
-import { FECHAS, formatFecha } from "@/content/fechas";
+import { FECHAS, GRUPOS_FECHA, formatFecha } from "@/content/fechas";
 import { SITE } from "@/content/site";
 import { sectionColor, UI } from "@/content/ui";
 import { href, isLocale, pick, type Locale } from "@/lib/i18n";
@@ -19,69 +20,187 @@ export const dynamic = "force-dynamic";
 
 type Props = { params: Promise<{ locale: string }> };
 
+// Normas, plantillas y plazos: documento «Información para la web de ieTIC
+// 2027» (01-10-2026).
 const T = {
   es: {
     eyebrow: "Comunicaciones",
     title: "Comparte tu investigación y tu experiencia",
-    lead: "ieTIC 2027 abrirá una convocatoria de comunicaciones sobre innovación educativa con tecnologías, organizada en seis ejes temáticos.",
-    modesEyebrow: "Modalidades",
-    modesTitle: "Dos formas de presentar tu trabajo",
-    modes: {
-      COMUNICACIONES: {
-        title: "Comunicaciones",
-        text: "Las comunicaciones aceptadas se presentan en mesas simultáneas repartidas por las aulas del IUCE.",
-      },
-      PROYECTOS: {
-        title: "Proyectos de investigación",
-        text: "Una sesión propia, en el salón de actos, para dar a conocer proyectos de investigación ante todo el congreso.",
-      },
+    lead: (from: string, to: string) =>
+      `Envío de resúmenes del ${from} al ${to}, en español, portugués o inglés. Las comunicaciones se presentan en el congreso de forma presencial o en línea.`,
+    meta: "Normas, plantillas, ejes temáticos y plazos para presentar una comunicación en ieTIC 2027.",
+    ctaSubmit: "Enviar en EasyChair",
+    ctaTemplates: "Descargar las plantillas",
+    rulesEyebrow: "Participación",
+    rulesTitle: "Normas para presentar una comunicación",
+    rules: [
+      "Cada autor o autora puede presentar un máximo de dos comunicaciones.",
+      "Cada comunicación puede firmarla un máximo de cuatro personas.",
+      "Todas las personas firmantes deben estar inscritas en el congreso.",
+      "Una de ellas presenta la comunicación en el congreso, en la modalidad (presencial o en línea) en la que se haya inscrito.",
+    ],
+    typesTitle: "Qué tipo de trabajo",
+    types: [
+      "Revisión de literatura o revisión bibliográfica",
+      "Reflexión y valoración sobre experiencias educativas",
+      "Difusión de resultados de investigación",
+      "Propuesta de modelo teórico explicativo en torno a un problema",
+      "Propuesta de intervención educativa novedosa",
+    ],
+    original:
+      "Los textos deben ser inéditos (no publicados ni aceptados en otra publicación) y pueden escribirse en español, portugués o inglés.",
+    review:
+      "La Comisión Científica valorará la calidad de las propuestas y, si es necesario, sugerirá mejoras de los resúmenes y de los textos completos.",
+    templatesEyebrow: "Plantillas",
+    templatesTitle: "Resumen y texto completo",
+    templatesLead:
+      "Hay dos modalidades de comunicación: el resumen de un proyecto de investigación o de una experiencia y, si quieres, el texto completo, con una descripción amplia del proceso y de los resultados.",
+    abstract: {
+      title: "Resumen",
+      tag: "obligatorio",
+      text: "Entre 400 y 500 palabras, con la estructura de la plantilla: introducción, metodología, resultados y discusión.",
     },
-    inProgramme: "Ver en el programa",
+    full: {
+      title: "Texto completo",
+      tag: "opcional",
+      text: "Entre 4.000 y 5.000 palabras, referencias bibliográficas incluidas.",
+    },
+    download: "Descargar la plantilla",
+    fileInfo: (kb: number | null) => (kb ? `Word, ${kb} KB` : "Word"),
+    axisNote: "Indica en la plantilla el eje temático de tu comunicación.",
+    submitTitle: "El envío se hace en EasyChair",
+    submitText: "Sube a la plataforma EasyChair del congreso el resumen y, si lo presentas, el texto completo.",
+    submitCta: "Ir a EasyChair",
     ejesEyebrow: "Ejes temáticos",
     ejesTitle: "Los temas de la convocatoria",
-    ejesLead: "Las comunicaciones se organizan en seis ejes, cada uno con sus líneas de trabajo.",
-    rulesEyebrow: "Envío",
-    rulesTitle: "Normas, plantillas y plazos",
-    rulesPending: "Convocatoria en preparación",
-    rulesText: "Aquí se publicarán las normas de presentación, las plantillas (en español y portugués), la plataforma de envío y el calendario de la convocatoria.",
-    datesTitle: "Fechas importantes",
-    sessions: (n: number) => (n === 1 ? "1 sesión" : `${n} sesiones`),
+    ejesLead: "Cada comunicación indica en la plantilla uno de estos ejes. Las líneas de cada eje son orientativas.",
+    talkEyebrow: "Exposición",
+    talkTitle: "Cinco minutos por comunicación",
+    onsite: {
+      title: "Presencial",
+      items: [
+        "Cada comunicación se expone en 5 minutos.",
+        "Si usas una presentación, entrégala a la coordinación de la mesa 10 minutos antes de que empiece, en el aula asignada: en un pendrive o con su enlace.",
+        "Tras las exposiciones, la mesa abre un debate sobre las experiencias e investigaciones presentadas.",
+      ],
+    },
+    online: {
+      title: "En línea",
+      items: [
+        "La exposición es síncrona, junto con el resto de autores de la mesa, en la plataforma del congreso; el enlace se envía antes.",
+        "Cada comunicación dispone de 5 minutos.",
+        "Si no puedes conectarte en directo, sube un vídeo de 5 minutos a la carpeta de tu mesa hasta el 8 de febrero de 2027; la coordinación lo proyectará.",
+        "Después, debate con las cuestiones de la coordinación y de los participantes.",
+      ],
+    },
+    slotsTitle: "Paneles de comunicaciones en el programa",
+    inProgramme: "Ver en el programa",
+    datesEyebrow: "Calendario",
+    datesTitle: "Plazos de la convocatoria",
+    publication:
+      "Las comunicaciones aceptadas se publican en los libros de actas del congreso, en GREDOS, el repositorio de la Universidad de Salamanca, y pueden ser seleccionadas para su publicación en la revista RELATEC.",
+    questions: "¿Dudas sobre las comunicaciones? Escribe a la secretaría del congreso:",
   },
   pt: {
     eyebrow: "Comunicações",
     title: "Partilha a tua investigação e a tua experiência",
-    lead: "O ieTIC 2027 abrirá uma chamada de comunicações sobre inovação educativa com tecnologias, organizada em seis eixos temáticos.",
-    modesEyebrow: "Modalidades",
-    modesTitle: "Duas formas de apresentar o teu trabalho",
-    modes: {
-      COMUNICACIONES: {
-        title: "Comunicações",
-        text: "As comunicações aceites são apresentadas em mesas simultâneas distribuídas pelas salas do IUCE.",
-      },
-      PROYECTOS: {
-        title: "Projetos de investigação",
-        text: "Uma sessão própria, no auditório, para dar a conhecer projetos de investigação a todo o congresso.",
-      },
+    lead: (from: string, to: string) =>
+      `Submissão de resumos de ${from} a ${to}, em português, espanhol ou inglês. As comunicações são apresentadas no congresso de forma presencial ou online.`,
+    meta: "Normas, modelos, eixos temáticos e prazos para apresentar uma comunicação no ieTIC 2027.",
+    ctaSubmit: "Submeter no EasyChair",
+    ctaTemplates: "Descarregar os modelos",
+    rulesEyebrow: "Participação",
+    rulesTitle: "Normas para apresentar uma comunicação",
+    rules: [
+      "Cada autor ou autora pode apresentar um máximo de duas comunicações.",
+      "Cada comunicação pode ter um máximo de quatro autores.",
+      "Todas as pessoas que assinam a comunicação devem estar inscritas no congresso.",
+      "Uma delas apresenta a comunicação no congresso, na modalidade (presencial ou online) em que se inscreveu.",
+    ],
+    typesTitle: "Que tipo de trabalho",
+    types: [
+      "Revisão de literatura ou revisão bibliográfica",
+      "Reflexão e avaliação sobre experiências educativas",
+      "Divulgação de resultados de investigação",
+      "Proposta de modelo teórico explicativo em torno de um problema",
+      "Proposta de intervenção educativa inovadora",
+    ],
+    original:
+      "Os textos devem ser inéditos (não publicados nem aceites noutra publicação) e podem ser escritos em português, espanhol ou inglês.",
+    review:
+      "A Comissão Científica avaliará a qualidade das propostas e, se necessário, sugerirá melhorias aos resumos e aos textos completos.",
+    templatesEyebrow: "Modelos",
+    templatesTitle: "Resumo e texto completo",
+    templatesLead:
+      "Há duas modalidades de comunicação: o resumo de um projeto de investigação ou de uma experiência e, se quiseres, o texto completo, com uma descrição ampla do processo e dos resultados.",
+    abstract: {
+      title: "Resumo",
+      tag: "obrigatório",
+      text: "Entre 400 e 500 palavras, com a estrutura do modelo: introdução, metodologia, resultados e discussão.",
     },
-    inProgramme: "Ver no programa",
+    full: {
+      title: "Texto completo",
+      tag: "opcional",
+      text: "Entre 4000 e 5000 palavras, incluindo as referências bibliográficas.",
+    },
+    download: "Descarregar o modelo",
+    fileInfo: (kb: number | null) => (kb ? `Word, ${kb} KB` : "Word"),
+    axisNote: "Indica no modelo o eixo temático da tua comunicação.",
+    submitTitle: "A submissão faz-se no EasyChair",
+    submitText: "Carrega na plataforma EasyChair do congresso o resumo e, se o apresentares, o texto completo.",
+    submitCta: "Ir para o EasyChair",
     ejesEyebrow: "Eixos temáticos",
     ejesTitle: "Os temas da chamada",
-    ejesLead: "As comunicações organizam-se em seis eixos, cada um com as suas linhas de trabalho.",
-    rulesEyebrow: "Submissão",
-    rulesTitle: "Normas, modelos e prazos",
-    rulesPending: "Chamada em preparação",
-    rulesText: "Aqui serão publicadas as normas de apresentação, os modelos (em espanhol e português), a plataforma de submissão e o calendário da chamada.",
-    datesTitle: "Datas importantes",
-    sessions: (n: number) => (n === 1 ? "1 sessão" : `${n} sessões`),
+    ejesLead: "Cada comunicação indica no modelo um destes eixos. As linhas de cada eixo são orientativas.",
+    talkEyebrow: "Apresentação",
+    talkTitle: "Cinco minutos por comunicação",
+    onsite: {
+      title: "Presencial",
+      items: [
+        "Cada comunicação é apresentada em 5 minutos.",
+        "Se usares uma apresentação, entrega-a à coordenação da mesa 10 minutos antes do início, na sala atribuída: numa pen USB ou com a respetiva ligação.",
+        "Depois das apresentações, a mesa abre um debate sobre as experiências e investigações apresentadas.",
+      ],
+    },
+    online: {
+      title: "Online",
+      items: [
+        "A apresentação é síncrona, com os restantes autores da mesa, na plataforma do congresso; a ligação é enviada previamente.",
+        "Cada comunicação dispõe de 5 minutos.",
+        "Se não puderes ligar-te em direto, carrega um vídeo de 5 minutos na pasta da tua mesa até 8 de fevereiro de 2027; a coordenação irá projetá-lo.",
+        "Segue-se um debate com as questões da coordenação e dos participantes.",
+      ],
+    },
+    slotsTitle: "Painéis de comunicações no programa",
+    inProgramme: "Ver no programa",
+    datesEyebrow: "Calendário",
+    datesTitle: "Prazos da chamada",
+    publication:
+      "As comunicações aceites são publicadas nos livros de atas do congresso, no GREDOS, o repositório da Universidade de Salamanca, e podem ser selecionadas para publicação na revista RELATEC.",
+    questions: "Dúvidas sobre as comunicações? Escreve ao secretariado do congresso:",
   },
 } as const;
 
-const MODE_TYPES = ["COMUNICACIONES", "PROYECTOS"] as const;
+/** «10 de octubre» / «10 de outubro» */
+function dayMonthLong(date: string, locale: Locale): string {
+  return new Intl.DateTimeFormat(locale === "pt" ? "pt-PT" : "es-ES", { day: "numeric", month: "long", timeZone: "UTC" }).format(
+    new Date(`${date}T12:00:00Z`),
+  );
+}
+
+/** Tamaño en KB de un fichero de public/ (null si no se puede leer). */
+function fileKB(publicPath: string): number | null {
+  try {
+    return Math.max(1, Math.round(statSync(path.join(process.cwd(), "public", publicPath)).size / 1024));
+  } catch {
+    return null;
+  }
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale: raw } = await params;
   const locale: Locale = isLocale(raw) ? raw : "es";
-  return pageMetadata(locale, "/comunicaciones", T[locale].eyebrow, T[locale].lead);
+  return pageMetadata(locale, "/comunicaciones", T[locale].eyebrow, T[locale].meta);
 }
 
 export default async function ComunicacionesPage({ params }: Props) {
@@ -95,73 +214,108 @@ export default async function ComunicacionesPage({ params }: Props) {
   } catch (e) {
     console.error("[comunicaciones] programa no disponible:", e);
   }
-  // Una tarjeta por modalidad con todas sus franjas (no una por sesión)
-  const modes = data
-    ? MODE_TYPES.map((type) => ({ type, sessions: data!.sessions.filter((s) => s.type === type) })).filter(
-        (m) => m.sessions.length > 0,
-      )
-    : [];
+  const panels = data?.sessions.filter((s) => s.type === "COMUNICACIONES") ?? [];
+
+  const opens = FECHAS.find((f) => f.id === "resumenes-apertura");
+  const closes = FECHAS.find((f) => f.id === "resumenes-cierre");
+  const lead =
+    opens?.date && closes?.date ? t.lead(dayMonthLong(opens.date, locale), formatFecha(closes, locale) ?? "") : undefined;
+
+  const templates = [
+    { ...t.abstract, file: SITE.submission.templateAbstract },
+    { ...t.full, file: SITE.submission.templateFull },
+  ];
 
   return (
     <>
-      <PageHeader eyebrow={t.eyebrow} title={t.title} lead={t.lead} art={<PageArt />} color={sectionColor("/comunicaciones")} />
+      <PageHeader eyebrow={t.eyebrow} title={t.title} lead={lead} art={<PageArt />} color={sectionColor("/comunicaciones")}>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <a href={SITE.submission.easychair} target="_blank" rel="noopener noreferrer" className="boton-oro">
+            {t.ctaSubmit} <ArrowUpRight className="h-4 w-4" aria-hidden />
+          </a>
+          <a href="#plantillas" className="boton-contorno-claro">
+            {t.ctaTemplates} <ArrowDownToLine className="h-4 w-4" aria-hidden />
+          </a>
+        </div>
+      </PageHeader>
 
-      {/* Modalidades (del programa) */}
+      {/* Normas de participación */}
       <section className="py-20 sm:py-24">
-        <div className="contenedor">
-          <SectionHeading eyebrow={t.modesEyebrow} title={t.modesTitle} />
-          <ul className="mt-10 grid gap-6 md:grid-cols-2">
-            {modes.map(({ type, sessions }, mi) => {
-              const mode = t.modes[type];
-              const Icon = type === "PROYECTOS" ? Presentation : FileText;
-              return (
-                <li key={type} data-reveal style={{ ["--d" as string]: `${mi * 110}ms` }} className="tarjeta eleva flex flex-col p-6 sm:p-7">
-                  <div className="flex items-center gap-4">
-                    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-mar-50 text-mar-600">
-                      <Icon className="h-6 w-6" aria-hidden />
-                    </span>
-                    <div>
-                      <h3 className="font-display text-xl font-bold leading-snug">{mode.title}</h3>
-                      <p className="text-sm text-tinta-tenue">{t.sessions(sessions.length)}</p>
-                    </div>
-                  </div>
-                  <p className="mt-4 leading-relaxed text-tinta-suave">{mode.text}</p>
-                  <ul className="mt-6 divide-y divide-linea overflow-hidden rounded-lg border border-linea">
-                    {sessions.map((s) => {
-                      const loc = sessionLocation(s, data!, locale);
-                      return (
-                        <li key={s.id}>
-                          <Link
-                            href={`${href(locale, "/programa")}?sesion=${s.id}`}
-                            className="group flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-3 text-sm transition hover:bg-papel"
-                            aria-label={`${mode.title}: ${shortDay(s.day, locale)} ${monthShort(s.day, locale)}, ${s.start}–${s.end}. ${t.inProgramme}`}
-                          >
-                            <span className="min-w-[7.5rem] font-medium text-tinta">
-                              {shortDay(s.day, locale)} {monthShort(s.day, locale)}
-                            </span>
-                            <span className="tabular-nums text-tinta-suave">
-                              {s.start}–{s.end}
-                            </span>
-                            {loc && (
-                              <span className="flex items-center gap-1 text-tinta-tenue">
-                                <MapPin className="h-3.5 w-3.5" aria-hidden /> {loc.label}
-                              </span>
-                            )}
-                            <ArrowUpRight className="ml-auto h-4 w-4 text-mar-600 opacity-50 transition group-hover:opacity-100" aria-hidden />
-                          </Link>
-                        </li>
-                      );
-                    })}
-                  </ul>
+        <div className="contenedor grid gap-12 lg:grid-cols-12">
+          <div className="lg:col-span-7">
+            <SectionHeading eyebrow={t.rulesEyebrow} title={t.rulesTitle} />
+            <ul className="mt-8 space-y-3 text-[1.0625rem] leading-relaxed text-tinta-suave">
+              {t.rules.map((r) => (
+                <li key={r} className="flex gap-3">
+                  <span className="mt-[0.8em] h-px w-3 shrink-0 bg-oro-500" aria-hidden />
+                  {r}
                 </li>
-              );
-            })}
+              ))}
+            </ul>
+            <p className="mt-6 max-w-2xl leading-relaxed text-tinta-suave">{t.original}</p>
+          </div>
+          <aside className="lg:col-span-5" data-reveal style={{ ["--d" as string]: "150ms" }}>
+            <div className="tarjeta p-7">
+              <h3 className="font-display text-xl font-bold">{t.typesTitle}</h3>
+              <ul className="mt-4 space-y-2.5 text-[0.95rem] leading-snug text-tinta-suave">
+                {t.types.map((x) => (
+                  <li key={x} className="flex gap-3">
+                    <FileText className="mt-0.5 h-4 w-4 shrink-0 text-mar-600" aria-hidden />
+                    {x}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-5 border-t border-linea pt-5 text-sm leading-relaxed text-tinta-suave">{t.review}</p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      {/* Plantillas y envío */}
+      <section id="plantillas" className="scroll-mt-24 border-y border-linea bg-papel py-20 sm:py-24">
+        <div className="contenedor">
+          <SectionHeading eyebrow={t.templatesEyebrow} title={t.templatesTitle} lead={t.templatesLead} />
+          <ul className="mt-10 grid gap-6 md:grid-cols-2">
+            {templates.map((tpl, i) => (
+              <li key={tpl.file} data-reveal style={{ ["--d" as string]: `${i * 110}ms` }} className="tarjeta flex flex-col p-6 sm:p-7">
+                <p className="flex items-baseline gap-3">
+                  <span className="font-display text-xl font-bold">{tpl.title}</span>
+                  <span className="nota text-mar-700">{tpl.tag}</span>
+                </p>
+                <p className="mt-3 flex-1 leading-relaxed text-tinta-suave">{tpl.text}</p>
+                <p className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2">
+                  <a href={tpl.file} download className="boton-mar">
+                    <ArrowDownToLine className="h-4 w-4" aria-hidden /> {t.download}
+                  </a>
+                  <span className="text-sm text-tinta-tenue">{t.fileInfo(fileKB(tpl.file))}</span>
+                </p>
+              </li>
+            ))}
           </ul>
+          <p className="mt-6 text-tinta-suave">{t.axisNote}</p>
+
+          <div
+            data-reveal="escala"
+            className="mt-10 flex flex-col gap-6 rounded-xl bg-noche-900 p-7 text-white sm:p-9 lg:flex-row lg:items-center lg:justify-between"
+          >
+            <div className="max-w-2xl">
+              <p className="font-display text-xl font-bold">{t.submitTitle}</p>
+              <p className="mt-2 text-white/75">{t.submitText}</p>
+            </div>
+            <a
+              href={SITE.submission.easychair}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="boton-oro shrink-0 self-start lg:self-auto"
+            >
+              {t.submitCta} <ArrowUpRight className="h-4 w-4" aria-hidden />
+            </a>
+          </div>
         </div>
       </section>
 
       {/* Ejes */}
-      <section className="border-y border-linea bg-papel py-20 sm:py-24">
+      <section className="py-20 sm:py-24">
         <div className="contenedor">
           <SectionHeading eyebrow={t.ejesEyebrow} title={t.ejesTitle} lead={t.ejesLead} />
           <ul className="mt-12 grid gap-x-14 gap-y-10 md:grid-cols-2">
@@ -190,43 +344,99 @@ export default async function ComunicacionesPage({ params }: Props) {
         </div>
       </section>
 
-      {/* Normas y fechas */}
-      <section className="py-20 sm:py-24">
-        <div className="contenedor grid gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-7">
-            <SectionHeading eyebrow={t.rulesEyebrow} title={t.rulesTitle} />
-            <PendingNote title={t.rulesPending} className="mt-8">
-              {t.rulesText}
-            </PendingNote>
-            {SITE.contactEmail && (
-              <p className="mt-8 flex items-center gap-2 text-sm text-tinta-suave">
-                <Send className="h-4 w-4 text-mar-600" aria-hidden />
-                <a className="enlace" href={`mailto:${SITE.contactEmail}`}>
-                  {SITE.contactEmail}
-                </a>
-              </p>
-            )}
-          </div>
-          <div className="lg:col-span-5">
-            <div data-reveal="escala" className="rounded-xl bg-noche-900 p-7 text-white">
-              <h2 className="font-display text-xl font-bold text-white">{t.datesTitle}</h2>
-              <ol className="mt-5 space-y-4">
-                {FECHAS.filter((f) => !f.highlight).map((f) => {
-                  const value = formatFecha(f, locale);
+      {/* Exposición en el congreso */}
+      <section className="border-y border-linea bg-papel py-20 sm:py-24">
+        <div className="contenedor">
+          <SectionHeading eyebrow={t.talkEyebrow} title={t.talkTitle} />
+          <ul className="mt-10 grid gap-6 md:grid-cols-2">
+            {[
+              { ...t.onsite, Icon: Presentation },
+              { ...t.online, Icon: MonitorPlay },
+            ].map(({ title, items, Icon }, i) => (
+              <li key={title} data-reveal style={{ ["--d" as string]: `${i * 110}ms` }} className="tarjeta p-6 sm:p-7">
+                <h3 className="flex items-center gap-3 font-display text-xl font-bold">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-mar-50 text-mar-600">
+                    <Icon className="h-5 w-5" aria-hidden />
+                  </span>
+                  {title}
+                </h3>
+                <ul className="mt-5 space-y-2.5 leading-relaxed text-tinta-suave">
+                  {items.map((x) => (
+                    <li key={x} className="flex gap-3">
+                      <span className="mt-[0.8em] h-px w-3 shrink-0 bg-oro-500" aria-hidden />
+                      {x}
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
+
+          {panels.length > 0 && data && (
+            <div className="mt-10 max-w-3xl">
+              <h3 className="nota text-mar-700">{t.slotsTitle}</h3>
+              <ul className="mt-3 divide-y divide-linea overflow-hidden rounded-lg border border-linea bg-white">
+                {panels.map((s) => {
+                  const loc = sessionLocation(s, data!, locale);
                   return (
-                    <li key={f.id} className="flex items-start justify-between gap-4 border-b border-white/10 pb-4 last:border-0 last:pb-0">
-                      <span className="text-sm text-white/80">{pick(f.label, locale)}</span>
-                      {value ? (
-                        <span className="shrink-0 text-right text-sm font-medium text-oro-300">{value}</span>
-                      ) : (
-                        <span className="nota shrink-0 text-oro-200/85">{pick(UI.pending, locale)}</span>
-                      )}
+                    <li key={s.id}>
+                      <Link
+                        href={`${href(locale, "/programa")}?sesion=${s.id}`}
+                        className="group flex flex-wrap items-center gap-x-4 gap-y-1 px-4 py-3 text-sm transition hover:bg-papel"
+                        aria-label={`${shortDay(s.day, locale)} ${monthShort(s.day, locale)}, ${s.start}–${s.end}. ${t.inProgramme}`}
+                      >
+                        <span className="min-w-[7.5rem] font-medium text-tinta">
+                          {shortDay(s.day, locale)} {monthShort(s.day, locale)}
+                        </span>
+                        <span className="tabular-nums text-tinta-suave">
+                          {s.start}–{s.end}
+                        </span>
+                        {loc && (
+                          <span className="flex items-center gap-1 text-tinta-tenue">
+                            <MapPin className="h-3.5 w-3.5" aria-hidden /> {loc.label}
+                          </span>
+                        )}
+                        <ArrowUpRight className="ml-auto h-4 w-4 text-mar-600 opacity-50 transition group-hover:opacity-100" aria-hidden />
+                      </Link>
                     </li>
                   );
                 })}
-              </ol>
+              </ul>
             </div>
+          )}
+        </div>
+      </section>
+
+      {/* Calendario y publicación */}
+      <section className="py-20 sm:py-24">
+        <div className="contenedor">
+          <SectionHeading eyebrow={t.datesEyebrow} title={t.datesTitle} />
+          <div className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+            {GRUPOS_FECHA.filter((g) => g.id !== "congreso").map((g, gi) => (
+              <div key={g.id} data-reveal style={{ ["--d" as string]: `${gi * 90}ms` }}>
+                <h3 className="nota text-mar-700">{pick(g.label, locale)}</h3>
+                <ol className="mt-4 space-y-4 border-l border-linea pl-5">
+                  {FECHAS.filter((f) => f.group === g.id).map((f) => (
+                    <li key={f.id} className="relative">
+                      <span className="absolute -left-[1.53rem] top-[0.45rem] h-2 w-2 rounded-full bg-oro-500" aria-hidden />
+                      <p className="font-display text-[0.95rem] font-semibold text-tinta">
+                        {formatFecha(f, locale) ?? pick(UI.pending, locale)}
+                      </p>
+                      <p className="text-sm leading-snug text-tinta-suave">{pick(f.label, locale)}</p>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            ))}
           </div>
+          <p className="mt-12 max-w-3xl leading-relaxed text-tinta-suave">{t.publication}</p>
+          <p className="mt-6 flex flex-wrap items-center gap-2 text-tinta-suave">
+            <Mail className="h-4 w-4 text-mar-600" aria-hidden />
+            {t.questions}{" "}
+            <a className="enlace" href={`mailto:${SITE.contact.secretaria}`}>
+              {SITE.contact.secretaria}
+            </a>
+          </p>
         </div>
       </section>
     </>

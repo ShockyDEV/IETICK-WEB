@@ -27,16 +27,24 @@ export function SiteFooter({ locale }: { locale: Locale }) {
           <Image src="/brand/ietic27-logo-oscuro.png" alt="ieTIC 2027" width={718} height={348} className="h-16 w-auto" />
           <p className="mt-5 max-w-md text-sm leading-relaxed text-white/65">{pick(UI.footerAbout, locale)}</p>
           <p className="nota mt-4 text-cian-200">
-            {pick(SITE.datesLabel, locale)}, {SITE.city}
+            {pick(SITE.datesLabel, locale)}, {pick(SITE.where, locale)}
           </p>
-          {SITE.contactEmail && (
-            <p className="mt-4 flex items-center gap-3 text-sm">
-              <Mail className="h-4 w-4 shrink-0 text-oro-400" aria-hidden />
-              <a href={`mailto:${SITE.contactEmail}`} className="transition hover:text-white">
-                {SITE.contactEmail}
-              </a>
-            </p>
-          )}
+          <ul className="mt-5 space-y-2 text-sm">
+            {[
+              { label: UI.contactSecretaria, email: SITE.contact.secretaria },
+              { label: UI.contactGeneral, email: SITE.contact.general },
+            ].map((c) => (
+              <li key={c.email} className="flex items-start gap-3">
+                <Mail className="mt-0.5 h-4 w-4 shrink-0 text-oro-400" aria-hidden />
+                <span>
+                  <span className="text-white/50">{pick(c.label, locale)}: </span>
+                  <a href={`mailto:${c.email}`} className="transition hover:text-white">
+                    {c.email}
+                  </a>
+                </span>
+              </li>
+            ))}
+          </ul>
         </div>
 
         <nav aria-label={pick(UI.sections, locale)} className="lg:col-span-3">

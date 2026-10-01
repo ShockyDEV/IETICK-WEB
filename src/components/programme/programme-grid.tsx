@@ -300,7 +300,11 @@ function SessionBlock({
             {subtitle && <p className="line-clamp-1 text-xs text-tinta-suave">{subtitle}</p>}
             <p className="flex items-center gap-3 text-[0.7rem] font-semibold uppercase tracking-wide" style={{ color: meta.color }}>
               {meta.label[locale]}
-              {s.talks.length > 0 && <span className="font-normal normal-case tracking-normal text-tinta-tenue">{t.talks(s.talks.length)}</span>}
+              {s.talks.length > 0 && (
+                <span className="font-normal normal-case tracking-normal text-tinta-tenue">
+                  {s.type === "TALLER" ? t.workshopsN(s.talks.length) : s.type === "MESA_REDONDA" ? t.experiencesN(s.talks.length) : t.talks(s.talks.length)}
+                </span>
+              )}
               {venueWide && <span className="font-normal normal-case tracking-normal text-tinta-tenue">{t.simultaneous}</span>}
             </p>
           </div>

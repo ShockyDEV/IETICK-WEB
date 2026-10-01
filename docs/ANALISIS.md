@@ -48,11 +48,18 @@ Traslado literal de horas y títulos del Word, con estas decisiones:
 
 - Número de edición (**XIII**, deducido de que ieTIC 2026 fue la XII) y nombre oficial de la serie.
 - Qué **salón de actos** acoge las plenarias (y su aforo).
-- Entidades organizadoras: **recibidas el 30-09-2026** (zip «Logos»): Universidad de Salamanca, Escola Superior de Educação del Instituto Politécnico de Bragança, Universidad Complutense de Madrid, Universidade Aberta y los grupos de investigación EduDIG y MITA (USAL). Se muestran en una franja clara en el pie de todas las páginas, con enlace a la web de cada una; cuatro logos llegan a 200×100 px: conviene pedir versiones grandes o vectoriales. El IUCE es solo la sede: no organiza el congreso, así que la web no usa sus datos de contacto (28-09-2026). **Falta el correo de contacto del congreso** (`SITE.contactEmail`; mientras esté vacío no se muestra ninguna línea de contacto). En ediciones anteriores participaron el Instituto Politécnico de Bragança, la Universidade Aberta, la UCM y la UNED.
-- Ponentes, participantes del panel y de la mesa redonda; talleres y su aula; mesas de comunicaciones.
-- Normas y plantillas de comunicaciones, plataforma de envío, fechas clave, cuotas e inscripción, comités, alojamiento.
-- Correo de contacto propio del congreso (hoy se muestra el del IUCE como sede) y dominio de la web.
-- Textos propuestos (presentación, «a quién se dirige», legales) y traducción al portugués.
+- **Información recibida el 01-10-2026** (documento «Información para la web de ieTIC 2027» y plantillas de resumen y de texto completo, copia en `../material-organizacion/info-web-2026-10-01/`). Incorporado: presentación oficial (ES; PT traducido por nosotros), modalidad **híbrida**, ponentes, programa actualizado (talleres y experiencias de la mesa redonda como contribuciones de su sesión, visitas a la Biblioteca histórica durante el almuerzo), cuotas y lo que incluyen, formulario previo y matrícula en el Centro de Formación Permanente, normas de comunicaciones, plantillas descargables (`public/descargas/`), envío por EasyChair, ejes (nuevo título del eje de IA y la línea «Peligros de la IA para el aprendizaje»), todas las fechas y los contactos (secretaria.ietic27@usal.es e ietic@ipb.pt).
+- Logos: los 11 del documento **más la UCM**, que venía en el zip del 30-09 aunque el documento no la incluye (criterio del usuario: mejor que sobre alguien a que falte). Franja «Organización y colaboración» en el pie de todas las páginas.
+- Discrepancias que conviene confirmar con la organización:
+  - El texto de presentación y los logos incluyen al **IUCE** dentro del consorcio; el 28-09 se nos dijo que el IUCE solo era la sede. Se ha respetado el texto oficial.
+  - **UCM** (en el zip, no en el documento) y **UNED** (en el documento y en el texto, no en el zip).
+  - La **Asociación de Atención Temprana AMPA** colabora según el texto, pero no llegó su logo.
+  - «Las cinco mejores comunicaciones se propondrán para RELATEC» venía marcado «(falta confirmar)»: no se publica; solo «posibilidad de selección para RELATEC», que aparece sin reservas en lo que incluye la inscripción.
+  - **Cinco talleres simultáneos** y hoy hay cuatro salas activas (salón de actos y tres aulas): quizá haga falta recuperar el Laboratorio u otra sala.
+  - Faltan: los cuatro ponentes del panel de expertos, la ponencia invitada del viernes, los responsables de dos talleres (solo consta la universidad) y las personas de la experiencia de San Estanislao de Kostka.
+  - Cómo se apuntan las visitas a la Biblioteca histórica (grupos de 25), el enlace a la plataforma online y la carpeta de vídeos se enviarán a los participantes.
+  - El documento trae la presentación también en **inglés**; la web está en español y portugués. ¿Versión en inglés?
+  - Las imágenes para enlazar el formulario, el pago y EasyChair (ilustraciones de banco de iconos) no se usan: en su lugar hay botones; si se quieren, puede hacer falta citar su autoría.
 - En el Word el lema dice «Diseño Universal **de** Aprendizaje» y en los ejes «Diseño Universal **para el** Aprendizaje»; se ha respetado cada literal.
 
 ## 7. Fuentes

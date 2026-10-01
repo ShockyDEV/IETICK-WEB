@@ -16,7 +16,7 @@ type Props = { params: Promise<{ locale: string }> };
 const T = {
   es: {
     title: "Programa",
-    lead: "Dos jornadas de ponencias invitadas, panel de expertos, mesa redonda, talleres y paneles de comunicaciones en el IUCE. Marca con la estrella las sesiones que no te quieres perder y consulta cada una por sala y hora.",
+    lead: "Dos jornadas de ponencias, panel de expertos, talleres, mesa redonda y paneles de comunicaciones, en Salamanca y en línea. Marca con la estrella las sesiones que no te quieres perder y consulta cada una por sala y hora.",
     provisional: "Programa provisional",
     provisionalNote: "sujeto a cambios",
     definitive: "Programa definitivo",
@@ -25,7 +25,7 @@ const T = {
   },
   pt: {
     title: "Programa",
-    lead: "Dois dias de conferências convidadas, painel de especialistas, mesa-redonda, oficinas e painéis de comunicações no IUCE. Marca com a estrela as sessões que não queres perder e consulta cada uma por sala e hora.",
+    lead: "Dois dias de conferências, painel de especialistas, oficinas, mesa-redonda e painéis de comunicações, em Salamanca e online. Marca com a estrela as sessões que não queres perder e consulta cada uma por sala e hora.",
     provisional: "Programa provisório",
     provisionalNote: "sujeito a alterações",
     definitive: "Programa definitivo",

@@ -25,6 +25,7 @@ export async function loadValidationInput(): Promise<ValidationInput> {
         published: true,
         cancelled: true,
         speakers: true,
+        talks: { select: { authors: true } },
       },
     }),
     prisma.room.findMany({ select: { id: true, venueId: true, name: true, active: true } }),

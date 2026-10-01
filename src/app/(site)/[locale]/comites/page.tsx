@@ -12,7 +12,7 @@ const T = {
   es: {
     eyebrow: "Comités",
     title: "Quién hace ieTIC 2027",
-    lead: "Organizan ieTIC 2027 la Universidad de Salamanca, el Instituto Politécnico de Bragança, la Universidad Complutense de Madrid y la Universidade Aberta, junto con los grupos de investigación EduDIG y MITA de la Universidad de Salamanca.",
+    lead: "Organiza ieTIC 2027 el consorcio de la red de universidades hispano-lusa formada por el Instituto Politécnico de Bragança, la Universidad de Salamanca, la Universidade Aberta y la UNED, con la colaboración de la Asociación de Atención Temprana AMPA.",
     organizing: "Comité organizador",
     scientific: "Comité científico",
     pending: "La composición del comité se publicará próximamente.",
@@ -20,7 +20,7 @@ const T = {
   pt: {
     eyebrow: "Comissões",
     title: "Quem faz o ieTIC 2027",
-    lead: "O ieTIC 2027 é organizado pela Universidade de Salamanca, pelo Instituto Politécnico de Bragança, pela Universidade Complutense de Madrid e pela Universidade Aberta, juntamente com os grupos de investigação EduDIG e MITA da Universidade de Salamanca.",
+    lead: "O ieTIC 2027 é organizado pelo consórcio da rede de universidades luso-espanhola formada pelo Instituto Politécnico de Bragança, pela Universidade de Salamanca, pela Universidade Aberta e pela UNED, com a colaboração da Asociación de Atención Temprana AMPA.",
     organizing: "Comissão organizadora",
     scientific: "Comissão científica",
     pending: "A composição da comissão será publicada brevemente.",

@@ -217,6 +217,12 @@ describe("solapes con la fila general", () => {
     }
   });
 
+  it("una actividad durante una pausa (dos filas generales) no genera aviso", () => {
+    const lunch = ses({ type: "PAUSA", start: "13:30", end: "15:30" });
+    const visit = ses({ type: "SOCIAL", title: "Visita", start: "13:30", end: "14:00" });
+    expect(run([lunch, visit])).toEqual([]);
+  });
+
   it("dos filas generales a la vez → aviso, aunque sean pausas", () => {
     const a = ses({ type: "PAUSA" });
     const b = ses({ type: "PAUSA", start: "10:30", end: "11:30" });

@@ -179,7 +179,7 @@ export function SessionDialog({
             {s.talks.length > 0 && (
               <section className="mt-8">
                 <h3 className="nota text-tinta-suave">
-                  {t.contributions} ({s.talks.length})
+                  {s.type === "TALLER" ? t.workshops : s.type === "MESA_REDONDA" ? t.experiences : t.contributions} ({s.talks.length})
                 </h3>
                 <ol className="mt-3 divide-y divide-linea rounded-lg border border-linea">
                   {s.talks.map((talk) => {

@@ -21,10 +21,10 @@ export const AVISO_LEGAL: LegalDoc = {
       heading: { es: "Titular", pt: "Titular" },
       body: {
         es: [
-          "Universidad de Salamanca. Patio de Escuelas, 1, 37008 Salamanca. El correo de contacto de la organización del congreso se publicará en esta web.",
+          "Universidad de Salamanca. Patio de Escuelas, 1, 37008 Salamanca. Secretaría del congreso: secretaria.ietic27@usal.es. Contacto general: ietic@ipb.pt.",
         ],
         pt: [
-          "Universidade de Salamanca. Patio de Escuelas, 1, 37008 Salamanca. O correio eletrónico de contacto da organização do congresso será publicado neste sítio.",
+          "Universidade de Salamanca. Patio de Escuelas, 1, 37008 Salamanca. Secretariado do congresso: secretaria.ietic27@usal.es. Contacto geral: ietic@ipb.pt.",
         ],
       },
     },
@@ -95,10 +95,10 @@ export const PRIVACIDAD: LegalDoc = {
       heading: { es: "Servicios de terceros", pt: "Serviços de terceiros" },
       body: {
         es: [
-          "El mapa de la página de sede se carga desde OpenStreetMap, que recibe la dirección IP de quien lo visualiza. La inscripción y el envío de comunicaciones se realizarán en plataformas externas con su propia política de privacidad.",
+          "El mapa de la página de sede se carga desde OpenStreetMap, que recibe la dirección IP de quien lo visualiza. La inscripción y el envío de comunicaciones se hacen en plataformas externas, cada una con su propia política de privacidad: el formulario previo de Google Forms, la matrícula y el pago en el Centro de Formación Permanente de la Universidad de Salamanca y el envío de comunicaciones en EasyChair.",
         ],
         pt: [
-          "O mapa da página do local é carregado a partir do OpenStreetMap, que recebe o endereço IP de quem o visualiza. A inscrição e a submissão de comunicações serão feitas em plataformas externas com a sua própria política de privacidade.",
+          "O mapa da página do local é carregado a partir do OpenStreetMap, que recebe o endereço IP de quem o visualiza. A inscrição e a submissão de comunicações fazem-se em plataformas externas, cada uma com a sua própria política de privacidade: o formulário prévio do Google Forms, a matrícula e o pagamento no Centro de Formação Permanente da Universidade de Salamanca e a submissão de comunicações no EasyChair.",
         ],
       },
     },
@@ -148,8 +148,8 @@ export const ACCESIBILIDAD: LegalDoc = {
     {
       heading: { es: "Comunícanos cualquier barrera", pt: "Comunica-nos qualquer barreira" },
       body: {
-        es: ["Si encuentras algún problema de accesibilidad, comunícaselo a la organización del congreso y lo resolveremos lo antes posible."],
-        pt: ["Se encontrares algum problema de acessibilidade, comunica-o à organização do congresso e resolvê-lo-emos o mais depressa possível."],
+        es: ["Si encuentras algún problema de accesibilidad, escríbenos a secretaria.ietic27@usal.es y lo resolveremos lo antes posible."],
+        pt: ["Se encontrares algum problema de acessibilidade, escreve-nos para secretaria.ietic27@usal.es e resolvê-lo-emos o mais depressa possível."],
       },
     },
   ],

@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: Omit<Props, "children">): Pro
   const { locale: raw } = await params;
   const locale: Locale = isLocale(raw) ? raw : "es";
   const title = `ieTIC 2027 · ${pick(SITE.fullName, locale)}`;
-  const description = `${pick(SITE.lema, locale)}. ${pick(SITE.datesLabel, locale)} · Salamanca.`;
+  const description = `${pick(SITE.lema, locale)}. ${pick(SITE.datesLabel, locale)}, ${pick(SITE.where, locale)}.`;
   return {
     metadataBase: new URL(siteUrl()),
     title: { default: title, template: "%s · ieTIC 2027" },

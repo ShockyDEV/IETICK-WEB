@@ -87,7 +87,7 @@ export const EJES: Eje[] = [
         "La tecnología educativa al servicio de la atención a la diversidad.",
         "Metodologías para afrontar la inclusión educativa en las aulas.",
         "Herramientas digitales para la práctica docente inclusiva.",
-        "Diseño Universal para el Aprendizaje en programas de innovación y prácticas de aula.",
+        "Diseño Universal de Aprendizaje en programas de innovación y prácticas de aula.",
       ],
       pt: [
         "A tecnologia educativa ao serviço da atenção à diversidade.",
@@ -126,20 +126,22 @@ export const EJES: Eje[] = [
     id: "ia",
     icon: "ia",
     title: {
-      es: "Uso educativo de la Inteligencia Artificial (IA)",
-      pt: "Uso educativo da Inteligência Artificial (IA)",
+      es: "La inteligencia artificial como agente transformador de la educación",
+      pt: "A inteligência artificial como agente transformador da educação",
     },
     short: { es: "Inteligencia artificial", pt: "Inteligência artificial" },
     lines: {
       es: [
         "Herramientas de IA para el diseño de recursos educativos.",
-        "La IA en los procesos de enseñanza-aprendizaje.",
+        "La inteligencia artificial (IA) en los procesos de enseñanza-aprendizaje.",
+        "Peligros de la IA para el aprendizaje.",
         "Analíticas de aprendizaje para fomentar la evaluación personalizada.",
         "Valoración del uso de la IA desde el punto de vista de la sostenibilidad.",
       ],
       pt: [
         "Ferramentas de IA para o design de recursos educativos.",
-        "A IA nos processos de ensino-aprendizagem.",
+        "A inteligência artificial (IA) nos processos de ensino-aprendizagem.",
+        "Perigos da IA para a aprendizagem.",
         "Analítica da aprendizagem para promover a avaliação personalizada.",
         "Avaliação do uso da IA do ponto de vista da sustentabilidade.",
       ],

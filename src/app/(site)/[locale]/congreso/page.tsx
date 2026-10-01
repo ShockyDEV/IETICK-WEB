@@ -24,19 +24,23 @@ const T = {
   es: {
     eyebrow: "El congreso",
     title: "Innovación educativa con TIC, en abierto",
-    lead: "La Conferencia Ibérica de Innovación en Educación con TIC llega a Salamanca en su XIII edición.",
+    lead: "La Conferencia Ibérica de Innovación en la Educación con TIC llega a Salamanca en su XIII edición, en modalidad híbrida: presencial y en línea.",
     aboutEyebrow: "Presentación",
     aboutTitle: "Un punto de encuentro ibérico",
+    // Texto oficial de la organización (documento del 01-10-2026)
     about: [
-      "ieTIC es un punto de encuentro de la comunidad ibérica de tecnología educativa. En cada edición, docentes, investigadores y profesionales de la educación de España y Portugal comparten investigaciones, experiencias de aula y proyectos que exploran cómo las tecnologías pueden mejorar la enseñanza y el aprendizaje.",
-      "La XIII edición se celebra los días 11 y 12 de febrero de 2027 en el Instituto Universitario de Ciencias de la Educación (IUCE) de la Universidad de Salamanca, bajo el lema «Tecnologías para mejorar el aprendizaje en el ecosistema de Ciencia Abierta. Recursos Educativos Abiertos y Diseño Universal de Aprendizaje».",
-      "El lema pone el foco en una educación más abierta y accesible: recursos que se comparten, se reutilizan y se mejoran en comunidad; diseños de aprendizaje pensados desde el principio para la diversidad del alumnado, y prácticas de docencia e investigación alineadas con los principios de la Ciencia Abierta.",
+      "El consorcio formado por la red de universidades hispano-lusa IPB/USAL/UAberta/UNED, en la que participan el Departamento de Tecnologia Educativa e Gestão de Informação de la Escuela Superior de Educación del Instituto Politécnico de Bragança en Portugal, el Departamento de Didáctica, Organización y Métodos de Investigación y el Instituto Universitario de Ciencias de la Educación (IUCE) de la Universidad de Salamanca en España, la Unidad de Desarrollo de Centros Locales de Aprendizaje de la Universidad Aberta en Portugal y el Departamento de Didáctica, Organización Escolar y Didácticas Especiales de la Facultad de Educación de la UNED en España, con la colaboración de la Asociación de Atención Temprana AMPA, presentan la XIII edición de la Conferencia Ibérica de Innovación en la Educación con Tecnologías de la Información y Comunicación (ieTIC 2027), que se realizará en modalidad híbrida (presencial y virtual) los días 11 y 12 de febrero de 2027, situándose la sede en la ciudad de Salamanca.",
+      "El congreso ofrecerá conferencias, mesas redondas, talleres formativos y mesas de comunicaciones sobre los ejes temáticos propuestos.",
+      "Los temas abordados en ieTIC 2027 responden a la temática «Tecnologías para mejorar el aprendizaje en el ecosistema de Ciencia Abierta. Recursos Educativos Abiertos y Diseño Universal de Aprendizaje».",
+      "Se abordarán cuestiones de gran actualidad para los profesionales de la educación preocupados por los grandes desafíos de las tecnologías relacionados con la educación actual y la profesionalización docente: tecnologías inclusivas, recursos educativos abiertos, ciencia abierta, bienestar digital, gamificación y narrativas inmersivas, impacto de la inteligencia artificial en la función docente y el aprendizaje de los estudiantes, etc.",
+      "El encuentro pretende ser una oportunidad para la reflexión, el conocimiento de experiencias desarrolladas en la práctica educativa y la difusión de resultados de investigación, así como el trabajo colaborativo de profesionales de diversos niveles educativos para proponer líneas y encontrar estrategias de actuación que permitan contribuir a un futuro educativo basado en valores compartidos de justicia social, accesibilidad, apertura y bienestar.",
+      "Un evento que pretende contribuir al desarrollo profesional docente en el ámbito de la competencia digital, la innovación didáctica y la mejora de los procesos de aprendizaje.",
     ],
     formatEyebrow: "Formato",
     formatTitle: "Qué encontrarás",
     ejesEyebrow: "Ejes temáticos",
     ejesTitle: "Seis ejes temáticos",
-    ejesLead: "Las comunicaciones deberán inscribirse en uno de estos ejes.",
+    ejesLead: "Cada comunicación indica uno de estos ejes; sus líneas son orientativas.",
     audienceEyebrow: "Participantes",
     audienceTitle: "¿A quién se dirige?",
     audience: [
@@ -58,19 +62,23 @@ const T = {
   pt: {
     eyebrow: "O congresso",
     title: "Inovação educativa com TIC, em aberto",
-    lead: "A Conferência Ibérica de Inovação na Educação com TIC chega a Salamanca na sua XIII edição.",
+    lead: "A Conferência Ibérica de Inovação na Educação com TIC chega a Salamanca na sua XIII edição, em modalidade híbrida: presencial e online.",
     aboutEyebrow: "Apresentação",
     aboutTitle: "Um ponto de encontro ibérico",
+    // Tradução própria do texto oficial (revisão pela organização pendente)
     about: [
-      "O ieTIC é um ponto de encontro da comunidade ibérica de tecnologia educativa. Em cada edição, docentes, investigadores e profissionais da educação de Espanha e Portugal partilham investigações, experiências de sala de aula e projetos que exploram como as tecnologias podem melhorar o ensino e a aprendizagem.",
-      "A XIII edição realiza-se nos dias 11 e 12 de fevereiro de 2027 no Instituto Universitário de Ciências da Educação (IUCE) da Universidade de Salamanca, sob o lema «Tecnologias para melhorar a aprendizagem no ecossistema da Ciência Aberta. Recursos Educativos Abertos e Desenho Universal para a Aprendizagem».",
-      "O lema coloca o foco numa educação mais aberta e acessível: recursos que se partilham, reutilizam e melhoram em comunidade; desenhos de aprendizagem pensados desde o início para a diversidade dos alunos, e práticas de ensino e investigação alinhadas com os princípios da Ciência Aberta.",
+      "O consórcio formado pela rede de universidades luso-espanhola IPB/USAL/UAberta/UNED, na qual participam o Departamento de Tecnologia Educativa e Gestão de Informação da Escola Superior de Educação do Instituto Politécnico de Bragança, em Portugal, o Departamento de Didática, Organização e Métodos de Investigação e o Instituto Universitário de Ciências da Educação (IUCE) da Universidade de Salamanca, em Espanha, a Unidade de Desenvolvimento de Centros Locais de Aprendizagem da Universidade Aberta, em Portugal, e o Departamento de Didática, Organização Escolar e Didáticas Especiais da Faculdade de Educação da UNED, em Espanha, com a colaboração da Asociación de Atención Temprana AMPA, apresenta a XIII edição da Conferência Ibérica de Inovação na Educação com Tecnologias da Informação e Comunicação (ieTIC 2027), que se realizará em modalidade híbrida (presencial e virtual) nos dias 11 e 12 de fevereiro de 2027, com sede na cidade de Salamanca.",
+      "O congresso incluirá conferências, mesas-redondas, oficinas de formação e mesas de comunicações sobre os eixos temáticos propostos.",
+      "Os temas abordados no ieTIC 2027 respondem ao tema «Tecnologias para melhorar a aprendizagem no ecossistema da Ciência Aberta. Recursos Educativos Abertos e Desenho Universal para a Aprendizagem».",
+      "Serão abordadas questões de grande atualidade para os profissionais da educação preocupados com os grandes desafios das tecnologias na educação atual e na profissionalização docente: tecnologias inclusivas, recursos educativos abertos, ciência aberta, bem-estar digital, gamificação e narrativas imersivas, impacto da inteligência artificial na função docente e na aprendizagem dos estudantes, entre outras.",
+      "O encontro pretende ser uma oportunidade de reflexão, de conhecimento de experiências desenvolvidas na prática educativa e de divulgação de resultados de investigação, bem como de trabalho colaborativo entre profissionais de diferentes níveis de ensino para propor linhas e encontrar estratégias de ação que contribuam para um futuro educativo assente em valores partilhados de justiça social, acessibilidade, abertura e bem-estar.",
+      "Um evento que pretende contribuir para o desenvolvimento profissional docente no âmbito da competência digital, da inovação didática e da melhoria dos processos de aprendizagem.",
     ],
     formatEyebrow: "Formato",
     formatTitle: "O que vais encontrar",
     ejesEyebrow: "Eixos temáticos",
     ejesTitle: "Seis eixos temáticos",
-    ejesLead: "As comunicações deverão enquadrar-se num destes eixos.",
+    ejesLead: "Cada comunicação indica um destes eixos; as suas linhas são orientativas.",
     audienceEyebrow: "Participantes",
     audienceTitle: "A quem se dirige?",
     audience: [
@@ -116,7 +124,12 @@ export default async function CongresoPage({ params }: Props) {
   let counts: { type: SessionTypeKey; n: number }[] = [];
   try {
     const data = await getProgramme();
-    counts = FORMAT_TYPES.map((type) => ({ type, n: data.sessions.filter((s) => s.type === type).length })).filter((c) => c.n > 0);
+    counts = FORMAT_TYPES.map((type) => {
+      const list = data.sessions.filter((s) => s.type === type);
+      // Los talleres van como contribuciones de una sola sesión: se cuentan uno a uno
+      const talleres = type === "TALLER" ? list.reduce((n, s) => n + s.talks.length, 0) : 0;
+      return { type, n: talleres || list.length };
+    }).filter((c) => c.n > 0);
   } catch (e) {
     console.error("[congreso] programa no disponible:", e);
   }
