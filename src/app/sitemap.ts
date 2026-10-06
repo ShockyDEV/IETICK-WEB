@@ -2,6 +2,9 @@ import type { MetadataRoute } from "next";
 import { siteUrl } from "@/content/site";
 import { href, LOCALES } from "@/lib/i18n";
 
+// Se genera al compilar (también en la versión estática).
+export const dynamic = "force-static";
+
 const PATHS = ["/", "/congreso", "/programa", "/ponentes", "/comunicaciones", "/inscripcion", "/comites", "/sede"];
 
 export default function sitemap(): MetadataRoute.Sitemap {

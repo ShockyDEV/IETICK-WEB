@@ -83,6 +83,8 @@ export const SITE = {
   // Envío de comunicaciones y plantillas (public/descargas/)
   submission: {
     easychair: "https://easychair.org/conferences/?conf=ietic2027",
+    // Convocatoria pública en EasyChair (la organización pidió enlazarla, 06-10-2026)
+    cfp: "https://easychair.org/cfp/ietic2027",
     templateAbstract: "/descargas/ieTIC2027_Plantilla_resumen.docx",
     templateFull: "/descargas/ieTIC2027_Plantilla_texto_completo.docx",
   },

@@ -7,11 +7,10 @@ import { PendingNote } from "@/components/ui/pending-note";
 import { sectionColor, UI } from "@/content/ui";
 import { href, isLocale, pick, type Locale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
-import { dayLabel, getProgramme, speakerList, tr, type ProgrammeData } from "@/lib/programme";
+import { dayLabel, speakerList, tr, type ProgrammeData } from "@/lib/programme";
+import { loadProgramme } from "@/lib/programme-data";
 import { sessionLocation } from "@/lib/programme-format";
 import { SESSION_TYPE_META, type SessionTypeKey } from "@/lib/session-types";
-
-export const dynamic = "force-dynamic";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -49,12 +48,7 @@ export default async function PonentesPage({ params }: Props) {
   const locale: Locale = isLocale(raw) ? raw : "es";
   const t = T[locale];
 
-  let data: ProgrammeData | null = null;
-  try {
-    data = await getProgramme();
-  } catch (e) {
-    console.error("[ponentes] programa no disponible:", e);
-  }
+  const data = await loadProgramme("ponentes");
   const sessions = data?.sessions.filter((s) => SPEAKER_TYPES.includes(s.type)) ?? [];
   const anyAnnounced = sessions.some((s) => speakerList(s).length > 0 || s.talks.some((t) => t.authors));
 

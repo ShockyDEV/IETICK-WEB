@@ -47,7 +47,7 @@ Hereda las ideas del programa en vivo de ICED26 (programme.iced26.es), llevadas 
 
 ## El panel (/backstage)
 
-Equivalente al editor `/backstage` del programa de ICED26, pero guardando directamente en la base de datos: lo que se publica aparece al momento en la web.
+Equivalente al editor `/backstage` del programa de ICED26, pero guardando directamente en la base de datos. En modo servidor lo que se publica aparece al momento; con la web estática se usa en local y se publica con `npm run programa:publicar` (ver «Publicación»).
 
 - **Resumen**: cifras del programa, conmutador provisional/definitivo y **avisos de validación** (solapes en una sala, sesiones de aula que pisan unas simultáneas del edificio, filas generales que no son pausas, horas imposibles, días o salas inexistentes, borradores y ponencias sin ponentes), cada uno con enlace a la sesión.
 - **Programa**: listado por días con buscador; crear, editar, duplicar (como borrador), publicar/despublicar, cancelar y borrar. El formulario tiene los textos en ES y PT, ponentes (uno por línea), un único selector de **ubicación** (fila general / todo un edificio / sala) y el editor de **contribuciones** con su eje temático.
@@ -57,7 +57,25 @@ Equivalente al editor `/backstage` del programa de ICED26, pero guardando direct
 
 Seguridad: sesión comprobada en el middleware, en cada página y en cada API contra la base de datos (desactivar una cuenta surte efecto al instante), control de origen en las escrituras, límite de intentos en el acceso y contraseñas con bcrypt.
 
-## Producción
+## Publicación: dos modos con el mismo código
+
+El CPD no da máquinas virtuales para eventos (CAU-49199), así que la web se publica **estática en GitHub Pages**. El código sirve igual para un servidor si algún día lo hay.
+
+### Versión estática (GitHub Pages, la que está en uso)
+
+Las páginas se generan al compilar, leyendo el programa de la base de datos, y GitHub las sirve ya hechas. Para quien visita la web no cambia nada respecto al modo servidor: parrilla, modo en directo, agenda, buscador, fichas y los dos idiomas funcionan en el navegador. No están el panel ni la API (ficheros `*.server.*`).
+
+```bash
+npm run build:static     # out/: español en la raíz, portugués en /pt, 404.html
+npm run preview:static   # la sirve en http://localhost:3028 como GitHub Pages
+```
+
+- **Publicar cambios del programa**: se editan en el panel en local y `npm run programa:publicar` los guarda en `prisma/programa-publicado.json`. Al subir ese fichero a `main`, el flujo `.github/workflows/pages.yml` carga el programa en una base de datos de usar y tirar, compila y publica en unos minutos.
+- **Cambios de textos o diseño**: basta con subirlos a `main`.
+- **Cada noche** se vuelve a compilar, para los textos que dependen de la fecha.
+- **Puesta en marcha** (una vez): en el repositorio, *Settings → Pages → Source: GitHub Actions*; la variable `PAGES_DOMAIN` (*Settings → Secrets and variables → Actions → Variables*) con el dominio, y en el registrador del dominio cuatro registros A a `185.199.108.153`, `185.199.109.153`, `185.199.110.153` y `185.199.111.153`, y un CNAME de `www` a `shockydev.github.io`. Después, *Custom domain* y *Enforce HTTPS* en *Settings → Pages*. Sin `PAGES_DOMAIN`, cada push solo comprueba que la versión estática compila.
+
+### Modo servidor (Docker)
 
 ```bash
 cp .env.example .env                              # y rellenar AUTH_SECRET, contraseñas y URL
@@ -65,7 +83,7 @@ docker compose --profile prod up -d --build       # app en el puerto 3027 + Post
 docker compose --profile tools run --rm migrate   # primera vez: tablas + seed
 ```
 
-Detrás de Apache/nginx con TLS, como Reservas. Cambiar la contraseña del panel tras el primer acceso.
+Detrás de Apache/nginx con TLS, como Reservas. Cambiar la contraseña del panel tras el primer acceso. Aquí el panel publica al momento.
 
 ## Estructura
 
@@ -73,13 +91,13 @@ Detrás de Apache/nginx con TLS, como Reservas. Cambiar la contraseña del panel
 src/
 ├── app/(site)/[locale]/   web pública (portada, congreso, programa, ponentes, comunicaciones,
 │                          inscripción, comités, sede y páginas legales)
-├── app/(admin)/backstage/ panel de administración
-├── app/api/               Auth.js y API del panel
+├── app/(admin)/backstage/ panel de administración (*.server.tsx: solo en modo servidor)
+├── app/api/               Auth.js y API del panel (*.server.ts: solo en modo servidor)
 ├── components/programme/  programa interactivo (parrilla, lista, ficha, agenda, buscador)
 ├── components/art/        ilustración del hero (skyline de Salamanca en SVG)
 ├── content/               textos y datos del congreso (ejes, sede, semilla del programa, legales)
 └── lib/                   Prisma, i18n, hora de Madrid, capa de datos del programa
-prisma/                    esquema y seed
+prisma/                    esquema, seed y programa publicado (programa-publicado.json)
 docs/ANALISIS.md           análisis del encargo y decisiones
 ```
 

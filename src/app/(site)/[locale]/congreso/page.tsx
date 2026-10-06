@@ -13,10 +13,8 @@ import { sectionColor } from "@/content/ui";
 import { CountUp } from "@/components/ui/count-up";
 import { href, isLocale, pick, type Locale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
-import { getProgramme } from "@/lib/programme";
+import { loadProgramme } from "@/lib/programme-data";
 import { SESSION_TYPE_META, type SessionTypeKey } from "@/lib/session-types";
-
-export const dynamic = "force-dynamic";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -121,18 +119,15 @@ export default async function CongresoPage({ params }: Props) {
   const locale: Locale = isLocale(raw) ? raw : "es";
   const t = T[locale];
 
-  let counts: { type: SessionTypeKey; n: number }[] = [];
-  try {
-    const data = await getProgramme();
-    counts = FORMAT_TYPES.map((type) => {
-      const list = data.sessions.filter((s) => s.type === type);
-      // Los talleres van como contribuciones de una sola sesión: se cuentan uno a uno
-      const talleres = type === "TALLER" ? list.reduce((n, s) => n + s.talks.length, 0) : 0;
-      return { type, n: talleres || list.length };
-    }).filter((c) => c.n > 0);
-  } catch (e) {
-    console.error("[congreso] programa no disponible:", e);
-  }
+  const data = await loadProgramme("congreso");
+  const counts: { type: SessionTypeKey; n: number }[] = data
+    ? FORMAT_TYPES.map((type) => {
+        const list = data.sessions.filter((s) => s.type === type);
+        // Los talleres van como contribuciones de una sola sesión: se cuentan uno a uno
+        const talleres = type === "TALLER" ? list.reduce((n, s) => n + s.talks.length, 0) : 0;
+        return { type, n: talleres || list.length };
+      }).filter((c) => c.n > 0)
+    : [];
 
   return (
     <>

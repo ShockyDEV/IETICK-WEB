@@ -1,0 +1,74 @@
+# Web estática en GitHub Pages (`npm run build:static`).
+#
+# Se regenera en cada push a main, cada noche (para los textos que dependen
+# de la fecha) y a mano desde la pestaña Actions. Solo publica si existe la
+# variable PAGES_DOMAIN (Settings → Secrets and variables → Actions →
+# Variables), con el dominio de la web, p. ej. ietic2027.com; sin ella, cada
+# push solo comprueba que la versión estática compila.
+name: Web en GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  compilar:
+    if: github.event_name != 'schedule' || vars.PAGES_DOMAIN != ''
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: ietic
+          POSTGRES_PASSWORD: ietic27-pages
+          POSTGRES_DB: ietic27
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U ietic -d ietic27"
+          --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      # Base de datos de usar y tirar: solo existe mientras dura la compilación.
+      DATABASE_URL: postgresql://ietic:ietic27-pages@localhost:5432/ietic27?schema=public
+      ADMIN_PASSWORD: solo-para-compilar-no-es-un-secreto
+      AUTH_SECRET: solo-para-compilar-no-es-un-secreto
+      NEXT_TELEMETRY_DISABLED: 1
+      NEXT_PUBLIC_SITE_URL: https://${{ vars.PAGES_DOMAIN || 'ietic2027.com' }}
+      SITE_DOMAIN: ${{ vars.PAGES_DOMAIN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npx prisma db push --skip-generate
+      # Carga prisma/programa-publicado.json (o el programa provisional)
+      - run: npx prisma db seed
+      - run: npm run build:static
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  publicar:
+    needs: compilar
+    if: vars.PAGES_DOMAIN != ''
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

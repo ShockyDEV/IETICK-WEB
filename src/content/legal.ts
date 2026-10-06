@@ -1,4 +1,5 @@
 import type { L10n } from "@/lib/i18n";
+import { STATIC_EXPORT } from "@/lib/build-mode";
 
 /**
  * Textos legales (propuesta de trabajo, pendiente de revisión por la
@@ -73,10 +74,10 @@ export const PRIVACIDAD: LegalDoc = {
       heading: { es: "Sin cookies ni analítica", pt: "Sem cookies nem analítica" },
       body: {
         es: [
-          "La web pública no instala cookies ni utiliza herramientas de analítica o publicidad. Las tipografías se sirven desde el propio servidor.",
+          "La web pública no instala cookies ni utiliza herramientas de analítica o publicidad. Las tipografías se sirven desde la propia web.",
         ],
         pt: [
-          "O sítio público não instala cookies nem utiliza ferramentas de analítica ou publicidade. Os tipos de letra são servidos a partir do próprio servidor.",
+          "O sítio público não instala cookies nem utiliza ferramentas de analítica ou publicidade. Os tipos de letra são servidos a partir do próprio sítio.",
         ],
       },
     },
@@ -95,9 +96,15 @@ export const PRIVACIDAD: LegalDoc = {
       heading: { es: "Servicios de terceros", pt: "Serviços de terceiros" },
       body: {
         es: [
+          ...(STATIC_EXPORT
+            ? ["La web está alojada en GitHub Pages (GitHub, Inc.), que, como cualquier servicio de alojamiento, recibe la dirección IP de quien la visita para poder servirla y por seguridad."]
+            : []),
           "El mapa de la página de sede se carga desde OpenStreetMap, que recibe la dirección IP de quien lo visualiza. La inscripción y el envío de comunicaciones se hacen en plataformas externas, cada una con su propia política de privacidad: el formulario previo de Google Forms, la matrícula y el pago en el Centro de Formación Permanente de la Universidad de Salamanca y el envío de comunicaciones en EasyChair.",
         ],
         pt: [
+          ...(STATIC_EXPORT
+            ? ["O sítio está alojado no GitHub Pages (GitHub, Inc.), que, como qualquer serviço de alojamento, recebe o endereço IP de quem o visita para o poder servir e por motivos de segurança."]
+            : []),
           "O mapa da página do local é carregado a partir do OpenStreetMap, que recebe o endereço IP de quem o visualiza. A inscrição e a submissão de comunicações fazem-se em plataformas externas, cada uma com a sua própria política de privacidade: o formulário prévio do Google Forms, a matrícula e o pagamento no Centro de Formação Permanente da Universidade de Salamanca e a submissão de comunicações no EasyChair.",
         ],
       },

@@ -1,6 +1,7 @@
 import "server-only";
 import { prisma } from "@/lib/prisma";
 import type { AdminUser } from "@/lib/admin/guard";
+import { fetchProgrammeRecords, SNAPSHOT_FORMAT, SNAPSHOT_VERSION } from "@/lib/programme-snapshot";
 
 /**
  * Exportación completa del programa en JSON (equivale al «Export
@@ -8,20 +9,11 @@ import type { AdminUser } from "@/lib/admin/guard";
  * sus contribuciones y ajustes. Incluye borradores, canceladas y salas
  * inactivas. Nunca incluye cuentas de usuario.
  */
-export const EXPORT_FORMAT = "ietic27-programme";
-export const EXPORT_VERSION = 1;
+export const EXPORT_FORMAT = SNAPSHOT_FORMAT;
+export const EXPORT_VERSION = SNAPSHOT_VERSION;
 
 export async function buildProgrammeExport(user: AdminUser) {
-  const [venues, rooms, days, sessions, settings] = await Promise.all([
-    prisma.venue.findMany({ orderBy: [{ order: "asc" }, { name: "asc" }] }),
-    prisma.room.findMany({ orderBy: [{ venueId: "asc" }, { order: "asc" }, { name: "asc" }] }),
-    prisma.day.findMany({ orderBy: [{ order: "asc" }, { key: "asc" }] }),
-    prisma.session.findMany({
-      orderBy: [{ day: "asc" }, { start: "asc" }, { order: "asc" }, { end: "asc" }],
-      include: { talks: { orderBy: { order: "asc" } } },
-    }),
-    prisma.setting.findMany({ orderBy: { key: "asc" } }),
-  ]);
+  const [venues, rooms, days, sessions, settings] = await fetchProgrammeRecords(prisma);
 
   return {
     format: EXPORT_FORMAT,

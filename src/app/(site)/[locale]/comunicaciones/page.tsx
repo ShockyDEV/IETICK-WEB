@@ -13,10 +13,9 @@ import { SITE } from "@/content/site";
 import { sectionColor, UI } from "@/content/ui";
 import { href, isLocale, pick, type Locale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
-import { getProgramme, type ProgrammeData } from "@/lib/programme";
+import type { ProgrammeData } from "@/lib/programme";
+import { loadProgramme } from "@/lib/programme-data";
 import { monthShort, sessionLocation, shortDay } from "@/lib/programme-format";
-
-export const dynamic = "force-dynamic";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -69,8 +68,9 @@ const T = {
     fileInfo: (kb: number | null) => (kb ? `Word, ${kb} KB` : "Word"),
     axisNote: "Indica en la plantilla el eje temático de tu comunicación.",
     submitTitle: "El envío se hace en EasyChair",
-    submitText: "Sube a la plataforma EasyChair del congreso el resumen y, si lo presentas, el texto completo.",
+    submitText: "Sube a la plataforma EasyChair del congreso el resumen y, si lo presentas, el texto completo. Allí está publicada también la convocatoria.",
     submitCta: "Ir a EasyChair",
+    cfpCta: "Ver la convocatoria",
     ejesEyebrow: "Ejes temáticos",
     ejesTitle: "Los temas de la convocatoria",
     ejesLead: "Cada comunicación indica en la plantilla uno de estos ejes. Las líneas de cada eje son orientativas.",
@@ -147,8 +147,9 @@ const T = {
     fileInfo: (kb: number | null) => (kb ? `Word, ${kb} KB` : "Word"),
     axisNote: "Indica no modelo o eixo temático da tua comunicação.",
     submitTitle: "A submissão faz-se no EasyChair",
-    submitText: "Carrega na plataforma EasyChair do congresso o resumo e, se o apresentares, o texto completo.",
+    submitText: "Carrega na plataforma EasyChair do congresso o resumo e, se o apresentares, o texto completo. A chamada também está publicada lá.",
     submitCta: "Ir para o EasyChair",
+    cfpCta: "Ver a chamada",
     ejesEyebrow: "Eixos temáticos",
     ejesTitle: "Os temas da chamada",
     ejesLead: "Cada comunicação indica no modelo um destes eixos. As linhas de cada eixo são orientativas.",
@@ -208,12 +209,7 @@ export default async function ComunicacionesPage({ params }: Props) {
   const locale: Locale = isLocale(raw) ? raw : "es";
   const t = T[locale];
 
-  let data: ProgrammeData | null = null;
-  try {
-    data = await getProgramme();
-  } catch (e) {
-    console.error("[comunicaciones] programa no disponible:", e);
-  }
+  const data = await loadProgramme("comunicaciones");
   const panels = data?.sessions.filter((s) => s.type === "COMUNICACIONES") ?? [];
 
   const opens = FECHAS.find((f) => f.id === "resumenes-apertura");
@@ -302,14 +298,14 @@ export default async function ComunicacionesPage({ params }: Props) {
               <p className="font-display text-xl font-bold">{t.submitTitle}</p>
               <p className="mt-2 text-white/75">{t.submitText}</p>
             </div>
-            <a
-              href={SITE.submission.easychair}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="boton-oro shrink-0 self-start lg:self-auto"
-            >
-              {t.submitCta} <ArrowUpRight className="h-4 w-4" aria-hidden />
-            </a>
+            <div className="flex shrink-0 flex-wrap gap-3 self-start lg:self-auto">
+              <a href={SITE.submission.easychair} target="_blank" rel="noopener noreferrer" className="boton-oro">
+                {t.submitCta} <ArrowUpRight className="h-4 w-4" aria-hidden />
+              </a>
+              <a href={SITE.submission.cfp} target="_blank" rel="noopener noreferrer" className="boton-contorno-claro">
+                {t.cfpCta} <ArrowUpRight className="h-4 w-4" aria-hidden />
+              </a>
+            </div>
           </div>
         </div>
       </section>

@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "next dev -p 3027",
     "build": "next build",
+    "build:static": "node scripts/build-static.mjs",
+    "preview:static": "node scripts/serve-static.mjs",
     "start": "next start -p 3027",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
@@ -15,6 +17,7 @@
     "db:generate": "prisma generate",
     "db:push": "prisma db push",
     "db:seed": "prisma db seed",
+    "programa:publicar": "tsx scripts/publish-programme.ts",
     "db:studio": "prisma studio",
     "postinstall": "prisma generate"
   },

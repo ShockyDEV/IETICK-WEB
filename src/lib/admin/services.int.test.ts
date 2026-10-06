@@ -24,7 +24,7 @@ import { createDay, deleteDay, getProgrammeStatus, listDays, setProgrammeStatus 
 import { createUser, resetPassword, updateUser } from "@/lib/admin/users";
 import { buildProgrammeExport } from "@/lib/admin/export";
 import { getProgrammeIssues } from "@/lib/admin/overview";
-import { getProgramme } from "@/lib/programme";
+import { getProgramme } from "@/lib/programme-data";
 import { SEED_DAYS, SEED_ROOMS, SEED_SESSIONS, SEED_SETTINGS, SEED_VENUES, seedSessionData } from "@/content/programme-seed";
 import type { AdminUser } from "@/lib/admin/guard";
 

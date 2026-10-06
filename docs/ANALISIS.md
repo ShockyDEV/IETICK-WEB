@@ -58,6 +58,7 @@ Traslado literal de horas y títulos del Word, con estas decisiones:
   - Hoja de comités, publicada tal cual: posibles erratas en «Limón Mendiizaval» (¿Mendizábal?) y «José Juán» (¿Juan?); afiliaciones que no casan con el correo de la persona (Roberto Soto Varela, Moussa Boumadan Hamed, Ana Mouraz Lopes y Maribel Miranda Pinto); y dos nombres que no son los oficiales, «Universidade Aberta do Porto» y «Universidade Técnica do Porto». En el comité organizador Sonia Casillas y Marcos Cabezas llevan los apellidos con guion y en el científico sin él.
   - La **Asociación de Atención Temprana AMPA** colabora según el texto, pero no llegó su logo.
   - «Las cinco mejores comunicaciones se propondrán para RELATEC» venía marcado «(falta confirmar)»: no se publica; solo «posibilidad de selección para RELATEC», que aparece sin reservas en lo que incluye la inscripción.
+  - Convocatoria pública en EasyChair (https://easychair.org/cfp/ietic2027, enlazada en Comunicaciones desde el 06-10): su «Conference web page» apunta a https://ietic.ipb.pt/ y habrá que cambiarla por el dominio nuevo; llama al eje 6 «Uso educativo y peligros de la IA» (la web usa el título del documento del 01-10, «La inteligencia artificial como agente transformador de la educación»); pone a Pilar Gutiez por la «Asociación Madrileña de Profesionales de la Atención Temprana (AMPAT)», cuando la hoja de comités dice UCM y los textos hablan de la asociación AMPA; y su comité de la USAL no incluye a Celia Sánchez Peinado, que sí está en la hoja definitiva (se sigue la hoja). Fechas, normas y líneas de los ejes coinciden con la web.
   - **Cinco talleres simultáneos** y hoy hay cuatro salas activas (salón de actos y tres aulas): quizá haga falta recuperar el Laboratorio u otra sala.
   - Faltan: los cuatro ponentes del panel de expertos, la ponencia invitada del viernes, los responsables de dos talleres (solo consta la universidad) y las personas de la experiencia de San Estanislao de Kostka.
   - Cómo se apuntan las visitas a la Biblioteca histórica (grupos de 25), el enlace a la plataforma online y la carpeta de vídeos se enviarán a los participantes.
@@ -65,7 +66,13 @@ Traslado literal de horas y títulos del Word, con estas decisiones:
   - Las imágenes para enlazar el formulario, el pago y EasyChair (ilustraciones de banco de iconos) no se usan: en su lugar hay botones; si se quieren, puede hacer falta citar su autoría.
 - En el Word el lema dice «Diseño Universal **de** Aprendizaje» y en los ejes «Diseño Universal **para el** Aprendizaje»; se ha respetado cada literal.
 
-## 7. Fuentes
+## 7. Dónde se publica
+
+- 01-10-2026: se pidió al CPD una máquina virtual como la de diderot.usal.es (CAU-49199). 02-10: denegada; «no se crean máquinas virtuales para eventos puntuales» y remiten a **Eventum**, según la normativa de webs de la USAL (Comisión Permanente, 20-03-2026). Esa normativa solo prevé Campus (Apache, MySQL y PHP), Multisite (WordPress cerrado), Diarium y Eventum, que es un servicio externo (eventum.usal.es apunta a symposium.events), temporal y sin dominio propio.
+- 06-10-2026, decisión del usuario: **dominio propio (ietic2027.com) y web estática en GitHub Pages**, para no perder lo hecho. El mismo código compila en dos modos (`src/lib/build-mode.ts`): servidor, con panel, o estático, solo la web pública. Para quien visita la web no cambia nada; el panel se usa en local y el programa se publica con `npm run programa:publicar` (ver README). Se descartó colgarla de iuce.usal.es porque parecería una sección de la web del IUCE, que solo es la sede.
+- Pendiente: comprar el dominio, configurar Pages y DNS, cambiar la dirección en EasyChair (hoy figura ietic2027.usal.es, que no existe) y, a ser posible, pedir la ficha del congreso en Eventum enlazando a la web.
+
+## 8. Fuentes
 
 - Correo de la organización (23-09-2026) y adjuntos.
 - JUTE 2026: https://stellae.usc.es/jute2026/

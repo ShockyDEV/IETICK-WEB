@@ -136,8 +136,8 @@ export const ORGANIZADORES: Organizador[] = [
     name: { es: "V Centenario de la Escuela de Salamanca (1526–2026)", pt: "V Centenário da Escola de Salamanca (1526–2026)" },
     url: "https://escueladesalamanca.usal.es",
     logo: "/logos/organizadores/centenario.png",
-    width: 1981,
-    height: 220,
+    width: 600,
+    height: 67,
     h: 30,
   },
 ];

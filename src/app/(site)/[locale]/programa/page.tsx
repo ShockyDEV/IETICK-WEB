@@ -7,9 +7,8 @@ import { PageArt } from "@/components/ui/page-art";
 import { SITE } from "@/content/site";
 import { isLocale, pick, type Locale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
-import { getProgramme, type ProgrammeData } from "@/lib/programme";
-
-export const dynamic = "force-dynamic";
+import type { ProgrammeData } from "@/lib/programme";
+import { loadProgramme } from "@/lib/programme-data";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -45,12 +44,7 @@ export default async function ProgrammePage({ params }: Props) {
   const locale: Locale = isLocale(raw) ? raw : "es";
   const t = T[locale];
 
-  let data: ProgrammeData | null = null;
-  try {
-    data = await getProgramme();
-  } catch (e) {
-    console.error("[programa] no se pudo leer la base de datos:", e);
-  }
+  const data = await loadProgramme("programa");
 
   const updated = data?.updatedAt
     ? new Intl.DateTimeFormat(locale === "pt" ? "pt-PT" : "es-ES", {

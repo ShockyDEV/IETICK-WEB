@@ -18,10 +18,9 @@ import { SITE, siteUrl } from "@/content/site";
 import { UI } from "@/content/ui";
 import { href, isLocale, pick, type Locale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
-import { getProgramme, type ProgrammeData } from "@/lib/programme";
+import type { ProgrammeData } from "@/lib/programme";
+import { loadProgramme } from "@/lib/programme-data";
 import { madridDate } from "@/lib/time";
-
-export const dynamic = "force-dynamic";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -104,20 +103,11 @@ const T = {
   },
 } as const;
 
-async function loadProgramme(): Promise<ProgrammeData | null> {
-  try {
-    return await getProgramme();
-  } catch (e) {
-    console.error("[home] no se pudo leer el programa:", e);
-    return null;
-  }
-}
-
 export default async function HomePage({ params }: Props) {
   const { locale: raw } = await params;
   const locale: Locale = isLocale(raw) ? raw : "es";
   const t = T[locale];
-  const programme = await loadProgramme();
+  const programme = await loadProgramme("portada");
   const rooms = programme?.rooms ?? [];
   const fecha = (id: string) => {
     const f = FECHAS.find((x) => x.id === id);

@@ -11,11 +11,10 @@ import { HOTELES } from "@/content/alojamiento";
 import { SITE } from "@/content/site";
 import { href, isLocale, pick, type Locale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
-import { getProgramme, tr, type ProgrammeData } from "@/lib/programme";
+import { tr, type ProgrammeData } from "@/lib/programme";
+import { loadProgramme } from "@/lib/programme-data";
 import { monthShort, shortDay } from "@/lib/programme-format";
 import { SESSION_TYPE_META } from "@/lib/session-types";
-
-export const dynamic = "force-dynamic";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -101,12 +100,7 @@ export default async function SedePage({ params }: Props) {
   const locale: Locale = isLocale(raw) ? raw : "es";
   const t = T[locale];
 
-  let data: ProgrammeData | null = null;
-  try {
-    data = await getProgramme();
-  } catch (e) {
-    console.error("[sede] datos no disponibles:", e);
-  }
+  const data = await loadProgramme("sede");
   const socials = data?.sessions.filter((s) => s.type === "SOCIAL") ?? [];
   // Con un solo edificio no hace falta rotularlo en cada sala
   const severalVenues = new Set(data?.rooms.map((r) => r.venueId)).size > 1;
@@ -216,7 +210,7 @@ export default async function SedePage({ params }: Props) {
           )}
 
           <figure data-reveal className="mt-16 overflow-hidden rounded-xl border border-linea bg-white p-4 sm:p-8">
-            <Image src="/espacios/plano-iuce.png" alt={t.planAlt} width={879} height={704} className="mx-auto h-auto w-full max-w-3xl" />
+            <Image src="/espacios/plano-iuce.webp" alt={t.planAlt} width={879} height={704} className="mx-auto h-auto w-full max-w-3xl" />
             <figcaption className="nota mt-4 text-center text-tinta-suave">{t.planTitle}</figcaption>
           </figure>
         </div>
