@@ -7,10 +7,15 @@ import type { NextConfig } from "next";
  *   ya generada, para GitHub Pages.
  */
 const STATIC_EXPORT = process.env.STATIC_EXPORT === "1";
+// Subcarpeta de GitHub Pages sin dominio propio (p. ej. "/IETICK-WEB"); el
+// flujo de Pages la saca de actions/configure-pages. Ver src/lib/base-path.ts.
+const BASE_PATH = STATIC_EXPORT ? (process.env.PAGES_BASE_PATH || "").replace(/\/$/, "") : "";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   output: STATIC_EXPORT ? "export" : "standalone",
+  basePath: BASE_PATH,
+  env: { NEXT_PUBLIC_BASE_PATH: BASE_PATH },
   // Los ficheros *.server.* (panel, API, middleware) solo cuentan en modo
   // servidor y los *.static.* (404.html) solo en el estático.
   pageExtensions: STATIC_EXPORT
@@ -21,9 +26,9 @@ const nextConfig: NextConfig = {
   distDir: process.env.NEXT_DIST_DIR || ".next",
   poweredByHeader: false,
   // Sin servidor no hay optimizador de imágenes: se sirven tal cual (los
-  // ficheros de public/ ya están a su tamaño).
+  // ficheros de public/ ya están a su tamaño), con la subcarpeta delante.
   images: STATIC_EXPORT
-    ? { unoptimized: true }
+    ? { loader: "custom", loaderFile: "./src/lib/static-image-loader.ts" }
     : {
         deviceSizes: [640, 750, 828, 1080, 1200, 1600],
         imageSizes: [32, 48, 64, 96, 128, 256, 384],

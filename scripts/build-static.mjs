@@ -7,9 +7,13 @@
  *   2. Reordena out/ para que GitHub Pages sirva las mismas direcciones que el
  *      modo servidor: el español sin prefijo (/programa) y el portugués en /pt.
  *   3. 404.html, CNAME (si se define SITE_DOMAIN) y .nojekyll.
+ *
+ * Sin dominio propio, GitHub Pages sirve la web en una subcarpeta
+ * (shockydev.github.io/IETICK-WEB): PAGES_BASE_PATH=/IETICK-WEB la tiene en
+ * cuenta en enlaces, imágenes, iconos y manifiesto.
  */
 import { spawnSync } from "node:child_process";
-import { copyFileSync, existsSync, readdirSync, renameSync, rmSync, statSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, readFileSync, readdirSync, renameSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import path from "node:path";
 
@@ -75,6 +79,18 @@ for (const f of ["pagina-no-encontrada.html", "pagina-no-encontrada.txt", "pt/pa
   rmSync(path.join(OUT, f), { force: true });
 }
 
+// Manifiesto: con subcarpeta, sus rutas también la llevan delante
+const base = (process.env.PAGES_BASE_PATH || "").replace(/\/$/, "");
+if (base) {
+  const file = path.join(OUT, "manifest.webmanifest");
+  const manifest = JSON.parse(readFileSync(file, "utf8"));
+  const withBase = (u) => (typeof u === "string" && u.startsWith("/") ? `${base}${u}` : u);
+  manifest.start_url = withBase(manifest.start_url);
+  manifest.scope = `${base}/`;
+  manifest.icons = (manifest.icons || []).map((icon) => ({ ...icon, src: withBase(icon.src) }));
+  writeFileSync(file, `${JSON.stringify(manifest, null, 2)}\n`);
+}
+
 const domain = (process.env.SITE_DOMAIN || "").trim();
 if (domain) writeFileSync(path.join(OUT, "CNAME"), `${domain}\n`);
 writeFileSync(path.join(OUT, ".nojekyll"), "");
@@ -105,4 +121,4 @@ const html = [];
     }
   }
 })(OUT);
-console.log(`\n✓ Versión estática lista en out/ (${html.length} páginas${domain ? `, dominio ${domain}` : ""})`);
+console.log(`\n✓ Versión estática lista en out/ (${html.length} páginas${domain ? `, dominio ${domain}` : ""}${base ? `, en la subcarpeta ${base}` : ""})`);

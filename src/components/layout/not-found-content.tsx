@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HomeLink } from "@/components/ui/home-link";
 
 /** Contenido del 404 bilingüe: lo usan not-found (servidor) y 404.html (estática). */
 export function NotFoundContent() {
@@ -11,7 +12,7 @@ export function NotFoundContent() {
           <span className="mt-2 block text-2xl font-semibold text-cian-300 sm:text-3xl">Esta página não existe</span>
         </h1>
         <div className="mt-10 flex flex-wrap gap-3">
-          <Link href="/" className="boton-oro">Volver al inicio</Link>
+          <HomeLink href="/" className="boton-oro">Volver al inicio</HomeLink>
           <Link href="/pt" className="boton-contorno-claro">Voltar ao início</Link>
         </div>
       </div>

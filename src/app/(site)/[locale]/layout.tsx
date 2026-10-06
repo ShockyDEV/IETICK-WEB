@@ -8,6 +8,7 @@ import { RevealObserver } from "@/components/ui/reveal-observer";
 import { REVEAL_BOOT } from "@/lib/reveal-boot";
 import { isLocale, LOCALES, LOCALE_LABELS, pick, type Locale } from "@/lib/i18n";
 import { SITE, siteUrl } from "@/content/site";
+import { withBase } from "@/lib/base-path";
 
 /** Solo existen /… (es) y /pt/…; cualquier otro prefijo es 404. */
 export const dynamicParams = false;
@@ -39,12 +40,12 @@ export async function generateMetadata({ params }: Omit<Props, "children">): Pro
     twitter: { card: "summary_large_image", title, description, images: ["/og-image.png"] },
     icons: {
       icon: [
-        { url: "/favicon.svg", type: "image/svg+xml" },
-        { url: "/favicon-32.png", sizes: "32x32", type: "image/png" },
+        { url: withBase("/favicon.svg"), type: "image/svg+xml" },
+        { url: withBase("/favicon-32.png"), sizes: "32x32", type: "image/png" },
       ],
-      apple: "/apple-touch-icon.png",
+      apple: withBase("/apple-touch-icon.png"),
     },
-    manifest: "/manifest.webmanifest",
+    manifest: withBase("/manifest.webmanifest"),
   };
 }
 

@@ -14,6 +14,7 @@ import { sectionColor, UI } from "@/content/ui";
 import { href, isLocale, pick, type Locale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
 import type { ProgrammeData } from "@/lib/programme";
+import { withBase } from "@/lib/base-path";
 import { loadProgramme } from "@/lib/programme-data";
 import { monthShort, sessionLocation, shortDay } from "@/lib/programme-format";
 
@@ -280,7 +281,7 @@ export default async function ComunicacionesPage({ params }: Props) {
                 </p>
                 <p className="mt-3 flex-1 leading-relaxed text-tinta-suave">{tpl.text}</p>
                 <p className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2">
-                  <a href={tpl.file} download className="boton-mar">
+                  <a href={withBase(tpl.file)} download className="boton-mar">
                     <ArrowDownToLine className="h-4 w-4" aria-hidden /> {t.download}
                   </a>
                   <span className="text-sm text-tinta-tenue">{t.fileInfo(fileKB(tpl.file))}</span>

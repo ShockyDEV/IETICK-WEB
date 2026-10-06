@@ -7,6 +7,8 @@ import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { TraceLine } from "@/components/ui/trace-line";
 import { NAV, UI, sectionColor } from "@/content/ui";
+import { withBase } from "@/lib/base-path";
+import { HomeLink } from "@/components/ui/home-link";
 import { href, LOCALES, LOCALE_LABELS, pick, stripLocale, type Locale } from "@/lib/i18n";
 import { cn } from "@/lib/cn";
 
@@ -56,7 +58,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
       </a>
 
       <div className="contenedor flex h-[var(--header-h)] items-center justify-between gap-6">
-        <Link
+        <HomeLink
           href={href(locale, "/")}
           className="group flex shrink-0 items-center"
           aria-label={`ieTIC 2027 — ${pick(UI.home, locale)}`}
@@ -69,7 +71,7 @@ export function SiteHeader({ locale }: { locale: Locale }) {
             priority
             className="h-10 w-auto transition duration-300 ease-out group-hover:-translate-y-0.5 group-hover:drop-shadow-[0_0_14px_rgba(152,221,237,0.55)] sm:h-11"
           />
-        </Link>
+        </HomeLink>
 
         <nav aria-label={pick(UI.mainNav, locale)} className="hidden lg:block">
           <ul className="flex items-center gap-0.5 xl:gap-1.5">
@@ -195,7 +197,7 @@ function LanguageSwitch({ locale, pathname }: { locale: Locale; pathname: string
               </span>
             ) : (
               <a
-                href={href(l, pathname)}
+                href={withBase(href(l, pathname))}
                 hrefLang={LOCALE_LABELS[l].htmlLang}
                 lang={LOCALE_LABELS[l].htmlLang}
                 title={LOCALE_LABELS[l].long}

@@ -68,12 +68,13 @@ Las páginas se generan al compilar, leyendo el programa de la base de datos, y 
 ```bash
 npm run build:static     # out/: español en la raíz, portugués en /pt, 404.html
 npm run preview:static   # la sirve en http://localhost:3028 como GitHub Pages
+# en subcarpeta: PAGES_BASE_PATH=/IETICK-WEB npm run build:static y npm run preview:static -- --base=/IETICK-WEB
 ```
 
 - **Publicar cambios del programa**: se editan en el panel en local y `npm run programa:publicar` los guarda en `prisma/programa-publicado.json`. Al subir ese fichero a `main`, el flujo `.github/workflows/pages.yml` carga el programa en una base de datos de usar y tirar, compila y publica en unos minutos.
 - **Cambios de textos o diseño**: basta con subirlos a `main`.
 - **Cada noche** se vuelve a compilar, para los textos que dependen de la fecha.
-- **Puesta en marcha** (una vez): en el repositorio, *Settings → Pages → Source: GitHub Actions*; la variable `PAGES_DOMAIN` (*Settings → Secrets and variables → Actions → Variables*) con el dominio, y en el registrador del dominio cuatro registros A a `185.199.108.153`, `185.199.109.153`, `185.199.110.153` y `185.199.111.153`, y un CNAME de `www` a `shockydev.github.io`. Después, *Custom domain* y *Enforce HTTPS* en *Settings → Pages*. Sin `PAGES_DOMAIN`, cada push solo comprueba que la versión estática compila.
+- **Dirección**: sin dominio propio, https://shockydev.github.io/IETICK-WEB (la compilación añade la subcarpeta `/IETICK-WEB` a enlaces, imágenes, iconos y manifiesto; ver `src/lib/base-path.ts`). Para pasar a un dominio propio: en el registrador, cuatro registros A a `185.199.108.153`, `185.199.109.153`, `185.199.110.153` y `185.199.111.153` y un CNAME de `www` a `shockydev.github.io`; en *Settings → Pages*, el dominio en *Custom domain* y, cuando GitHub emita el certificado, *Enforce HTTPS*. La siguiente compilación se adapta sola (el flujo lee la dirección con `actions/configure-pages`).
 
 ### Modo servidor (Docker)
 
