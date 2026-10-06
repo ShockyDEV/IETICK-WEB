@@ -29,7 +29,7 @@ const T = {
     aboutTitle: "Un punto de encuentro ibérico",
     // Texto oficial de la organización (documento del 01-10-2026)
     about: [
-      "El consorcio formado por la red de universidades hispano-lusa IPB/USAL/UAberta/UNED, en la que participan el Departamento de Tecnologia Educativa e Gestão de Informação de la Escuela Superior de Educación del Instituto Politécnico de Bragança en Portugal, el Departamento de Didáctica, Organización y Métodos de Investigación y el Instituto Universitario de Ciencias de la Educación (IUCE) de la Universidad de Salamanca en España, la Unidad de Desarrollo de Centros Locales de Aprendizaje de la Universidad Aberta en Portugal y el Departamento de Didáctica, Organización Escolar y Didácticas Especiales de la Facultad de Educación de la UNED en España, con la colaboración de la Asociación de Atención Temprana AMPA, presentan la XIII edición de la Conferencia Ibérica de Innovación en la Educación con Tecnologías de la Información y Comunicación (ieTIC 2027), que se realizará en modalidad híbrida (presencial y virtual) los días 11 y 12 de febrero de 2027, situándose la sede en la ciudad de Salamanca.",
+      "El consorcio formado por la red de universidades hispano-lusa UPB/USAL/UAberta/UNED, en la que participan el Departamento de Tecnologia Educativa e Gestão de Informação de la Escuela Superior de Educación de la Universidade Politécnica de Bragança en Portugal, el Departamento de Didáctica, Organización y Métodos de Investigación y el Instituto Universitario de Ciencias de la Educación (IUCE) de la Universidad de Salamanca en España, la Unidad de Desarrollo de Centros Locales de Aprendizaje de la Universidad Aberta en Portugal y el Departamento de Didáctica, Organización Escolar y Didácticas Especiales de la Facultad de Educación de la UNED en España, con la colaboración de la Asociación de Atención Temprana AMPA, presentan la XIII edición de la Conferencia Ibérica de Innovación en la Educación con Tecnologías de la Información y Comunicación (ieTIC 2027), que se realizará en modalidad híbrida (presencial y virtual) los días 11 y 12 de febrero de 2027, situándose la sede en la ciudad de Salamanca.",
       "El congreso ofrecerá conferencias, mesas redondas, talleres formativos y mesas de comunicaciones sobre los ejes temáticos propuestos.",
       "Los temas abordados en ieTIC 2027 responden a la temática «Tecnologías para mejorar el aprendizaje en el ecosistema de Ciencia Abierta. Recursos Educativos Abiertos y Diseño Universal de Aprendizaje».",
       "Se abordarán cuestiones de gran actualidad para los profesionales de la educación preocupados por los grandes desafíos de las tecnologías relacionados con la educación actual y la profesionalización docente: tecnologías inclusivas, recursos educativos abiertos, ciencia abierta, bienestar digital, gamificación y narrativas inmersivas, impacto de la inteligencia artificial en la función docente y el aprendizaje de los estudiantes, etc.",
@@ -55,8 +55,8 @@ const T = {
     historyLead: "ieTIC nació en 2011 de la colaboración entre instituciones de España y Portugal y ha recorrido distintas sedes a ambos lados de la frontera. Estas son sus ediciones, con los libros de actas publicados:",
     thisEdition: "esta edición",
     linkLabels: { actas: "Actas", resumenes: "Resúmenes", web: "Web" },
-    seriesWeb: "Web de la serie ieTIC (IPB)",
-    proceedingsNote: "Actas en el repositorio del Instituto Politécnico de Bragança.",
+    seriesWeb: "Web de la serie ieTIC (UPB)",
+    proceedingsNote: "Actas en el repositorio de la Universidade Politécnica de Bragança.",
     ctaProgramme: "Ver el programa",
   },
   pt: {
@@ -67,7 +67,7 @@ const T = {
     aboutTitle: "Um ponto de encontro ibérico",
     // Tradução própria do texto oficial (revisão pela organização pendente)
     about: [
-      "O consórcio formado pela rede de universidades luso-espanhola IPB/USAL/UAberta/UNED, na qual participam o Departamento de Tecnologia Educativa e Gestão de Informação da Escola Superior de Educação do Instituto Politécnico de Bragança, em Portugal, o Departamento de Didática, Organização e Métodos de Investigação e o Instituto Universitário de Ciências da Educação (IUCE) da Universidade de Salamanca, em Espanha, a Unidade de Desenvolvimento de Centros Locais de Aprendizagem da Universidade Aberta, em Portugal, e o Departamento de Didática, Organização Escolar e Didáticas Especiais da Faculdade de Educação da UNED, em Espanha, com a colaboração da Asociación de Atención Temprana AMPA, apresenta a XIII edição da Conferência Ibérica de Inovação na Educação com Tecnologias da Informação e Comunicação (ieTIC 2027), que se realizará em modalidade híbrida (presencial e virtual) nos dias 11 e 12 de fevereiro de 2027, com sede na cidade de Salamanca.",
+      "O consórcio formado pela rede de universidades luso-espanhola UPB/USAL/UAberta/UNED, na qual participam o Departamento de Tecnologia Educativa e Gestão de Informação da Escola Superior de Educação da Universidade Politécnica de Bragança, em Portugal, o Departamento de Didática, Organização e Métodos de Investigação e o Instituto Universitário de Ciências da Educação (IUCE) da Universidade de Salamanca, em Espanha, a Unidade de Desenvolvimento de Centros Locais de Aprendizagem da Universidade Aberta, em Portugal, e o Departamento de Didática, Organização Escolar e Didáticas Especiais da Faculdade de Educação da UNED, em Espanha, com a colaboração da Asociación de Atención Temprana AMPA, apresenta a XIII edição da Conferência Ibérica de Inovação na Educação com Tecnologias da Informação e Comunicação (ieTIC 2027), que se realizará em modalidade híbrida (presencial e virtual) nos dias 11 e 12 de fevereiro de 2027, com sede na cidade de Salamanca.",
       "O congresso incluirá conferências, mesas-redondas, oficinas de formação e mesas de comunicações sobre os eixos temáticos propostos.",
       "Os temas abordados no ieTIC 2027 respondem ao tema «Tecnologias para melhorar a aprendizagem no ecossistema da Ciência Aberta. Recursos Educativos Abertos e Desenho Universal para a Aprendizagem».",
       "Serão abordadas questões de grande atualidade para os profissionais da educação preocupados com os grandes desafios das tecnologias na educação atual e na profissionalização docente: tecnologias inclusivas, recursos educativos abertos, ciência aberta, bem-estar digital, gamificação e narrativas imersivas, impacto da inteligência artificial na função docente e na aprendizagem dos estudantes, entre outras.",
@@ -93,8 +93,8 @@ const T = {
     historyLead: "O ieTIC nasceu em 2011 da colaboração entre instituições de Espanha e Portugal e tem percorrido diferentes locais dos dois lados da fronteira. Estas são as suas edições, com os livros de atas publicados:",
     thisEdition: "esta edição",
     linkLabels: { actas: "Atas", resumenes: "Resumos", web: "Web" },
-    seriesWeb: "Sítio da série ieTIC (IPB)",
-    proceedingsNote: "Atas no repositório do Instituto Politécnico de Bragança.",
+    seriesWeb: "Sítio da série ieTIC (UPB)",
+    proceedingsNote: "Atas no repositório da Universidade Politécnica de Bragança.",
     ctaProgramme: "Ver o programa",
   },
 } as const;

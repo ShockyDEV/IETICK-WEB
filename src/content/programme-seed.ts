@@ -328,7 +328,7 @@ export const SEED_SESSIONS: SeedSession[] = [
     titlePt: "Apresentação de projetos de investigação",
     speakers: [
       "Dr. Antonio Moreira (Universidade Aberta)",
-      "Dr. Vitor Gonçalves (Instituto Politécnico de Bragança)",
+      "Dr. Vitor Gonçalves (Universidade Politécnica de Bragança)",
       "Dra. Pilar Gútiez Cuevas (AMPA)",
       "Dra. Cristina Sánchez Romero (UNED)",
       "Dra. Sonia Casillas Martín (Universidad de Salamanca)",

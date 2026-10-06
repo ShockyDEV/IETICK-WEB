@@ -39,7 +39,7 @@ const T = {
     welcomeTitle: "Innovar con TIC, en abierto",
     welcome: [
       "Desde 2011, la Conferencia Ibérica de Innovación en la Educación con TIC reúne a docentes, investigadores y profesionales de la educación de España y Portugal para compartir investigaciones, experiencias y propuestas sobre el uso educativo de las tecnologías.",
-      "La XIII edición, organizada por la red de universidades hispano-lusa IPB, USAL, Universidade Aberta y UNED, se celebra en Salamanca en modalidad híbrida, presencial y en línea, con una pregunta de fondo: cómo pueden las tecnologías mejorar el aprendizaje en el ecosistema de la Ciencia Abierta, con los Recursos Educativos Abiertos y el Diseño Universal de Aprendizaje como hilo conductor.",
+      "La XIII edición, organizada por la red de universidades hispano-lusa UPB, USAL, Universidade Aberta y UNED, se celebra en Salamanca en modalidad híbrida, presencial y en línea, con una pregunta de fondo: cómo pueden las tecnologías mejorar el aprendizaje en el ecosistema de la Ciencia Abierta, con los Recursos Educativos Abiertos y el Diseño Universal de Aprendizaje como hilo conductor.",
     ],
     welcomeMore: "Conoce el congreso",
     facts: [
@@ -74,7 +74,7 @@ const T = {
     welcomeTitle: "Inovar com TIC, em aberto",
     welcome: [
       "Desde 2011, a Conferência Ibérica de Inovação na Educação com TIC reúne docentes, investigadores e profissionais da educação de Espanha e Portugal para partilhar investigações, experiências e propostas sobre o uso educativo das tecnologias.",
-      "A XIII edição, organizada pela rede de universidades luso-espanhola IPB, USAL, Universidade Aberta e UNED, realiza-se em Salamanca em modalidade híbrida, presencial e online, com uma pergunta de fundo: como podem as tecnologias melhorar a aprendizagem no ecossistema da Ciência Aberta, tendo os Recursos Educativos Abertos e o Desenho Universal para a Aprendizagem como fio condutor.",
+      "A XIII edição, organizada pela rede de universidades luso-espanhola UPB, USAL, Universidade Aberta e UNED, realiza-se em Salamanca em modalidade híbrida, presencial e online, com uma pergunta de fundo: como podem as tecnologias melhorar a aprendizagem no ecossistema da Ciência Aberta, tendo os Recursos Educativos Abertos e o Desenho Universal para a Aprendizagem como fio condutor.",
     ],
     welcomeMore: "Conhece o congresso",
     facts: [

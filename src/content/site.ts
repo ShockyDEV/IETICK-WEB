@@ -198,7 +198,7 @@ export const EDICIONES: {
   },
 ];
 
-/** Web permanente de la serie (IPB) y página de actas de ediciones anteriores. */
+/** Web permanente de la serie (UPB, antes IPB) y página de actas de ediciones anteriores. */
 export const IETIC_SERIE = {
   web: "https://ietic.unipb.pt/",
   actas: "https://ietic.unipb.pt/edicoes-anteriores/",

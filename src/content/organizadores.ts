@@ -40,7 +40,7 @@ export const ORGANIZADORES: Organizador[] = [
   },
   {
     id: "ipb",
-    name: { es: "Instituto Politécnico de Bragança", pt: "Instituto Politécnico de Bragança" },
+    name: { es: "Universidade Politécnica de Bragança", pt: "Universidade Politécnica de Bragança" },
     url: "https://www.ipb.pt",
     logo: "/logos/organizadores/ipb.png",
     width: 252,
