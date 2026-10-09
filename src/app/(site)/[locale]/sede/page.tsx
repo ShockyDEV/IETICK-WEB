@@ -1,20 +1,13 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { ArrowUpRight, Bus, Car, Landmark, MapPin, TrainFront } from "lucide-react";
 import { PageArt } from "@/components/ui/page-art";
 import { PageHeader } from "@/components/ui/page-header";
 import { sectionColor } from "@/content/ui";
-import { PendingNote } from "@/components/ui/pending-note";
 import { SectionHeading } from "@/components/ui/section-heading";
-import { HOTELES } from "@/content/alojamiento";
 import { SITE } from "@/content/site";
-import { href, isLocale, pick, type Locale } from "@/lib/i18n";
+import { isLocale, pick, type Locale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
-import { tr } from "@/lib/programme";
-import { loadProgramme } from "@/lib/programme-data";
-import { monthShort, shortDay } from "@/lib/programme-format";
-import { SESSION_TYPE_META } from "@/lib/session-types";
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -55,10 +48,6 @@ const T = {
     ],
     openMap: "Abrir en OpenStreetMap",
     mapTitle: "Mapa de la sede: Facultad de Educación, Paseo de Canalejas, 169, Salamanca",
-    stayEyebrow: "Alojamiento",
-    stayTitle: "Dónde alojarse",
-    stayPending: "Hoteles recomendados: próximamente",
-    stayText: "Publicaremos una selección de alojamientos cercanos a la sede y al centro histórico, con las tarifas especiales que se acuerden para las personas inscritas.",
   },
   pt: {
     eyebrow: "Local",
@@ -96,10 +85,6 @@ const T = {
     ],
     openMap: "Abrir no OpenStreetMap",
     mapTitle: "Mapa do local: Faculdade de Educação, Paseo de Canalejas, 169, Salamanca",
-    stayEyebrow: "Alojamento",
-    stayTitle: "Onde ficar",
-    stayPending: "Hotéis recomendados: brevemente",
-    stayText: "Publicaremos uma seleção de alojamentos perto do local e do centro histórico, com as tarifas especiais que venham a ser acordadas para os participantes inscritos.",
   },
 } as const;
 
@@ -131,8 +116,6 @@ export default async function SedePage({ params }: Props) {
   const locale: Locale = isLocale(raw) ? raw : "es";
   const t = T[locale];
 
-  const data = await loadProgramme("sede");
-  const socials = data?.sessions.filter((s) => s.type === "SOCIAL") ?? [];
   const { lat, lon } = SITE.venue;
   const bbox = [lon - 0.0065, lat - 0.0032, lon + 0.0065, lat + 0.0032].map((n) => n.toFixed(5)).join(",");
 
@@ -253,62 +236,6 @@ export default async function SedePage({ params }: Props) {
               <MapPin className="h-4 w-4" aria-hidden /> {t.openMap}
             </a>
           </div>
-        </div>
-      </section>
-
-      {/* Alojamiento */}
-      <section id="alojamiento" className="scroll-mt-24 py-20 sm:py-24">
-        <div className="contenedor grid gap-10 lg:grid-cols-2">
-          <div>
-            <SectionHeading eyebrow={t.stayEyebrow} title={t.stayTitle} />
-            {HOTELES.length === 0 ? (
-              <PendingNote title={t.stayPending} className="mt-8">
-                {t.stayText}
-              </PendingNote>
-            ) : (
-              <ul className="mt-8 space-y-4">
-                {HOTELES.map((h) => (
-                  <li key={h.name} className="tarjeta p-5">
-                    <p className="flex items-center gap-2 font-display text-lg font-bold">
-                      {h.name}
-                      {h.stars ? <span className="text-sm text-oro-500" aria-label={`${h.stars} ★`}>{"★".repeat(h.stars)}</span> : null}
-                    </p>
-                    <p className="mt-1 text-sm text-tinta-suave">{h.address}</p>
-                    {h.distance && <p className="mt-1 text-sm text-mar-700">{pick(h.distance, locale)}</p>}
-                    {h.offer && <p className="mt-3 rounded-md bg-oro-50 p-3 text-sm text-oro-800">{pick(h.offer, locale)}</p>}
-                    <p className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-sm">
-                      {h.web && (
-                        <a href={h.web} target="_blank" rel="noopener noreferrer" className="enlace">
-                          {h.web.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "")}
-                        </a>
-                      )}
-                      {h.phone && <a href={`tel:${h.phone.replace(/\s/g, "")}`} className="enlace">{h.phone}</a>}
-                      {h.email && <a href={`mailto:${h.email}`} className="enlace">{h.email}</a>}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-          {socials.length > 0 && (
-            <div className="self-end rounded-xl bg-gradient-to-br from-oro-400 to-oro-500 p-7 text-noche-900">
-              <p className="nota text-noche-900/80">{SESSION_TYPE_META.SOCIAL.plural[locale]}</p>
-              <ul className="mt-3 space-y-3">
-                {socials.map((s) => (
-                  <li key={s.id}>
-                    <Link href={`${href(locale, "/programa")}?sesion=${s.id}`} className="group block">
-                      <span className="block text-sm font-semibold tabular-nums">
-                        {shortDay(s.day, locale)} {monthShort(s.day, locale)}, {s.start}–{s.end}
-                      </span>
-                      <span className="block font-display text-lg font-bold leading-snug underline-offset-4 group-hover:underline">
-                        {tr(s.title, s.titlePt, locale)}
-                      </span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
         </div>
       </section>
     </>
