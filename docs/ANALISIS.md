@@ -60,7 +60,7 @@ Traslado literal de horas y títulos del Word, con estas decisiones:
   - Fuera el taller «Neuroeducación y tecnología»: quedan cuatro talleres.
   - Plantilla de texto completo sustituida por la última versión.
   - Comités: miembros del consorcio y equipo organizador por separado; añadidos Andrea Basantes Andrade (Universidad Técnica del Norte, Ecuador) y Braulio Ibarra Olea (Universidad de Chile).
-  - Sede: la Facultad de Educación (Paseo de Canalejas, 169), con el Edificio Cossío (Facultad) y el Edificio Solís (IUCE); fuera el apartado de espacios; mapa en el Edificio Cossío. La foto del Edificio Cossío es la de la portada de la web de la Facultad (con crédito): conviene confirmar que se puede usar o sustituirla por una suya.
+  - Sede: la Facultad de Educación (Paseo de Canalejas, 169), con el Edificio Cossío (Facultad) y el Edificio Solís (IUCE); fuera el apartado de espacios; mapa en el Edificio Cossío. La foto del Edificio Cossío es la de la web del Departamento de Didáctica, Organización y Métodos de Investigación (el de la organización), con crédito.
   - Pendiente: el lugar del almuerzo (para enlazarlo), fotos y enlaces de los ponentes cuando estén confirmados, y si «mesas de comunicaciones» y «panel de resultados de investigación» deben cambiar también en el programa.
 - Discrepancias que conviene confirmar con la organización:
   - El texto de presentación y los logos incluyen al **IUCE** dentro del consorcio; el 28-09 se nos dijo que el IUCE solo era la sede. Se ha respetado el texto oficial.

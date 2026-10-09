@@ -32,7 +32,7 @@ const T = {
         "El Edificio Cossío es la sede de la Facultad de Educación de la Universidad de Salamanca. En sus aulas se forman los futuros maestros y maestras de Educación Infantil y Primaria, pedagogos y educadores sociales, y se imparten másteres como el de Las TIC en Educación o el de Profesorado de Educación Secundaria.",
       ],
       alt: "Fachada de ladrillo del Edificio Cossío, sede de la Facultad de Educación",
-      credit: "Foto: Facultad de Educación, Universidad de Salamanca",
+      credit: "Foto: Departamento de Didáctica, Organización y Métodos de Investigación, Universidad de Salamanca",
     },
     solis: {
       name: "Edificio Solís",
@@ -73,7 +73,7 @@ const T = {
         "O Edifício Cossío é a sede da Faculdade de Educação da Universidade de Salamanca. Nas suas salas formam-se os futuros educadores de infância e professores do ensino primário, pedagogos e educadores sociais, e lecionam-se mestrados como o de TIC na Educação ou o de Professores do Ensino Secundário.",
       ],
       alt: "Fachada de tijolo do Edifício Cossío, sede da Faculdade de Educação",
-      credit: "Foto: Faculdade de Educação, Universidade de Salamanca",
+      credit: "Foto: Departamento de Didática, Organização e Métodos de Investigação, Universidade de Salamanca",
     },
     solis: {
       name: "Edifício Solís",
@@ -156,10 +156,10 @@ export default async function SedePage({ params }: Props) {
               <Image
                 src="/espacios/edificio-cossio.webp"
                 alt={t.cossio.alt}
-                width={934}
-                height={526}
+                width={1280}
+                height={854}
                 sizes="(min-width: 1024px) 45vw, 100vw"
-                className="aspect-[16/9] w-full rounded-xl object-cover shadow-elevada"
+                className="aspect-[3/2] w-full rounded-xl object-cover shadow-elevada"
               />
               <figcaption className="mt-2 text-xs text-tinta-tenue">{t.cossio.credit}</figcaption>
             </figure>

@@ -296,8 +296,8 @@ export default async function HomePage({ params }: Props) {
               <Image
                 src="/espacios/edificio-cossio.webp"
                 alt={locale === "pt" ? "Edifício Cossío, sede da Faculdade de Educação" : "Edificio Cossío, sede de la Facultad de Educación"}
-                width={934}
-                height={526}
+                width={1280}
+                height={854}
                 sizes="(min-width: 1024px) 40vw, 100vw"
                 className="aspect-[4/3] w-full object-cover transition duration-700 ease-out group-hover:scale-[1.03]"
               />
