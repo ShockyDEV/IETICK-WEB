@@ -17,7 +17,7 @@ export const NAV: { path: string; label: L10n; color: string }[] = [
   { path: "/sede", label: { es: "Sede", pt: "Local" }, color: "#F5B387" },
 ];
 
-/** Color de la sección de una ruta ("/sede", "/sede#espacios"…); cian en portada y legales. */
+/** Color de la sección de una ruta ("/sede", "/sede#como-llegar"…); cian en portada y legales. */
 export function sectionColor(path: string): string {
   const clean = path.split(/[?#]/)[0];
   return NAV.find((n) => clean === n.path || clean.startsWith(`${n.path}/`))?.color ?? "#98DDED";
@@ -51,6 +51,5 @@ export const UI = {
   sections: { es: "Secciones", pt: "Secções" },
   howToGet: { es: "Cómo llegar", pt: "Como chegar" },
   rights: { es: "Universidad de Salamanca", pt: "Universidade de Salamanca" },
-  contactGeneral: { es: "Contacto general", pt: "Contacto geral" },
   contactSecretaria: { es: "Secretaría del congreso", pt: "Secretariado do congresso" },
 } satisfies Record<string, L10n>;

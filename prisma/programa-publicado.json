@@ -358,8 +358,8 @@
       "type": "TALLER",
       "title": "Talleres",
       "titlePt": "Oficinas",
-      "subtitle": "Cinco talleres simultáneos",
-      "subtitlePt": "Cinco oficinas em simultâneo",
+      "subtitle": "Cuatro talleres simultáneos",
+      "subtitlePt": "Quatro oficinas em simultâneo",
       "description": "Talleres prácticos en paralelo. El aula de cada taller se publicará con el programa definitivo.",
       "descriptionPt": "Oficinas práticas em paralelo. A sala de cada oficina será publicada com o programa definitivo.",
       "speakers": null,
@@ -373,7 +373,7 @@
       "published": true,
       "order": 8,
       "createdAt": "2026-10-06T08:41:05.094Z",
-      "updatedAt": "2026-10-06T08:41:05.094Z",
+      "updatedAt": "2026-10-09T09:01:15.393Z",
       "talks": [
         {
           "id": "cmuwfipmu000euwfsxct3in41",
@@ -389,15 +389,6 @@
           "order": 1,
           "title": "Videojuegos para educar",
           "authors": "Universidad de Extremadura",
-          "presenter": null,
-          "abstract": null,
-          "axis": null
-        },
-        {
-          "id": "cmuwfipmu000guwfsqrntyymk",
-          "order": 2,
-          "title": "Neuroeducación y tecnología",
-          "authors": "Dra. Vanesa Delgado y Dra. Sonia Rodríguez Cano (Universidad de Burgos)",
           "presenter": null,
           "abstract": null,
           "axis": null

@@ -22,10 +22,10 @@ export const AVISO_LEGAL: LegalDoc = {
       heading: { es: "Titular", pt: "Titular" },
       body: {
         es: [
-          "Universidad de Salamanca. Patio de Escuelas, 1, 37008 Salamanca. Secretaría del congreso: secretaria.ietic27@usal.es. Contacto general: ietic@ipb.pt.",
+          "Universidad de Salamanca. Patio de Escuelas, 1, 37008 Salamanca. Secretaría del congreso: secretaria.ietic27@usal.es.",
         ],
         pt: [
-          "Universidade de Salamanca. Patio de Escuelas, 1, 37008 Salamanca. Secretariado do congresso: secretaria.ietic27@usal.es. Contacto geral: ietic@ipb.pt.",
+          "Universidade de Salamanca. Patio de Escuelas, 1, 37008 Salamanca. Secretariado do congresso: secretaria.ietic27@usal.es.",
         ],
       },
     },

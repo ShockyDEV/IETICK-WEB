@@ -132,13 +132,20 @@ export function SessionDialog({
                       <span className="block text-tinta-tenue">{tr(loc.venue.name, loc.venue.namePt, locale)}</span>
                     )}
                     {(loc.room || loc.venue) && (
-                      <Link
-                        href={`${href(locale, "/sede")}#${loc.room ? `sala-${loc.room.id}` : "espacios"}`}
-                        className="enlace mt-1 inline-block text-xs"
-                        onClick={onClose}
-                      >
+                      <Link href={`${href(locale, "/sede")}#como-llegar`} className="enlace mt-1 inline-block text-xs" onClick={onClose}>
                         {t.seeVenue}
                       </Link>
+                    )}
+                    {/* Lugares fuera de la sede (p. ej. la Biblioteca histórica): enlace al mapa */}
+                    {loc.scope === "global" && s.location && (
+                      <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${s.location}, Salamanca`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="enlace mt-1 inline-block text-xs"
+                      >
+                        {t.seeOnMap}
+                      </a>
                     )}
                   </dd>
                 </div>

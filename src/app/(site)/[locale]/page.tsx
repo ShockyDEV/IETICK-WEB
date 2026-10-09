@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Users } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { FacetPattern } from "@/components/art/FacetPattern";
 import { Countdown } from "@/components/home/countdown";
 import { TraceLine } from "@/components/ui/trace-line";
@@ -55,11 +55,10 @@ const T = {
     progLead: "Ponencias invitadas, panel de expertos, mesa redonda, talleres simultáneos y paneles de comunicaciones. Consulta la versión interactiva para ver cada sesión por sala y hora.",
     progCta: "Abrir el programa interactivo",
     venueEyebrow: "Sede",
-    venueTitle: "El IUCE, en el Edificio Solís",
+    venueTitle: "En la Facultad de Educación",
     venueText:
-      "ieTIC 2027 se celebra en el Instituto Universitario de Ciencias de la Educación (IUCE) de la Universidad de Salamanca, en el Edificio Solís del Campus de Educación, a pocos minutos a pie del centro histórico de la ciudad.",
-    venueCta: "Espacios y cómo llegar",
-    capacity: (n: number) => `${n} personas`,
+      "ieTIC 2027 se celebra en la Facultad de Educación de la Universidad de Salamanca, en el Campus de Educación del Paseo de Canalejas, a pocos minutos a pie del centro histórico de la ciudad.",
+    venueCta: "La sede y cómo llegar",
     datesEyebrow: "Fechas clave",
     datesTitle: "Calendario",
     participate: "¿Quieres presentar tu trabajo?",
@@ -90,11 +89,10 @@ const T = {
     progLead: "Conferências convidadas, painel de especialistas, mesa-redonda, oficinas simultâneas e painéis de comunicações. Consulta a versão interativa para ver cada sessão por sala e hora.",
     progCta: "Abrir o programa interativo",
     venueEyebrow: "Local",
-    venueTitle: "O IUCE, no Edifício Solís",
+    venueTitle: "Na Faculdade de Educação",
     venueText:
-      "O ieTIC 2027 realiza-se no Instituto Universitário de Ciências da Educação (IUCE) da Universidade de Salamanca, no Edifício Solís do Campus de Educação, a poucos minutos a pé do centro histórico da cidade.",
-    venueCta: "Espaços e como chegar",
-    capacity: (n: number) => `${n} pessoas`,
+      "O ieTIC 2027 realiza-se na Faculdade de Educação da Universidade de Salamanca, no Campus de Educação do Paseo de Canalejas, a poucos minutos a pé do centro histórico da cidade.",
+    venueCta: "O local e como chegar",
     datesEyebrow: "Datas importantes",
     datesTitle: "Calendário",
     participate: "Queres apresentar o teu trabalho?",
@@ -108,7 +106,6 @@ export default async function HomePage({ params }: Props) {
   const locale: Locale = isLocale(raw) ? raw : "es";
   const t = T[locale];
   const programme = await loadProgramme("portada");
-  const rooms = programme?.rooms ?? [];
   const fecha = (id: string) => {
     const f = FECHAS.find((x) => x.id === id);
     return (f && formatFecha(f, locale)) ?? pick(UI.pending, locale);
@@ -259,7 +256,9 @@ export default async function HomePage({ params }: Props) {
                   <span className="flex h-12 w-12 items-center justify-center rounded-md bg-cian-300/10 text-cian-300 ring-1 ring-cian-300/20 transition group-hover:bg-cian-300 group-hover:text-noche-900">
                     <EjeIcon icon={eje.icon} className="h-6 w-6" />
                   </span>
-                  <h3 className="mt-5 font-display text-lg font-semibold leading-snug text-white">{pick(eje.title, locale)}</h3>
+                  <h3 className="mt-5 font-display text-lg font-semibold leading-snug text-white">
+                    {i + 1}. {pick(eje.title, locale)}
+                  </h3>
                   <ul className="mt-3 space-y-1.5 text-sm leading-snug text-white/65">
                     {pick(eje.lines, locale).map((line) => (
                       <li key={line} className="flex gap-2">
@@ -295,46 +294,22 @@ export default async function HomePage({ params }: Props) {
           <div className="relative" data-reveal="izq">
             <div className="group overflow-hidden rounded-xl shadow-elevada">
               <Image
-                src="/espacios/edificio-solis-claustro.webp"
-                alt={locale === "pt" ? "Claustro do Edifício Solís, sede do IUCE" : "Claustro del Edificio Solís, sede del IUCE"}
-                width={1000}
-                height={750}
+                src="/espacios/edificio-cossio.webp"
+                alt={locale === "pt" ? "Edifício Cossío, sede da Faculdade de Educação" : "Edificio Cossío, sede de la Facultad de Educación"}
+                width={934}
+                height={526}
                 sizes="(min-width: 1024px) 40vw, 100vw"
                 className="aspect-[4/3] w-full object-cover transition duration-700 ease-out group-hover:scale-[1.03]"
               />
             </div>
             <div className="absolute -bottom-6 -right-2 hidden rounded-md bg-noche-900 px-5 py-4 text-white shadow-elevada sm:block">
               <p className="nota text-cian-200">Salamanca</p>
-              <p className="mt-1 font-display text-lg font-semibold">{pick(SITE.venue.building, locale)}</p>
+              <p className="mt-1 font-display text-lg font-semibold">{pick(SITE.venue.name, locale)}</p>
             </div>
           </div>
           <div>
             <SectionHeading eyebrow={t.venueEyebrow} title={t.venueTitle} id="sede-home" />
             <p className="prosa mt-6">{t.venueText}</p>
-            {rooms.length > 0 && (
-              <ul className="mt-8 grid grid-cols-2 gap-3">
-                {rooms.map((r, i) => (
-                  <li
-                    key={r.id}
-                    data-reveal
-                    style={{ ["--d" as string]: `${i * 80}ms` }}
-                    className="eleva flex items-center gap-3 rounded-lg border border-linea bg-white p-3"
-                  >
-                    {r.imageUrl && (
-                      <Image src={r.imageUrl} alt="" width={96} height={72} className="h-12 w-16 shrink-0 rounded object-cover" />
-                    )}
-                    <div className="min-w-0">
-                      <p className="truncate font-display text-sm font-semibold">{locale === "pt" && r.namePt ? r.namePt : r.name}</p>
-                      {r.capacity && (
-                        <p className="flex items-center gap-1 text-xs text-tinta-tenue">
-                          <Users className="h-3.5 w-3.5" aria-hidden /> {t.capacity(r.capacity)}
-                        </p>
-                      )}
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            )}
             <Link href={href(locale, "/sede")} className="boton-contorno mt-8">
               {t.venueCta}
               <ArrowRight className="h-4 w-4" aria-hidden />

@@ -52,6 +52,16 @@ Traslado literal de horas y títulos del Word, con estas decisiones:
 - Logos: los 11 del documento **más la UCM**, que venía en el zip del 30-09 aunque el documento no la incluye (criterio del usuario: mejor que sobre alguien a que falte). Franja «Organización y colaboración» en el pie de todas las páginas.
 - **Comités (06-10-2026)**, de «COMITÉS_ieTIC27 definitivo.xlsx» (copia en `../material-organizacion/comites-2026-10-06/`): 14 personas en el organizador, en el orden de la hoja, y 95 en el científico, agrupadas por país y ordenadas por nombre (`src/content/comites.ts`). Los correos de la hoja no se publican ni se suben al repositorio.
 - **Universidade Politécnica de Bragança (UPB)**: la hoja de comités y la propia web de la institución (ipb.pt) usan ya el nombre nuevo; el documento del 01-10 decía Instituto Politécnico de Bragança (IPB). Se ha actualizado en toda la web, presentación oficial incluida; la edición de 2016 conserva el nombre de entonces.
+- **Cambios pedidos por la organización (09-10-2026)**, documento «Sitio Web ieTIC27_cambios.docx» (copia en `../material-organizacion/cambios-2026-10-09/`, junto con la plantilla de texto completo nueva). Hechos:
+  - Fuera el «Contacto general: ietic@ipb.pt» del pie (y del aviso legal).
+  - Ejes temáticos numerados en la portada, El congreso y Comunicaciones (como en la convocatoria de EasyChair).
+  - El congreso: fuera la sección «Trayectoria» (el componente `editions-timeline` queda sin usar); en «Qué encontrarás», «mesas de comunicaciones» y «panel de resultados de investigación».
+  - Programa: sin columnas de salas; la lista por horas, con la sala en cada actividad, también en el ordenador (`programme-grid` queda sin usar salvo `LiveBadge`). Las actividades con lugar propio (visitas a la Biblioteca histórica) enlazan al mapa.
+  - Fuera el taller «Neuroeducación y tecnología»: quedan cuatro talleres.
+  - Plantilla de texto completo sustituida por la última versión.
+  - Comités: miembros del consorcio y equipo organizador por separado; añadidos Andrea Basantes Andrade (Universidad Técnica del Norte, Ecuador) y Braulio Ibarra Olea (Universidad de Chile).
+  - Sede: la Facultad de Educación (Paseo de Canalejas, 169), con el Edificio Cossío (Facultad) y el Edificio Solís (IUCE); fuera el apartado de espacios; mapa en el Edificio Cossío. La foto del Edificio Cossío es la de la portada de la web de la Facultad (con crédito): conviene confirmar que se puede usar o sustituirla por una suya.
+  - Pendiente: el lugar del almuerzo (para enlazarlo), fotos y enlaces de los ponentes cuando estén confirmados, y si «mesas de comunicaciones» y «panel de resultados de investigación» deben cambiar también en el programa.
 - Discrepancias que conviene confirmar con la organización:
   - El texto de presentación y los logos incluyen al **IUCE** dentro del consorcio; el 28-09 se nos dijo que el IUCE solo era la sede. Se ha respetado el texto oficial.
   - **UCM** (en el zip y en el comité organizador, no en el documento) y **UNED** (en el documento y en el texto, no en el zip).

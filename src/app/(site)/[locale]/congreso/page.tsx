@@ -1,17 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight, ArrowUpRight, Check } from "lucide-react";
-import { FacetPattern } from "@/components/art/FacetPattern";
-import { EditionsTimeline } from "@/components/congreso/editions-timeline";
+import { ArrowRight, Check } from "lucide-react";
 import { EjeIcon } from "@/components/ui/eje-icon";
 import { PageArt } from "@/components/ui/page-art";
 import { PageHeader } from "@/components/ui/page-header";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { EJES } from "@/content/ejes";
-import { IETIC_SERIE } from "@/content/site";
 import { sectionColor } from "@/content/ui";
 import { CountUp } from "@/components/ui/count-up";
-import { href, isLocale, pick, type Locale } from "@/lib/i18n";
+import { href, isLocale, pick, type L10n, type Locale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
 import { loadProgramme } from "@/lib/programme-data";
 import { SESSION_TYPE_META, type SessionTypeKey } from "@/lib/session-types";
@@ -48,13 +45,6 @@ const T = {
       "Equipos directivos, coordinación TIC y responsables de innovación de los centros.",
       "Profesionales vinculados a la formación y al diseño de recursos educativos.",
     ],
-    historyEyebrow: "Trayectoria",
-    historyTitle: "Una conferencia ibérica",
-    historyLead: "ieTIC nació en 2011 de la colaboración entre instituciones de España y Portugal y ha recorrido distintas sedes a ambos lados de la frontera. Estas son sus ediciones, con los libros de actas publicados:",
-    thisEdition: "esta edición",
-    linkLabels: { actas: "Actas", resumenes: "Resúmenes", web: "Web" },
-    seriesWeb: "Web de la serie ieTIC (UPB)",
-    proceedingsNote: "Actas en el repositorio de la Universidade Politécnica de Bragança.",
     ctaProgramme: "Ver el programa",
   },
   pt: {
@@ -86,16 +76,24 @@ const T = {
       "Direções, coordenação TIC e responsáveis pela inovação nas escolas.",
       "Profissionais ligados à formação e ao design de recursos educativos.",
     ],
-    historyEyebrow: "Percurso",
-    historyTitle: "Uma conferência ibérica",
-    historyLead: "O ieTIC nasceu em 2011 da colaboração entre instituições de Espanha e Portugal e tem percorrido diferentes locais dos dois lados da fronteira. Estas são as suas edições, com os livros de atas publicados:",
-    thisEdition: "esta edição",
-    linkLabels: { actas: "Atas", resumenes: "Resumos", web: "Web" },
-    seriesWeb: "Sítio da série ieTIC (UPB)",
-    proceedingsNote: "Atas no repositório da Universidade Politécnica de Bragança.",
     ctaProgramme: "Ver o programa",
   },
 } as const;
+
+/**
+ * Nombres propios de «Qué encontrarás», como los pidió la organización
+ * (09-10-2026); en el resto de la web cada tipo usa su nombre general.
+ */
+const FORMAT_LABELS: Partial<Record<SessionTypeKey, { label: L10n; plural: L10n }>> = {
+  COMUNICACIONES: {
+    label: { es: "Mesa de comunicaciones", pt: "Mesa de comunicações" },
+    plural: { es: "Mesas de comunicaciones", pt: "Mesas de comunicações" },
+  },
+  PROYECTOS: {
+    label: { es: "Panel de resultados de investigación", pt: "Painel de resultados de investigação" },
+    plural: { es: "Paneles de resultados de investigación", pt: "Painéis de resultados de investigação" },
+  },
+};
 
 /** Tipos que se enseñan en «Qué encontrarás» (el resto son logística). */
 const FORMAT_TYPES: SessionTypeKey[] = [
@@ -169,12 +167,13 @@ export default async function CongresoPage({ params }: Props) {
             <ul className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {counts.map(({ type, n }, i) => {
                 const meta = SESSION_TYPE_META[type];
+                const names = FORMAT_LABELS[type] ?? meta;
                 return (
                   <li key={type} data-reveal style={{ ["--d" as string]: `${i * 80}ms` }} className="tarjeta eleva flex items-center gap-4 p-5">
                     <span className="font-display text-3xl font-extrabold" style={{ color: meta.color }}>
                       <CountUp value={n} duration={900} />
                     </span>
-                    <span className="text-sm font-medium leading-snug text-tinta">{(n === 1 ? meta.label : meta.plural)[locale]}</span>
+                    <span className="text-sm font-medium leading-snug text-tinta">{(n === 1 ? names.label : names.plural)[locale]}</span>
                   </li>
                 );
               })}
@@ -197,7 +196,9 @@ export default async function CongresoPage({ params }: Props) {
                   <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-md bg-noche-900 text-cian-300">
                     <EjeIcon icon={eje.icon} className="h-6 w-6" />
                   </span>
-                  <h3 className="font-display text-xl font-bold leading-snug">{pick(eje.title, locale)}</h3>
+                  <h3 className="font-display text-xl font-bold leading-snug">
+                    {i + 1}. {pick(eje.title, locale)}
+                  </h3>
                 </div>
                 <ul className="mt-5 space-y-2.5 border-t border-linea pt-5">
                   {pick(eje.lines, locale).map((line) => (
@@ -210,25 +211,6 @@ export default async function CongresoPage({ params }: Props) {
               </li>
             ))}
           </ol>
-        </div>
-      </section>
-
-      {/* Trayectoria */}
-      <section className="relative isolate overflow-hidden bg-noche-900 py-20 text-white sm:py-24">
-        <FacetPattern className="-z-10" seed={23} />
-        <div
-          className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_100%_0%,rgba(22,116,146,0.45),transparent_55%)]"
-          aria-hidden
-        />
-        <div className="contenedor">
-          <SectionHeading eyebrow={t.historyEyebrow} title={t.historyTitle} lead={t.historyLead} dark />
-          <EditionsTimeline locale={locale} labels={t.linkLabels} thisEdition={t.thisEdition} />
-          <p className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-white/60">
-            <a href={IETIC_SERIE.web} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-cian-200 hover:text-white">
-              {t.seriesWeb} <ArrowUpRight className="h-3.5 w-3.5" aria-hidden />
-            </a>
-            <span>{t.proceedingsNote}</span>
-          </p>
         </div>
       </section>
     </>

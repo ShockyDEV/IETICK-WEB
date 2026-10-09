@@ -12,7 +12,6 @@ import { cn } from "@/lib/cn";
 import { TraceLine } from "@/components/ui/trace-line";
 import { AgendaDrawer } from "./agenda-drawer";
 import { PT_ES } from "./i18n";
-import { ProgrammeGrid } from "./programme-grid";
 import { ProgrammeList } from "./programme-list";
 import { SessionDialog } from "./session-dialog";
 import { SessionSearch } from "./session-search";
@@ -222,32 +221,19 @@ export function ProgrammeApp({ data, locale }: { data: ProgrammeData; locale: Lo
         </p>
       </div>
 
-      <div className="hidden lg:block">
-        <ProgrammeGrid
-          data={data}
-          dayKey={dayKey}
-          locale={locale}
-          t={t}
-          now={now}
-          archive={archive}
-          agenda={agenda}
-          onToggleAgenda={onToggleAgenda}
-          onOpen={open}
-        />
-      </div>
-      <div className="lg:hidden">
-        <ProgrammeList
-          data={data}
-          dayKey={dayKey}
-          locale={locale}
-          t={t}
-          now={now}
-          archive={archive}
-          agenda={agenda}
-          onToggleAgenda={onToggleAgenda}
-          onOpen={open}
-        />
-      </div>
+      {/* Lista por horas con la sala dentro de cada actividad, también en el
+          ordenador: la organización prefirió no ver columnas de salas (09-10-2026). */}
+      <ProgrammeList
+        data={data}
+        dayKey={dayKey}
+        locale={locale}
+        t={t}
+        now={now}
+        archive={archive}
+        agenda={agenda}
+        onToggleAgenda={onToggleAgenda}
+        onOpen={open}
+      />
 
       <SessionDialog
         session={openSession}

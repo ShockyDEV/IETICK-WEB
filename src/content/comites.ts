@@ -8,6 +8,11 @@ import type { L10n } from "@/lib/i18n";
  * público. Nombres y afiliaciones van tal cual; solo se han normalizado los
  * espacios y dos afiliaciones («Universidades Politécnica de Bragança» →
  * «Universidade», y el «, Portugal» repetido de «Universidade Técnica do Porto»).
+ *
+ * Cambios pedidos por la organización el 09-10-2026 («Sitio Web
+ * ieTIC27_cambios.docx», copia en ../material-organizacion/cambios-2026-10-09/):
+ * el comité organizador se separa en consorcio y equipo organizador, y se
+ * añaden dos personas al comité científico.
  */
 
 export interface MiembroComite {
@@ -31,13 +36,18 @@ export const PAISES: Record<PaisId, L10n> = {
   ec: { es: "Ecuador", pt: "Equador" },
 };
 
-/** En el orden de la hoja. */
-export const COMITE_ORGANIZADOR: MiembroComite[] = [
+/** Miembros del consorcio, en el orden de la hoja. */
+export const COMITE_CONSORCIO: MiembroComite[] = [
   { name: "Ana García-Valcárcel Muñoz-Repiso", affiliation: "Universidad de Salamanca" },
   { name: "Vitor Gonçalves", affiliation: "Universidade Politécnica de Bragança" },
   { name: "José António Moreira", affiliation: "Universidade Aberta do Porto" },
   { name: "Pilar Gutiez Cuevas", affiliation: "Universidad Complutense de Madrid" },
   { name: "Cristina Sánchez Romero", affiliation: "UNED" },
+];
+
+/** Equipo organizador: Ana García-Valcárcel y el resto de la hoja, en su orden. */
+export const COMITE_ORGANIZADOR: MiembroComite[] = [
+  { name: "Ana García-Valcárcel Muñoz-Repiso", affiliation: "Universidad de Salamanca" },
   { name: "Sonia Casillas-Martín", affiliation: "Universidad de Salamanca" },
   { name: "Marcos Cabezas-González", affiliation: "Universidad de Salamanca" },
   { name: "Erla Mariela Morales Morgado", affiliation: "Universidad de Salamanca" },
@@ -96,6 +106,7 @@ export const COMITE_CIENTIFICO: MiembroCientifico[] = [
   { name: "José M. Gutiérrez Pequeño", affiliation: "Universidad de Valladolid", country: "es" },
   { name: "Jose Miguel Correa Gorospe", affiliation: "Universidad País Vasco", country: "es" },
   { name: "Juan Fco. Gavilán Escalona", affiliation: "Universidad de Concepción", country: "cl" },
+  { name: "Braulio Ibarra Olea", affiliation: "Universidad de Chile", country: "cl" },
   { name: "Julio César Leyva Ruiz", affiliation: "Universidad Michoacana de S. Nicolás", country: "mx" },
   { name: "Klaus Schlunzen Junior", affiliation: "Universidade Estadual Paulista", country: "br" },
   { name: "Leonel Morgado", affiliation: "Universidade Aberta", country: "pt" },
@@ -113,6 +124,7 @@ export const COMITE_CIENTIFICO: MiembroCientifico[] = [
   { name: "María Rosa Fernández Sánchez", affiliation: "Universidad de Extremadura", country: "es" },
   { name: "Maribel Miranda Pinto", affiliation: "Universidade Aberta", country: "pt" },
   { name: "Martha Vanessa Agila Palacios", affiliation: "UTPL Universidad Católica de Loja", country: "ec" },
+  { name: "Andrea Basantes Andrade", affiliation: "Universidad Técnica del Norte", country: "ec" },
   { name: "Mario Alberto Secchi", affiliation: "Instituto Universitario Italiano de Rosario", country: "ar" },
   { name: "Melchor Gómez García", affiliation: "Universidad Autónoma de Madrid", country: "es" },
   { name: "Miguel Romero Hortelano", affiliation: "UNED", country: "es" },

@@ -325,7 +325,9 @@ export default async function ComunicacionesPage({ params }: Props) {
               >
                 <h3 className="flex items-start gap-3 font-display text-lg font-bold leading-snug text-tinta">
                   <EjeIcon icon={eje.icon} className="mt-0.5 h-5 w-5 shrink-0 text-mar-600" />
-                  {pick(eje.title, locale)}
+                  <span>
+                    {i + 1}. {pick(eje.title, locale)}
+                  </span>
                 </h3>
                 <ul className="mt-3 space-y-1.5 pl-8 text-[0.95rem] leading-snug text-tinta-suave">
                   {pick(eje.lines, locale).map((line) => (

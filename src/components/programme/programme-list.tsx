@@ -13,8 +13,9 @@ import { StarButton } from "./star-button";
 import { rgba } from "./utils";
 
 /**
- * Vista de lista (móvil y tabletas): feed cronológico de tarjetas agrupadas
- * por hora de inicio, como la vista móvil del programa de ICED26.
+ * Vista del programa en todas las pantallas: feed cronológico de tarjetas
+ * agrupadas por hora de inicio, cada una con su sala. En pantallas anchas, las
+ * actividades que empiezan a la misma hora se ponen una al lado de otra.
  */
 export function ProgrammeList({
   data,
@@ -48,9 +49,9 @@ export function ProgrammeList({
   return (
     <ol className="space-y-6">
       {[...groups.entries()].map(([start, list]) => (
-        <li key={start} className="grid grid-cols-[3.5rem_1fr] gap-3">
-          <p className="pt-3 text-right text-sm font-semibold tabular-nums text-tinta-suave">{start}</p>
-          <ul className="space-y-2.5">
+        <li key={start} className="grid grid-cols-[3.5rem_1fr] gap-3 lg:grid-cols-[5rem_1fr] lg:gap-5">
+          <p className="pt-3 text-right text-sm font-semibold tabular-nums text-tinta-suave lg:text-base">{start}</p>
+          <ul className={cn("grid gap-2.5", list.length > 1 && "md:grid-cols-2")}>
             {list.map((s) => {
               const meta = SESSION_TYPE_META[s.type];
               const state = now ? sessionState(s, now) : "future";

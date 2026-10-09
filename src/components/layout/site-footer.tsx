@@ -32,7 +32,6 @@ export function SiteFooter({ locale }: { locale: Locale }) {
           <ul className="mt-5 space-y-2 text-sm">
             {[
               { label: UI.contactSecretaria, email: SITE.contact.secretaria },
-              { label: UI.contactGeneral, email: SITE.contact.general },
             ].map((c) => (
               <li key={c.email} className="flex items-start gap-3">
                 <Mail className="mt-0.5 h-4 w-4 shrink-0 text-oro-400" aria-hidden />

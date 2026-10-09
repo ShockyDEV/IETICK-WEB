@@ -49,24 +49,25 @@ export const SITE = {
   // Modalidad híbrida (documento de la organización, 01-10-2026)
   where: { es: "Salamanca y en línea", pt: "Salamanca e online" } satisfies L10n,
   venue: {
-    name: {
-      es: "Instituto Universitario de Ciencias de la Educación (IUCE)",
-      pt: "Instituto Universitário de Ciências da Educação (IUCE)",
+    // Sede: la Facultad de Educación (cambio pedido por la organización el
+    // 09-10-2026); el IUCE está en el Edificio Solís, en el mismo campus.
+    name: { es: "Facultad de Educación", pt: "Faculdade de Educação" } satisfies L10n,
+    short: {
+      es: "Facultad de Educación, Universidad de Salamanca",
+      pt: "Faculdade de Educação, Universidade de Salamanca",
     } satisfies L10n,
-    short: { es: "IUCE, Universidad de Salamanca", pt: "IUCE, Universidade de Salamanca" } satisfies L10n,
     building: {
-      es: "Edificio Solís, Campus de Educación",
-      pt: "Edifício Solís, Campus de Educação",
+      es: "Universidad de Salamanca, Campus de Educación",
+      pt: "Universidade de Salamanca, Campus de Educação",
     } satisfies L10n,
     address: "Paseo de Canalejas, 169, 37008 Salamanca",
-    // Paseo de Canalejas, 169 (OpenStreetMap / Nominatim)
-    lat: 40.95874,
-    lon: -5.65984,
-    web: "https://solis.usal.es", // web nueva del IUCE
+    // Edificio Cossío, sede de la Facultad (OpenStreetMap / Nominatim)
+    lat: 40.95897,
+    lon: -5.65966,
+    iuceWeb: "https://iuce.usal.es",
   },
   // Contactos del congreso (documento de la organización, 01-10-2026)
   contact: {
-    general: "ietic@ipb.pt",
     secretaria: "secretaria.ietic27@usal.es",
   },
   // Inscripción: formulario previo + matrícula y pago en el Centro de
