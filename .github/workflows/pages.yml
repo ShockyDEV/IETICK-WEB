@@ -57,9 +57,12 @@ jobs:
       - run: npx prisma db push --skip-generate
       # Carga prisma/programa-publicado.json (o el programa provisional)
       - run: npx prisma db seed
-      - run: npm run build:static
+      # configure-pages da la dirección con http:// mientras «Enforce HTTPS» no
+      # está activo; la web se sirve por https, así que las URL canónicas, el
+      # sitemap y robots.txt van siempre con https.
+      - run: NEXT_PUBLIC_SITE_URL="https://${BASE_URL#*://}" npm run build:static
         env:
-          NEXT_PUBLIC_SITE_URL: ${{ steps.pages.outputs.base_url }}
+          BASE_URL: ${{ steps.pages.outputs.base_url }}
           PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
       - uses: actions/upload-pages-artifact@v3
         with:
