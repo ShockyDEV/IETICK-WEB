@@ -74,7 +74,7 @@ npm run preview:static   # la sirve en http://localhost:3028 como GitHub Pages
 - **Publicar cambios del programa**: se editan en el panel en local y `npm run programa:publicar` los guarda en `prisma/programa-publicado.json`. Al subir ese fichero a `main`, el flujo `.github/workflows/pages.yml` carga el programa en una base de datos de usar y tirar, compila y publica en unos minutos.
 - **Cambios de textos o diseño**: basta con subirlos a `main`.
 - **Cada noche** se vuelve a compilar, para los textos que dependen de la fecha.
-- **Dirección**: sin dominio propio, https://shockydev.github.io/IETICK-WEB (la compilación añade la subcarpeta `/IETICK-WEB` a enlaces, imágenes, iconos y manifiesto; ver `src/lib/base-path.ts`). Para pasar a un dominio propio: en el registrador, cuatro registros A a `185.199.108.153`, `185.199.109.153`, `185.199.110.153` y `185.199.111.153` y un CNAME de `www` a `shockydev.github.io`; en *Settings → Pages*, el dominio en *Custom domain* y, cuando GitHub emita el certificado, *Enforce HTTPS*. La siguiente compilación se adapta sola (el flujo lee la dirección con `actions/configure-pages`).
+- **Dirección**: https://ietic2027.usal.es, desde el 14-oct-2026. El CPD creó el registro `ietic2027.usal.es CNAME shockydev.github.io` (CAU-49199) y el dominio está puesto en *Settings → Pages → Custom domain*; la antigua https://shockydev.github.io/IETICK-WEB redirige sola. El flujo lee la dirección con `actions/configure-pages`, así que compila para la raíz del dominio. Sin dominio propio, la compilación añadiría la subcarpeta `/IETICK-WEB` a enlaces, imágenes, iconos y manifiesto (ver `src/lib/base-path.ts`).
 
 ### Modo servidor (Docker)
 
