@@ -8,7 +8,7 @@ import { PendingNote } from "@/components/ui/pending-note";
 import { sectionColor, UI } from "@/content/ui";
 import { href, isLocale, pick, type Locale } from "@/lib/i18n";
 import { pageMetadata } from "@/lib/metadata";
-import { dayLabel, speakerList, tr, type ProgrammeData } from "@/lib/programme";
+import { dayLabel, speakerList, splitSpeaker, tr, type ProgrammeData } from "@/lib/programme";
 import { loadProgramme } from "@/lib/programme-data";
 import { sessionLocation } from "@/lib/programme-format";
 import { SESSION_TYPE_META, type SessionTypeKey } from "@/lib/session-types";
@@ -99,12 +99,16 @@ export default async function PonentesPage({ params }: Props) {
                         <p className="nota mt-1 text-mar-700">{tr(s.subtitle, s.subtitlePt, locale)}</p>
                       )}
                       {people.length > 0 && (
-                        <ul className="mt-3 space-y-1">
-                          {people.map((p) => (
-                            <li key={p} className="font-medium text-tinta">
-                              {p}
-                            </li>
-                          ))}
+                        <ul className="mt-4 space-y-3">
+                          {people.map((p) => {
+                            const { name, affiliation } = splitSpeaker(p);
+                            return (
+                              <li key={p} className="leading-snug">
+                                <span className="block font-medium text-tinta">{name}</span>
+                                {affiliation && <span className="mt-0.5 block text-sm text-tinta-suave">{affiliation}</span>}
+                              </li>
+                            );
+                          })}
                         </ul>
                       )}
                       {s.talks.length > 0 && (

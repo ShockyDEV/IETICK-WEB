@@ -195,13 +195,12 @@ describe("programa público", () => {
 // ─── Validación del programa provisional real ─────────────────────────
 
 describe("validación", () => {
-  it("el programa provisional no tiene errores; solo avisa de ponentes pendientes", async () => {
+  it("el programa provisional no tiene errores ni ponentes pendientes", async () => {
     const issues = await getProgrammeIssues();
     expect(issues.filter((i) => i.severity === "error")).toEqual([]);
-    const missing = issues.filter((i) => i.code === "MISSING_SPEAKERS");
-    // La ponencia invitada del viernes y el panel de expertos (la mesa redonda
-    // lleva sus personas en las experiencias)
-    expect(missing).toHaveLength(2);
+    // Desde el 16-oct todas las ponencias y el panel tienen sus ponentes (la mesa
+    // redonda y los talleres los llevan en sus contribuciones)
+    expect(issues.filter((i) => i.code === "MISSING_SPEAKERS")).toEqual([]);
   });
 
   it("detecta el solape de dos sesiones en la misma sala", async () => {

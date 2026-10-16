@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Clock, Globe2, Link2, MapPin, Mic2, Radio, Star, Users, X } from "lucide-react";
 import { EJES } from "@/content/ejes";
 import { href, pick, type Locale } from "@/lib/i18n";
-import { dayLabel, speakerList, tr, type ProgrammeData, type ProgrammeSession } from "@/lib/programme";
+import { dayLabel, speakerList, splitSpeaker, tr, type ProgrammeData, type ProgrammeSession } from "@/lib/programme";
 import { sessionLocation } from "@/lib/programme-format";
 import { SESSION_TYPE_META } from "@/lib/session-types";
 import { formatInZone, formatOffset, hmToMinutes, offsetVsMadrid, sessionState } from "@/lib/time";
@@ -157,12 +157,16 @@ export function SessionDialog({
                 <h3 className="nota flex items-center gap-2 text-tinta-suave">
                   <Mic2 className="h-4 w-4 text-mar-600" aria-hidden /> {t.speakers}
                 </h3>
-                <ul className="mt-2 space-y-1">
-                  {speakers.map((p) => (
-                    <li key={p} className="font-medium text-tinta">
-                      {p}
-                    </li>
-                  ))}
+                <ul className="mt-3 space-y-3">
+                  {speakers.map((p) => {
+                    const { name, affiliation } = splitSpeaker(p);
+                    return (
+                      <li key={p} className="leading-snug">
+                        <span className="block font-medium text-tinta">{name}</span>
+                        {affiliation && <span className="mt-0.5 block text-sm text-tinta-suave">{affiliation}</span>}
+                      </li>
+                    );
+                  })}
                 </ul>
               </section>
             )}

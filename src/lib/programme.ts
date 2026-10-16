@@ -123,3 +123,13 @@ export function speakerList(s: Pick<ProgrammeSession, "speakers">): string[] {
     .map((x) => x.trim())
     .filter(Boolean);
 }
+
+/**
+ * Separa «Nombre (cargo y afiliación)» en nombre y afiliación, para mostrarlos
+ * en dos líneas. La afiliación va del primer paréntesis al último, así que puede
+ * llevar paréntesis dentro; sin paréntesis, todo es el nombre.
+ */
+export function splitSpeaker(line: string): { name: string; affiliation: string | null } {
+  const m = line.match(/^([^(]+?)\s*\((.+)\)\s*$/);
+  return m ? { name: m[1].trim(), affiliation: m[2].trim() } : { name: line.trim(), affiliation: null };
+}
