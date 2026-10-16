@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight, CalendarDays, MapPin, UserRound } from "lucide-react";
+import { ProgrammeStatus } from "@/components/programme/programme-status";
 import { PageArt } from "@/components/ui/page-art";
 import { PageHeader } from "@/components/ui/page-header";
 import { PendingNote } from "@/components/ui/pending-note";
@@ -18,8 +19,11 @@ const T = {
   es: {
     eyebrow: "Ponentes",
     title: "Voces invitadas",
-    lead: "Quién interviene en ieTIC 2027: la ponencia inaugural, el panel de expertos, los talleres, la mesa redonda sobre experiencias escolares y la presentación de proyectos de investigación.",
+    lead: "Quién interviene en ieTIC 2027: las ponencias invitadas, el panel de expertos, los talleres, la mesa redonda sobre experiencias escolares y la presentación de proyectos de investigación.",
     inProgramme: "Ver en el programa",
+    provisional: "Lista provisional",
+    provisionalNote: "sujeta a cambios",
+    definitive: "Lista definitiva",
     pendingTitle: "Programa de ponentes en preparación",
     pendingText: "El comité organizador está cerrando las intervenciones invitadas. Esta página se actualizará automáticamente en cuanto se publiquen en el programa.",
     error: "La información de ponentes no está disponible en este momento.",
@@ -27,8 +31,11 @@ const T = {
   pt: {
     eyebrow: "Oradores",
     title: "Vozes convidadas",
-    lead: "Quem intervém no ieTIC 2027: a conferência inaugural, o painel de especialistas, as oficinas, a mesa-redonda sobre experiências escolares e a apresentação de projetos de investigação.",
+    lead: "Quem intervém no ieTIC 2027: as conferências convidadas, o painel de especialistas, as oficinas, a mesa-redonda sobre experiências escolares e a apresentação de projetos de investigação.",
     inProgramme: "Ver no programa",
+    provisional: "Lista provisória",
+    provisionalNote: "sujeita a alterações",
+    definitive: "Lista definitiva",
     pendingTitle: "Programa de oradores em preparação",
     pendingText: "A comissão organizadora está a fechar as intervenções convidadas. Esta página será atualizada automaticamente assim que forem publicadas no programa.",
     error: "A informação sobre os oradores não está disponível neste momento.",
@@ -54,7 +61,11 @@ export default async function PonentesPage({ params }: Props) {
 
   return (
     <>
-      <PageHeader eyebrow={t.eyebrow} title={t.title} lead={t.lead} art={<PageArt />} color={sectionColor("/ponentes")} />
+      <PageHeader eyebrow={t.eyebrow} title={t.title} lead={t.lead} art={<PageArt />} color={sectionColor("/ponentes")}>
+        {data && anyAnnounced && (
+          <ProgrammeStatus data={data} locale={locale} provisional={t.provisional} definitive={t.definitive} note={t.provisionalNote} />
+        )}
+      </PageHeader>
       <section className="py-16 sm:py-20">
         <div className="contenedor">
           {!data && <p className="text-tinta-suave">{t.error}</p>}

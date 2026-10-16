@@ -169,7 +169,8 @@ export function SessionDialog({
             {s.chair && (
               <p className="mt-4 flex items-center gap-2 text-sm">
                 <Users className="h-4 w-4 text-tinta-tenue" aria-hidden />
-                <span className="text-tinta-tenue">{t.chair}:</span> <span className="font-medium">{s.chair}</span>
+                {/* en una ponencia, quien figura en «chair» la presenta; en el resto de sesiones, la modera */}
+                <span className="text-tinta-tenue">{s.type === "PONENCIA" ? t.presenter : t.chair}:</span> <span className="font-medium">{s.chair}</span>
               </p>
             )}
 

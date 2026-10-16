@@ -135,6 +135,8 @@ interface SeedSession {
   descriptionPt?: string;
   /** Una persona por línea */
   speakers?: string;
+  /** Quien modera la sesión (o presenta, en una ponencia) */
+  chair?: string;
   roomId?: string;
   venueId?: string;
   location?: string;
@@ -202,11 +204,12 @@ export const SEED_SESSIONS: SeedSession[] = [
     start: "10:00",
     end: "11:30",
     type: "PONENCIA",
-    title: "Ponencia inaugural",
-    titlePt: "Conferência inaugural",
+    title: "Ponencia invitada",
+    titlePt: "Conferência convidada",
     subtitle: "Recursos Educativos Abiertos y Diseño Universal de Aprendizaje",
     subtitlePt: "Recursos Educativos Abertos e Desenho Universal para a Aprendizagem",
-    speakers: "Dra. Prudencia Gutiérrez Esteban (Universidad de Extremadura)",
+    speakers: "Prudencia Gutiérrez Esteban (Profesora Titular de la Universidad de Extremadura y consejera de Educación en Portugal)",
+    chair: "Marcos Cabezas González (Universidad de Salamanca)",
     roomId: "salon-actos",
   },
   {
@@ -224,8 +227,15 @@ export const SEED_SESSIONS: SeedSession[] = [
     type: "PANEL_EXPERTOS",
     title: "Panel de expertos",
     titlePt: "Painel de especialistas",
-    subtitle: "Cuatro ponentes, por anunciar",
-    subtitlePt: "Quatro oradores, a anunciar",
+    subtitle: "Tecnologías para mejorar el aprendizaje en el ecosistema de Ciencia Abierta",
+    subtitlePt: "Tecnologias para melhorar a aprendizagem no ecossistema da Ciência Aberta",
+    speakers: [
+      "Margarida Leandro (Coordenadora da Unidade Portuguesa da Rede Eurydice, Direção-Geral de Estudos, Planeamento e Avaliação, Ministério da Educação, Ciência e Inovação, Portugal)",
+      "Ilka Márcia Ribeiro de Souza Serra (Professional Doctorate in Engineering, State University of Maranhão, Brasil)",
+      "Francisco García Peñalvo (Catedrático de Informática y subdirector del IUCE, Universidad de Salamanca)",
+      "Sabrina Fernandes de Castro (Professora Associada na UFSM, chefe da Subdivisão de Acessibilidade da CAEd/PROGRAD e líder do Grupo de Estudos e Pesquisa em Educação Especial e Deficiência Intelectual, GEPEEDI)",
+      "Melchor Gómez (Universidad Autónoma de Madrid)",
+    ].join("\n"),
     roomId: "salon-actos",
   },
   {
@@ -265,9 +275,9 @@ export const SEED_SESSIONS: SeedSession[] = [
     descriptionPt: "Oficinas práticas em paralelo. A sala de cada oficina será publicada com o programa definitivo.",
     venueId: "solis",
     talks: [
-      { title: "Narrativa inmersiva como propuesta pedagógica", authors: "Dra. Maribel R. Fidalgo (Universidad de Salamanca)" },
-      { title: "Videojuegos para educar", authors: "Universidad de Extremadura" },
-      { title: "Potencial educativo de la IA", authors: "Universidad de Granada" },
+      { title: "Narrativa inmersiva como propuesta pedagógica", authors: "Maribel R. Fidalgo (Universidad de Salamanca)" },
+      { title: "Videojuegos para educar", authors: "Jesús Acevedo, Alberto González y Alaín Presentación (Universidad de Extremadura)" },
+      { title: "Enseñar con IA", authors: "Santiago Alonso García (Universidad de Granada)" },
       { title: "Musicoterapia y TIC", authors: "César Daniel Pascual Vallejo (Universidad de Salamanca)" },
     ],
   },
@@ -282,11 +292,11 @@ export const SEED_SESSIONS: SeedSession[] = [
     subtitlePt: "Experiências de escolas",
     roomId: "salon-actos",
     talks: [
-      { title: "Experiencia de Sagrado Corazón", authors: "Dña. María Álvarez y Jorge Nuño" },
-      { title: "Experiencia de las Esclavas", authors: "Dña. María José Daniel y D. Carlos Marcos" },
-      { title: "Experiencia de CEIP Santa Catalina", authors: "Dña. María Victoria Casado Martín" },
-      { title: "Experiencia de San Estanislao de Kostka" },
-      { title: "Centro E-pisteme", authors: "Dr. Manuel Vidal Vielma Blanco" },
+      { title: "Experiencia de Sagrado Corazón", authors: "María Álvarez y Jorge Nuño" },
+      { title: "Experiencia de las Esclavas", authors: "María José Daniel y Carlos Marcos" },
+      { title: "Experiencia de CEIP Santa Catalina", authors: "María Victoria Casado Martín" },
+      { title: "Experiencia de San Estanislao de Kostka", authors: "Ana María Martín Hernández y César Rosselló Llamero" },
+      { title: "Centro E-pisteme", authors: "Manuel Vidal Vielma Blanco" },
     ],
   },
   {
@@ -312,23 +322,28 @@ export const SEED_SESSIONS: SeedSession[] = [
   {
     day: "2027-02-12",
     start: "09:00",
-    end: "10:30",
+    end: "10:00",
     ...COMUNICACIONES,
   },
   {
     day: "2027-02-12",
-    start: "10:30",
+    start: "10:00",
     end: "11:30",
     type: "PROYECTOS",
     title: "Presentación de proyectos de investigación",
     titlePt: "Apresentação de projetos de investigação",
     speakers: [
-      "Dr. Antonio Moreira (Universidade Aberta)",
-      "Dr. Vitor Gonçalves (Universidade Politécnica de Bragança)",
-      "Dra. Pilar Gútiez Cuevas (AMPA)",
-      "Dra. Cristina Sánchez Romero (UNED)",
-      "Dra. Sonia Casillas Martín (Universidad de Salamanca)",
+      "Susana Henriques (Professora Associada com Agregação, Departamento de Educação e Ensino a Distância, Universidade Aberta, Portugal)",
+      "Cristina Sánchez Romero (Chair del Consorcio y coordinadora académica del Máster Universitario en Tratamiento Educativo de la Diversidad, UNED, España)",
+      "Rafael Pastor Vargas (Director de la ETSI Informática de la UNED, España)",
+      "Vitor Gonçalves (Universidade Politécnica de Bragança, Portugal)",
+      "Iasmin Zanchi Boueri (Professora e pesquisadora na Universidade Federal do Paraná, UFPR; proyecto IA Edu Pocket Guide)",
+      "Sonia Casillas Martín (Instituto Universitario de Ciencias de la Educación, Universidad de Salamanca)",
+      "Sonia Nuño Sánchez (Instituto Universitario de Ciencias de la Educación, Universidad de Salamanca)",
+      "Pilar Gútiez Cuevas (Asociación de Atención Temprana, AMPAT)",
+      "Roberto Soto Varela (Universidad de Valladolid, AMPAT)",
     ].join("\n"),
+    chair: "Vitor Gonçalves (Universidade Politécnica de Bragança)",
     roomId: "salon-actos",
   },
   {
@@ -346,8 +361,8 @@ export const SEED_SESSIONS: SeedSession[] = [
     type: "PONENCIA",
     title: "Ponencia invitada",
     titlePt: "Conferência convidada",
-    subtitle: "Ponente por anunciar",
-    subtitlePt: "Orador a anunciar",
+    speakers: "António M. Teixeira (Professor Associado, Departamento de Educação e Ensino a Distância, Universidade Aberta, Portugal)",
+    chair: "José António Moreira (Universidade Aberta)",
     roomId: "salon-actos",
   },
   {

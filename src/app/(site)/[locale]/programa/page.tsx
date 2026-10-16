@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { CalendarClock } from "lucide-react";
 import { ProgrammeApp } from "@/components/programme/programme-app";
+import { ProgrammeStatus } from "@/components/programme/programme-status";
 import { PageHeader } from "@/components/ui/page-header";
 import { sectionColor } from "@/content/ui";
 import { PageArt } from "@/components/ui/page-art";
@@ -19,7 +19,6 @@ const T = {
     provisional: "Programa provisional",
     provisionalNote: "sujeto a cambios",
     definitive: "Programa definitivo",
-    updated: "Actualizado el",
     error: "El programa no está disponible en este momento. Vuelve a intentarlo en unos minutos.",
   },
   pt: {
@@ -28,7 +27,6 @@ const T = {
     provisional: "Programa provisório",
     provisionalNote: "sujeito a alterações",
     definitive: "Programa definitivo",
-    updated: "Atualizado em",
     error: "O programa não está disponível neste momento. Tenta novamente dentro de alguns minutos.",
   },
 } as const;
@@ -46,33 +44,11 @@ export default async function ProgrammePage({ params }: Props) {
 
   const data = await loadProgramme("programa");
 
-  const updated = data?.updatedAt
-    ? new Intl.DateTimeFormat(locale === "pt" ? "pt-PT" : "es-ES", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-        timeZone: "Europe/Madrid",
-      }).format(new Date(data.updatedAt))
-    : null;
-
   return (
     <>
       <PageHeader eyebrow={pick(SITE.datesLabel, locale)} title={t.title} lead={t.lead} art={<PageArt />} color={sectionColor("/programa")}>
         {data && (
-          <div className={`mt-7 border-l-2 pl-4 ${data.status === "provisional" ? "border-oro-400" : "border-cian-300"}`}>
-            <p className="flex flex-wrap items-baseline gap-x-2">
-              <span className={`font-display font-semibold ${data.status === "provisional" ? "text-oro-200" : "text-cian-200"}`}>
-                {data.status === "provisional" ? t.provisional : t.definitive}
-              </span>
-              {data.status === "provisional" && <span className="nota text-white/70">{t.provisionalNote}</span>}
-            </p>
-            {updated && (
-              <p className="mt-1 flex items-center gap-1.5 text-sm text-white/60">
-                <CalendarClock className="h-4 w-4" aria-hidden />
-                {t.updated} {updated}
-              </p>
-            )}
-          </div>
+          <ProgrammeStatus data={data} locale={locale} provisional={t.provisional} definitive={t.definitive} note={t.provisionalNote} />
         )}
       </PageHeader>
 
