@@ -85,7 +85,8 @@ export function SiteHeader({ locale }: { locale: Locale }) {
                     aria-current={active ? "page" : undefined}
                     aria-label={label}
                     className={cn(
-                      "trazo-hover flex flex-col items-start rounded-md px-3 pb-1.5 pt-2 text-[0.9rem] font-medium transition-colors duration-300",
+                      // entre 1024 y 1279 px el menú va más apretado para que quepa junto al selector de idioma
+                      "trazo-hover flex flex-col items-start rounded-md px-2 pb-1.5 pt-2 text-[0.9rem] font-medium transition-colors duration-300 xl:px-3",
                       active ? "text-[color:var(--c)]" : "text-white/75 hover:text-[color:var(--c)] focus-visible:text-[color:var(--c)]",
                     )}
                   >

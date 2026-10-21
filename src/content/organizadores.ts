@@ -134,6 +134,20 @@ export const ORGANIZADORES: Organizador[] = [
     h: 40,
   },
   {
+    // Añadido a petición de Ana García-Valcárcel (21-10-2026). Su correo enlazaba
+    // cited-test.ipb.pt; se usa la web en producción, que es la misma.
+    id: "cited",
+    name: {
+      es: "CITeD, Centro de Investigação Transdisciplinar em Educação e Desenvolvimento (Universidade Politécnica de Bragança)",
+      pt: "CITeD, Centro de Investigação Transdisciplinar em Educação e Desenvolvimento (Universidade Politécnica de Bragança)",
+    },
+    url: "https://cited.ipb.pt",
+    logo: "/logos/organizadores/cited.png",
+    width: 520,
+    height: 93,
+    h: 32,
+  },
+  {
     id: "centenario",
     name: { es: "V Centenario de la Escuela de Salamanca (1526–2026)", pt: "V Centenário da Escola de Salamanca (1526–2026)" },
     url: "https://escueladesalamanca.usal.es",
