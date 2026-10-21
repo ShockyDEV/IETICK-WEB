@@ -156,6 +156,8 @@ export const COMITE_CIENTIFICO: MiembroCientifico[] = [
   { name: "Teresa Pessoa", affiliation: "Universidade de Coimbra", country: "pt" },
   { name: "Valentín Martínez-Otero Pérez", affiliation: "Universidad Complutense de Madrid", country: "es" },
   { name: "Vanesa Delgado Benito", affiliation: "Universidad de Burgos", country: "es" },
+  // Añadida a petición de Ana García-Valcárcel (21-10-2026)
+  { name: "Laura Rayón Rumayor", affiliation: "Universidad Complutense de Madrid", country: "es" },
   { name: "Vitor Barrigão Gonçalves", affiliation: "Universidade Politécnica de Bragança", country: "pt" },
   { name: "Vitor Hugo B. Manzke", affiliation: "Instituto Federal de Río Grande do Sul", country: "br" },
 ];

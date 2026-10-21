@@ -6,7 +6,7 @@ import type { L10n } from "@/lib/i18n";
  * en el zip «Logos» del 30-09 aunque el documento no la incluye (criterio del
  * usuario: mejor que sobre alguien a que falte). El documento no dice el
  * papel de cada logo; según su texto de presentación, organiza el consorcio
- * IPB/USAL/UAberta/UNED con la colaboración de la Asociación de Atención
+ * UPB/USAL/UAberta/UNED con la colaboración de la Asociación de Atención
  * Temprana AMPA (sin logo).
  *
  * Logos preparados para la web con fondo transparente y recortados
@@ -39,13 +39,15 @@ export const ORGANIZADORES: Organizador[] = [
     consorcio: true,
   },
   {
-    id: "ipb",
+    // Logo nuevo de la UPB (correo de Ana García-Valcárcel, 21-10-2026), en lugar
+    // del antiguo del Instituto Politécnico de Bragança; ipb.pt ya redirige a unipb.pt
+    id: "upb",
     name: { es: "Universidade Politécnica de Bragança", pt: "Universidade Politécnica de Bragança" },
-    url: "https://www.ipb.pt",
-    logo: "/logos/organizadores/ipb.png",
-    width: 252,
-    height: 182,
-    h: 56,
+    url: "https://unipb.pt",
+    logo: "/logos/organizadores/upb.png",
+    width: 520,
+    height: 200,
+    h: 44,
     consorcio: true,
   },
   {
