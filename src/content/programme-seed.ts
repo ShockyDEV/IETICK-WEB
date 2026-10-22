@@ -361,6 +361,8 @@ export const SEED_SESSIONS: SeedSession[] = [
     type: "PONENCIA",
     title: "Ponencia invitada",
     titlePt: "Conferência convidada",
+    subtitle: "¿Quién aprende, quién decide? Repensar la agencia humana y la delegación cognitiva en la educación abierta e inclusiva mediada por IA",
+    subtitlePt: "Quem aprende, quem decide? Repensar a agência humana e a delegação cognitiva na educação aberta e inclusiva mediada por IA",
     speakers: "António M. Teixeira (Professor Associado, Departamento de Educação e Ensino a Distância, Universidade Aberta, Portugal)",
     chair: "José António Moreira (Universidade Aberta)",
     roomId: "salon-actos",
