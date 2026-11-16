@@ -8,7 +8,7 @@ import { PageArt } from "@/components/ui/page-art";
 import { PageHeader } from "@/components/ui/page-header";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { EJES } from "@/content/ejes";
-import { FECHAS, GRUPOS_FECHA, formatFecha } from "@/content/fechas";
+import { FECHAS, GRUPOS_FECHA, formatFecha, notaAmpliacion } from "@/content/fechas";
 import { SITE } from "@/content/site";
 import { sectionColor, UI } from "@/content/ui";
 import { href, isLocale, pick, type Locale } from "@/lib/i18n";
@@ -27,7 +27,7 @@ const T = {
     eyebrow: "Comunicaciones",
     title: "Comparte tu investigación y tu experiencia",
     lead: (from: string, to: string) =>
-      `Envío de resúmenes del ${from} al ${to}, en español, portugués o inglés. Las comunicaciones se presentan en el congreso de forma presencial o en línea.`,
+      `Envío de resúmenes del ${from} al ${to} (plazo ampliado), en español, portugués o inglés. Las comunicaciones se presentan en el congreso de forma presencial o en línea.`,
     meta: "Normas, plantillas, ejes temáticos y plazos para presentar una comunicación en ieTIC 2027.",
     ctaSubmit: "Enviar en EasyChair",
     ctaTemplates: "Descargar las plantillas",
@@ -106,7 +106,7 @@ const T = {
     eyebrow: "Comunicações",
     title: "Partilha a tua investigação e a tua experiência",
     lead: (from: string, to: string) =>
-      `Submissão de resumos de ${from} a ${to}, em português, espanhol ou inglês. As comunicações são apresentadas no congresso de forma presencial ou online.`,
+      `Submissão de resumos de ${from} a ${to} (prazo alargado), em português, espanhol ou inglês. As comunicações são apresentadas no congresso de forma presencial ou online.`,
     meta: "Normas, modelos, eixos temáticos e prazos para apresentar uma comunicação no ieTIC 2027.",
     ctaSubmit: "Submeter no EasyChair",
     ctaTemplates: "Descarregar os modelos",
@@ -422,6 +422,9 @@ export default async function ComunicacionesPage({ params }: Props) {
                         {formatFecha(f, locale) ?? pick(UI.pending, locale)}
                       </p>
                       <p className="text-sm leading-snug text-tinta-suave">{pick(f.label, locale)}</p>
+                      {notaAmpliacion(f, locale) && (
+                        <p className="mt-0.5 text-sm font-medium leading-snug text-mar-700">{notaAmpliacion(f, locale)}</p>
+                      )}
                     </li>
                   ))}
                 </ol>

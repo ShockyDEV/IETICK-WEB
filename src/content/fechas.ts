@@ -15,6 +15,8 @@ export interface FechaClave {
   /** Fecha final, si es un intervalo (p. ej. el propio congreso) */
   until?: string | null;
   highlight?: boolean;
+  /** Fecha anterior, si el plazo se ha ampliado (se muestra como «Plazo ampliado») */
+  extendedFrom?: string;
   home?: boolean;
 }
 
@@ -38,7 +40,8 @@ export const FECHAS: FechaClave[] = [
     id: "resumenes-cierre",
     group: "resumenes",
     label: { es: "Cierre del envío de resúmenes", pt: "Fecho da submissão de resumos" },
-    date: "2026-11-15",
+    date: "2026-11-29",
+    extendedFrom: "2026-11-15",
     home: true,
   },
   {
@@ -119,6 +122,16 @@ export const FECHAS: FechaClave[] = [
     date: "2027-06-15",
   },
 ];
+
+/** «Plazo ampliado (antes, 15 de noviembre)» o null si la fecha no ha cambiado. */
+export function notaAmpliacion(f: FechaClave, locale: "es" | "pt"): string | null {
+  if (!f.extendedFrom) return null;
+  const loc = locale === "pt" ? "pt-PT" : "es-ES";
+  const d = new Intl.DateTimeFormat(loc, { day: "numeric", month: "long", timeZone: "UTC" }).format(
+    new Date(`${f.extendedFrom}T12:00:00Z`),
+  );
+  return locale === "pt" ? `Prazo alargado (antes, ${d})` : `Plazo ampliado (antes, ${d})`;
+}
 
 /** «11 de febrero de 2027» / «11 y 12 de febrero de 2027» (y en portugués). */
 export function formatFecha(f: FechaClave, locale: "es" | "pt"): string | null {

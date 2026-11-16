@@ -12,7 +12,7 @@ import { HomeHeroArt } from "@/components/home/hero-art-slot";
 import { EjeIcon } from "@/components/ui/eje-icon";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { EJES } from "@/content/ejes";
-import { FECHAS, formatFecha } from "@/content/fechas";
+import { FECHAS, formatFecha, notaAmpliacion } from "@/content/fechas";
 import { ORGANIZADORES } from "@/content/organizadores";
 import { SITE, siteUrl } from "@/content/site";
 import { UI } from "@/content/ui";
@@ -62,8 +62,8 @@ const T = {
     datesEyebrow: "Fechas clave",
     datesTitle: "Calendario",
     participate: "¿Quieres presentar tu trabajo?",
-    participateText: (opens: string) =>
-      `El envío de resúmenes se abre el ${opens}. Normas, plantillas y ejes temáticos, en la página de comunicaciones.`,
+    participateText: (closes: string) =>
+      `El plazo de envío de resúmenes se ha ampliado hasta el ${closes}. Normas, plantillas y ejes temáticos, en la página de comunicaciones.`,
   },
   pt: {
     eyebrow: "XIII Conferência Ibérica",
@@ -96,8 +96,8 @@ const T = {
     datesEyebrow: "Datas importantes",
     datesTitle: "Calendário",
     participate: "Queres apresentar o teu trabalho?",
-    participateText: (opens: string) =>
-      `A submissão de resumos abre a ${opens}. Normas, modelos e eixos temáticos na página de comunicações.`,
+    participateText: (closes: string) =>
+      `O prazo de submissão de resumos foi alargado até ${closes}. Normas, modelos e eixos temáticos na página de comunicações.`,
   },
 } as const;
 
@@ -349,6 +349,9 @@ export default async function HomePage({ params }: Props) {
                   >
                     {value ?? pick(UI.pending, locale)}
                   </p>
+                  {notaAmpliacion(d, locale) && (
+                    <p className={hl ? "mt-1 text-sm text-white/70" : "mt-1 text-sm text-tinta-suave"}>{notaAmpliacion(d, locale)}</p>
+                  )}
                 </li>
               );
             })}
@@ -359,7 +362,7 @@ export default async function HomePage({ params }: Props) {
           >
             <div className="max-w-2xl">
               <p className="font-display text-2xl font-bold">{t.participate}</p>
-              <p className="mt-2 text-white/80">{t.participateText(fecha("resumenes-apertura"))}</p>
+              <p className="mt-2 text-white/80">{t.participateText(fecha("resumenes-cierre"))}</p>
             </div>
             <Link href={href(locale, "/comunicaciones")} className="boton-oro shrink-0 self-start transition hover:-translate-y-0.5 lg:self-auto">
               {pick(UI.submit, locale)}
