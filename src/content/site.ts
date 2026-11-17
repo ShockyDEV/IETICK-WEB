@@ -74,9 +74,8 @@ export const SITE = {
   // Formación Permanente de la USAL
   registration: {
     form: "https://forms.gle/Ju4LaDBYRtZhFyE96",
-    payment: "https://vaporetto.usal.es/preactform/listaCursos?tipocur=sm",
-    courseName:
-      "Conferencia Ibérica de Innovación en la Educación con Tecnologías de la Información y Comunicación - ietic2027",
+    paymentOnsite: "https://vaporetto.usal.es/preactform/detalleCurso?codigo_curso=6929&ano_academico=2027&convocatoria=1",
+    paymentOnline: "https://vaporetto.usal.es/preactform/detalleCurso?codigo_curso=6929&ano_academico=2027&convocatoria=2",
     helpEmail: "formacionpermanente@usal.es",
     helpPhone: "923 294 500",
     helpExt: "3050 / 1174",

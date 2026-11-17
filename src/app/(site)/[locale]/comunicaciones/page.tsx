@@ -26,8 +26,12 @@ const T = {
   es: {
     eyebrow: "Comunicaciones",
     title: "Comparte tu investigación y tu experiencia",
-    lead: (from: string, to: string) =>
-      `Envío de resúmenes del ${from} al ${to} (plazo ampliado), en español, portugués o inglés. Las comunicaciones se presentan en el congreso de forma presencial o en línea.`,
+    lead: (from: string, to: string) => (
+      <>
+        Envío de resúmenes del {from} al <strong className="font-semibold text-oro-300">{to} (plazo ampliado)</strong>, en
+        español, portugués o inglés. Las comunicaciones se presentan en el congreso de forma presencial o en línea.
+      </>
+    ),
     meta: "Normas, plantillas, ejes temáticos y plazos para presentar una comunicación en ieTIC 2027.",
     ctaSubmit: "Enviar en EasyChair",
     ctaTemplates: "Descargar las plantillas",
@@ -105,8 +109,12 @@ const T = {
   pt: {
     eyebrow: "Comunicações",
     title: "Partilha a tua investigação e a tua experiência",
-    lead: (from: string, to: string) =>
-      `Submissão de resumos de ${from} a ${to} (prazo alargado), em português, espanhol ou inglês. As comunicações são apresentadas no congresso de forma presencial ou online.`,
+    lead: (from: string, to: string) => (
+      <>
+        Submissão de resumos de {from} a <strong className="font-semibold text-oro-300">{to} (prazo alargado)</strong>, em
+        português, espanhol ou inglês. As comunicações são apresentadas no congresso de forma presencial ou online.
+      </>
+    ),
     meta: "Normas, modelos, eixos temáticos e prazos para apresentar uma comunicação no ieTIC 2027.",
     ctaSubmit: "Submeter no EasyChair",
     ctaTemplates: "Descarregar os modelos",

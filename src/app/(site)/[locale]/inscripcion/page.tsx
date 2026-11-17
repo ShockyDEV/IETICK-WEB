@@ -40,8 +40,8 @@ const T = {
     step2: {
       kicker: "Después",
       title: "Inscripción y pago",
-      text: "Se hacen en el Centro de Formación Permanente de la Universidad de Salamanca. Busca el congreso en el listado de cursos con este nombre:",
-      cta: "Ir al Centro de Formación Permanente",
+      text: "Se hacen en el Centro de Formación Permanente de la Universidad de Salamanca. Entra por el enlace de tu modalidad:",
+      links: { onsite: "Modalidad presencial", online: "Modalidad en línea" },
     },
     helpBilling: "Inscripción y facturación",
     helpBillingWho: "Centro de Formación Permanente de la Universidad de Salamanca",
@@ -74,8 +74,8 @@ const T = {
     step2: {
       kicker: "Depois",
       title: "Inscrição e pagamento",
-      text: "Fazem-se no Centro de Formação Permanente da Universidade de Salamanca. Procura o congresso na lista de cursos com este nome:",
-      cta: "Ir para o Centro de Formação Permanente",
+      text: "Fazem-se no Centro de Formação Permanente da Universidade de Salamanca. Entra pela ligação da tua modalidade:",
+      links: { onsite: "Modalidade presencial", online: "Modalidade online" },
     },
     helpBilling: "Inscrição e faturação",
     helpBillingWho: "Centro de Formação Permanente da Universidade de Salamanca",
@@ -105,8 +105,14 @@ export default async function InscripcionPage({ params }: Props) {
     new Intl.NumberFormat(locale === "pt" ? "pt-PT" : "es-ES", { style: "currency", currency: "EUR", maximumFractionDigits: 0 }).format(n);
 
   const steps = [
-    { ...t.step1, url: SITE.registration.form },
-    { ...t.step2, url: SITE.registration.payment, course: SITE.registration.courseName },
+    { ...t.step1, buttons: [{ label: t.step1.cta, url: SITE.registration.form }] },
+    {
+      ...t.step2,
+      buttons: [
+        { label: t.step2.links.onsite, url: SITE.registration.paymentOnsite },
+        { label: t.step2.links.online, url: SITE.registration.paymentOnline },
+      ],
+    },
   ];
 
   return (
@@ -189,19 +195,16 @@ export default async function InscripcionPage({ params }: Props) {
           <SectionHeading eyebrow={t.stepsEyebrow} title={t.stepsTitle} />
           <ol className="mt-10 grid gap-6 md:grid-cols-2">
             {steps.map((s, i) => (
-              <li key={s.url} data-reveal style={{ ["--d" as string]: `${i * 110}ms` }} className="tarjeta flex flex-col p-6 sm:p-7">
+              <li key={s.title} data-reveal style={{ ["--d" as string]: `${i * 110}ms` }} className="tarjeta flex flex-col p-6 sm:p-7">
                 <p className="nota text-mar-700">{s.kicker}</p>
                 <h3 className="mt-1 font-display text-xl font-bold">{s.title}</h3>
                 <p className="mt-3 leading-relaxed text-tinta-suave">{s.text}</p>
-                {"course" in s && s.course && (
-                  <p className="mt-3 rounded-r-md border-l-2 border-oro-400 bg-oro-50/70 px-4 py-2.5 text-sm font-medium leading-snug text-tinta">
-                    {s.course}
-                  </p>
-                )}
-                <p className="mt-auto pt-6">
-                  <a href={s.url} target="_blank" rel="noopener noreferrer" className="boton-mar">
-                    {s.cta} <ArrowUpRight className="h-4 w-4" aria-hidden />
-                  </a>
+                <p className="mt-auto flex flex-wrap gap-3 pt-6">
+                  {s.buttons.map((b) => (
+                    <a key={b.url} href={b.url} target="_blank" rel="noopener noreferrer" className="boton-mar">
+                      {b.label} <ArrowUpRight className="h-4 w-4" aria-hidden />
+                    </a>
+                  ))}
                 </p>
               </li>
             ))}
