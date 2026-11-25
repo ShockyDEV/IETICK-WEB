@@ -89,6 +89,19 @@ export const ORGANIZADORES: Organizador[] = [
     h: 35,
   },
   {
+    // Añadido a petición de Marcos Cabezas (25-11-2026)
+    id: "doymi",
+    name: {
+      es: "Departamento de Didáctica, Organización y Métodos de Investigación, Universidad de Salamanca",
+      pt: "Departamento de Didática, Organização e Métodos de Investigação, Universidade de Salamanca",
+    },
+    url: "https://doymi.usal.es",
+    logo: "/logos/organizadores/doymi.png",
+    width: 520,
+    height: 117,
+    h: 35,
+  },
+  {
     id: "iuce",
     name: { es: "Instituto Universitario de Ciencias de la Educación (IUCE), Universidad de Salamanca", pt: "Instituto Universitário de Ciências da Educação (IUCE), Universidade de Salamanca" },
     url: "https://solis.usal.es",
