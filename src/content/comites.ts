@@ -158,6 +158,8 @@ export const COMITE_CIENTIFICO: MiembroCientifico[] = [
   { name: "Vanesa Delgado Benito", affiliation: "Universidad de Burgos", country: "es" },
   // Añadida a petición de Ana García-Valcárcel (21-10-2026)
   { name: "Laura Rayón Rumayor", affiliation: "Universidad Complutense de Madrid", country: "es" },
+  // Añadida a petición de la organización (28-11-2026)
+  { name: "Verónica Basilotta Gómez-Pablos", affiliation: "Universidad del Atlántico Medio", country: "es" },
   { name: "Vitor Barrigão Gonçalves", affiliation: "Universidade Politécnica de Bragança", country: "pt" },
   { name: "Vitor Hugo B. Manzke", affiliation: "Instituto Federal de Río Grande do Sul", country: "br" },
 ];
